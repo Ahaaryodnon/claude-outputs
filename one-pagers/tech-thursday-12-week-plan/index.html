@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tech Thursday — 12-week plan · Ground Control</title>
+<meta name="description" content="A 12-week plan of 30-to-60-second tech tip videos for Ground Control. Covers Microsoft Stack, AI with Copilot Free, and general tech tips.">
+<style>
+  :root{
+    /* Ground Control palette — from the official brand guide */
+    --gc-dark-green:#294238;
+    --gc-light-green:#B2D235;
+    --gc-mid-green:#50B748;
+    --gc-grey:#E6EBE3;
+    --gc-orange:#F57821;
+    --gc-white:#FFFFFF;
+    --gc-black:#0a0f0c;
+
+    --radius:14px;
+    --radius-sm:8px;
+    --shadow:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(41,66,56,.06);
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    /* Cera Pro is the brand font; falling back to a clean system sans where Cera is unavailable. */
+    font-family:"Cera Pro","Cera Pro Medium",Inter,"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+    color:var(--gc-black);
+    background:var(--gc-white);
+    line-height:1.55;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  a{color:var(--gc-dark-green); text-underline-offset:3px}
+  a:hover{color:var(--gc-mid-green)}
+
+  /* ------- Hero ------- */
+  .hero{
+    background:var(--gc-dark-green);
+    color:var(--gc-white);
+    position:relative;
+    overflow:hidden;
+    padding:64px 32px 72px;
+  }
+  .hero .inner{max-width:var(--maxw); margin:0 auto; position:relative; z-index:2}
+  .overline{
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    font-size:12px;
+    color:var(--gc-light-green);
+    font-weight:600;
+    margin:0 0 16px;
+  }
+  h1{
+    /* Titles want FOT-TsukuARdGothic; falling back to a rounded gothic-feeling stack. */
+    font-family:"FOT-TsukuARdGothic","Cera Pro",Inter,system-ui,sans-serif;
+    font-size:clamp(34px, 5vw, 56px);
+    line-height:1.05;
+    letter-spacing:-.01em;
+    margin:0 0 16px;
+    color:var(--gc-white);
+    font-weight:700;
+  }
+  .strapline{
+    font-size:clamp(17px, 1.6vw, 20px);
+    max-width:720px;
+    color:var(--gc-white);
+    opacity:.92;
+    margin:0 0 28px;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:10px 18px;
+    font-size:13px; color:var(--gc-white); opacity:.85;
+  }
+  .meta span{display:inline-flex; align-items:center; gap:8px}
+  .meta b{font-weight:600; color:var(--gc-light-green)}
+
+  /* Flowing line motif — light/mid green, two corners only, flowing off the edge */
+  .hero svg.motif{
+    position:absolute; pointer-events:none; z-index:1; opacity:.85;
+  }
+  .hero svg.motif.tr{ top:-60px; right:-80px; width:520px; }
+  .hero svg.motif.bl{ bottom:-80px; left:-60px; width:420px; }
+
+  /* ------- Sections ------- */
+  section{padding:56px 32px}
+  .inner{max-width:var(--maxw); margin:0 auto}
+  .why{background:var(--gc-grey)}
+  h2{
+    font-family:"FOT-TsukuARdGothic","Cera Pro",Inter,system-ui,sans-serif;
+    font-size:clamp(24px, 2.6vw, 32px);
+    line-height:1.15;
+    margin:0 0 8px;
+    color:var(--gc-dark-green);
+    font-weight:700;
+  }
+  .sub-overline{
+    text-transform:uppercase; letter-spacing:.16em; font-size:11px; font-weight:600;
+    color:var(--gc-mid-green); margin:0 0 10px;
+  }
+  .lede{
+    font-size:18px; max-width:780px; color:var(--gc-dark-green); margin:0 0 0;
+  }
+
+  /* ------- Schedule table ------- */
+  .schedule .inner{display:block}
+  .legend{display:flex; flex-wrap:wrap; gap:10px 18px; margin:0 0 18px; font-size:13px}
+  .legend .dot{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--gc-grey); padding:6px 12px; border-radius:999px;
+    color:var(--gc-dark-green); font-weight:600;
+  }
+  .legend .dot::before{
+    content:""; width:10px; height:10px; border-radius:50%;
+  }
+  .legend .ms::before{ background:var(--gc-light-green) }
+  .legend .ai::before{ background:var(--gc-orange) }
+  .legend .gn::before{ background:var(--gc-mid-green) }
+
+  table.weeks{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    background:var(--gc-white);
+    border:1px solid var(--gc-grey);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  table.weeks th, table.weeks td{
+    text-align:left;
+    padding:14px 16px;
+    border-bottom:1px solid var(--gc-grey);
+    vertical-align:top;
+  }
+  table.weeks tr:last-child td{border-bottom:none}
+  table.weeks thead th{
+    background:var(--gc-dark-green);
+    color:var(--gc-white);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-weight:600;
+  }
+  table.weeks td.wk{
+    font-weight:700; color:var(--gc-dark-green); width:56px; white-space:nowrap;
+  }
+  table.weeks td.date{ width:120px; white-space:nowrap; color:var(--gc-dark-green); opacity:.8; font-variant-numeric:tabular-nums }
+  table.weeks td.cat{ width:160px; white-space:nowrap }
+  table.weeks td.topic b{ display:block; color:var(--gc-dark-green); font-size:16px; margin-bottom:2px }
+  table.weeks td.topic span{ color:#39463f; font-size:14.5px }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:600;
+    padding:5px 10px; border-radius:999px;
+    color:var(--gc-dark-green);
+    border:1px solid transparent;
+  }
+  .badge::before{ content:""; width:8px; height:8px; border-radius:50% }
+  .badge.ms{ background:rgba(178,210,53,.20); border-color:rgba(178,210,53,.55) }
+  .badge.ms::before{ background:var(--gc-light-green) }
+  .badge.ai{ background:rgba(245,120,33,.12); border-color:rgba(245,120,33,.50); color:#7a3b0e }
+  .badge.ai::before{ background:var(--gc-orange) }
+  .badge.gn{ background:rgba(80,183,72,.15); border-color:rgba(80,183,72,.50) }
+  .badge.gn::before{ background:var(--gc-mid-green) }
+
+  /* ------- Production notes ------- */
+  .notes{background:var(--gc-grey)}
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:16px;
+    margin-top:18px;
+  }
+  .card{
+    background:var(--gc-white);
+    border-radius:var(--radius-sm);
+    padding:18px 18px 16px;
+    border:1px solid #d8ded5;
+  }
+  .card h3{
+    font-size:14px; margin:0 0 6px; color:var(--gc-dark-green);
+    text-transform:uppercase; letter-spacing:.10em;
+  }
+  .card p{ margin:0; font-size:15px; color:#2b3a32 }
+
+  /* ------- CTA ------- */
+  .cta{
+    background:var(--gc-dark-green); color:var(--gc-white);
+    padding:56px 32px;
+  }
+  .cta .inner{display:flex; align-items:center; gap:24px; flex-wrap:wrap; justify-content:space-between}
+  .cta h2{ color:var(--gc-white); margin:0 }
+  .cta a.btn{
+    display:inline-block;
+    background:var(--gc-light-green);
+    color:var(--gc-dark-green);
+    text-decoration:none;
+    font-weight:700;
+    padding:14px 22px;
+    border-radius:999px;
+    border:2px solid var(--gc-light-green);
+    transition:background .15s ease, color .15s ease;
+  }
+  .cta a.btn:hover{ background:transparent; color:var(--gc-light-green) }
+
+  /* ------- Footer ------- */
+  footer{
+    padding:24px 32px; background:var(--gc-dark-green); color:var(--gc-white);
+    border-top:1px solid rgba(255,255,255,.10);
+  }
+  footer .inner{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:12.5px; opacity:.85}
+
+  @media (max-width:680px){
+    table.weeks td.cat{ width:auto }
+    table.weeks td.date{ width:auto }
+    .meta{font-size:12.5px}
+  }
+  @media print{
+    .hero, .cta, footer{ background:#fff !important; color:#000 !important }
+    .hero svg.motif{ display:none }
+    h1, h2{ color:var(--gc-dark-green) !important }
+    .cta a.btn{ border-color:var(--gc-dark-green) !important; color:var(--gc-dark-green) !important; background:transparent !important }
+    body{font-size:11.5pt}
+    section, .hero, .cta{ padding:18px 0 }
+    table.weeks{ box-shadow:none }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <!-- Flowing line motif, top-right and bottom-left only, flowing off the edge -->
+  <svg class="motif tr" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M650,40 C500,80 420,140 380,210 C340,280 260,330 120,340" fill="none" stroke="#B2D235" stroke-width="3" stroke-linecap="round"/>
+    <path d="M650,90 C520,130 460,180 420,250 C380,310 300,360 160,380" fill="none" stroke="#50B748" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+    <path d="M650,150 C540,180 500,210 470,270 C440,320 380,360 260,400" fill="none" stroke="#B2D235" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+  </svg>
+  <svg class="motif bl" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M-40,360 C100,330 180,280 220,210 C260,140 340,80 480,40" fill="none" stroke="#B2D235" stroke-width="3" stroke-linecap="round"/>
+    <path d="M-40,310 C120,280 200,230 240,160 C280,90 360,50 500,10" fill="none" stroke="#50B748" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+  </svg>
+
+  <div class="inner">
+    <p class="overline">Internal · Tech Thursday</p>
+    <h1>12 weeks of 30-to-60-second tech tips</h1>
+    <p class="strapline">A weekly rhythm of small wins for everyone at Ground Control — short videos covering the Microsoft stack, AI with Copilot Free, and the everyday tech that quietly makes work easier.</p>
+    <p class="meta">
+      <span><b>Audience</b>&nbsp;All Ground Control staff</span>
+      <span><b>Author</b>&nbsp;Aaron Haydon</span>
+      <span><b>Cadence</b>&nbsp;Thursdays · 14 May → 30 July 2026</span>
+      <span><b>Length</b>&nbsp;30–60 seconds</span>
+    </p>
+  </div>
+</header>
+
+<section class="why">
+  <div class="inner">
+    <p class="sub-overline">Why this format</p>
+    <h2>Small tips, every Thursday, for twelve weeks</h2>
+    <p class="lede">One short video. One thing you can use the same day. We rotate through three streams so the series stays fresh — a Microsoft tip people can apply in Outlook, Teams, or Excel by lunch; an AI tip using the free Copilot everyone already has; and a general tip that makes the rest of the day a bit easier. Twelve weeks gives the habit time to land without overstaying its welcome.</p>
+  </div>
+</section>
+
+<section class="schedule">
+  <div class="inner">
+    <p class="sub-overline">The schedule</p>
+    <h2>12 weeks at a glance</h2>
+    <div class="legend" aria-label="Topic categories">
+      <span class="dot ms">Microsoft Stack</span>
+      <span class="dot ai">AI · Copilot Free</span>
+      <span class="dot gn">General tech tip</span>
+    </div>
+
+    <table class="weeks" aria-label="Tech Thursday 12 week schedule">
+      <thead>
+        <tr>
+          <th scope="col">Week</th>
+          <th scope="col">Date</th>
+          <th scope="col">Category</th>
+          <th scope="col">Topic &amp; the line that sells it</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="wk">01</td>
+          <td class="date">Thu 14 May</td>
+          <td class="cat"><span class="badge ms">Microsoft Stack</span></td>
+          <td class="topic"><b>Outlook: schedule send</b><span>Write tonight, deliver at 9am. Stop emailing colleagues at 11pm.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">02</td>
+          <td class="date">Thu 21 May</td>
+          <td class="cat"><span class="badge ai">AI · Copilot Free</span></td>
+          <td class="topic"><b>Summarise any webpage in Edge</b><span>Open the Copilot side panel and ask for five bullets. A 60-minute article in 60 seconds.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">03</td>
+          <td class="date">Thu 28 May</td>
+          <td class="cat"><span class="badge gn">General</span></td>
+          <td class="topic"><b>Clipboard history with Win + V</b><span>Copy more than one thing at a time. Press Win + V, switch it on once, never lose a snippet again.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">04</td>
+          <td class="date">Thu 4 Jun</td>
+          <td class="cat"><span class="badge ms">Microsoft Stack</span></td>
+          <td class="topic"><b>Teams meeting recap</b><span>Turn on transcription. The Recap tab writes the notes and the action items for you.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">05</td>
+          <td class="date">Thu 11 Jun</td>
+          <td class="cat"><span class="badge ai">AI · Copilot Free</span></td>
+          <td class="topic"><b>Generate an image for slides</b><span>Ask Copilot for a landscape image you can drop into a deck. No more stock photo guilt.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">06</td>
+          <td class="date">Thu 18 Jun</td>
+          <td class="cat"><span class="badge gn">General</span></td>
+          <td class="topic"><b>PowerToys: PowerRename</b><span>Install Microsoft PowerToys, right-click a folder, rename 200 files in one go.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">07</td>
+          <td class="date">Thu 25 Jun</td>
+          <td class="cat"><span class="badge ms">Microsoft Stack</span></td>
+          <td class="topic"><b>Excel: XLOOKUP in 60 seconds</b><span>=XLOOKUP(what, where, return). The one Excel formula worth learning this year.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">08</td>
+          <td class="date">Thu 2 Jul</td>
+          <td class="cat"><span class="badge ai">AI · Copilot Free</span></td>
+          <td class="topic"><b>Sharper prompts with PTCF</b><span>Persona, Task, Context, Format. Four words that get you a much better answer.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">09</td>
+          <td class="date">Thu 9 Jul</td>
+          <td class="cat"><span class="badge gn">General</span></td>
+          <td class="topic"><b>Spot a phishing link in five seconds</b><span>Hover before you click. Read the real domain right-to-left. If it looks off, report it.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">10</td>
+          <td class="date">Thu 16 Jul</td>
+          <td class="cat"><span class="badge ms">Microsoft Stack</span></td>
+          <td class="topic"><b>Loop components in Teams chat</b><span>Drop a live checklist or table into a chat. Everyone edits in place. Stop sending updates of the update.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">11</td>
+          <td class="date">Thu 23 Jul</td>
+          <td class="cat"><span class="badge ai">AI · Copilot Free</span></td>
+          <td class="topic"><b>Compare options to decide faster</b><span>Drop two options into Copilot and ask for a side-by-side trade-off table with a recommendation.</span></td>
+        </tr>
+        <tr>
+          <td class="wk">12</td>
+          <td class="date">Thu 30 Jul</td>
+          <td class="cat"><span class="badge gn">General</span></td>
+          <td class="topic"><b>Focus time in Outlook</b><span>Outlook → My Day → Focus Time. Two hours of quiet, booked into your calendar. Buy back your morning.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="notes">
+  <div class="inner">
+    <p class="sub-overline">Production notes</p>
+    <h2>How each Thursday actually ships</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Format</h3>
+        <p>Vertical or 16:9. 30–60 seconds. One tip, one screen recording, one sentence of voiceover at the end: "Try it this week — let me know how it goes."</p>
+      </div>
+      <div class="card">
+        <h3>Tools to record</h3>
+        <p>Clipchamp or PowerPoint Cameo for the talking head; Snipping Tool (Win + Shift + S → "Record") for the screen capture. Both are already on every laptop.</p>
+      </div>
+      <div class="card">
+        <h3>Where it lands</h3>
+        <p>Posted in Viva Engage and the All Hands Teams channel by 9am Thursday. Archived to a SharePoint page so anyone can binge-watch the back catalogue.</p>
+      </div>
+      <div class="card">
+        <h3>Feedback loop</h3>
+        <p>Reactions on the post count as the success metric. Topics that get the most replies graduate into a longer "Tech Thursday Deep Dive" once a quarter.</p>
+      </div>
+      <div class="card">
+        <h3>Buffer / fallback</h3>
+        <p>If a week is missed, slot in a "viewer request" topic from the comments. Always keep one evergreen tip recorded in reserve.</p>
+      </div>
+      <div class="card">
+        <h3>Accessibility</h3>
+        <p>Burn-in captions on every video. Same tip written as a one-paragraph summary in the Viva Engage post — for the people who would rather read than watch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="inner">
+    <h2>Ready to film week one?</h2>
+    <a class="btn" href="#" rel="noopener">Open the Tech Thursday SharePoint</a>
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <span>Tech Thursday · 12-week plan · Drafted by AI, reviewed by Aaron Haydon</span>
+    <span>Ground Control · Human Nature: At Its Best</span>
+  </div>
+</footer>
+
+</body>
+</html>
