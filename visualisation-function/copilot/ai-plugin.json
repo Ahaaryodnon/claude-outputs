@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.4/schema.json",
+  "schema_version": "v2.4",
+  "name_for_human": "Ground Control Visualisation Generator",
+  "namespace": "groundControlVisualisation",
+  "description_for_human": "Generate charts, Mermaid diagrams, KPI cards, tables and timelines in the Ground Control brand style.",
+  "description_for_model": "Use this plugin whenever the user asks the agent to produce a visualisation — a chart (bar, line, area, pie, scatter), a Mermaid diagram or flowchart, a KPI / metric card, a tabular view of data, or a milestone timeline. Pass structured data; the plugin returns SVG, HTML or Mermaid source ready to embed in the response. Prefer outputFormat 'svg' for charts, KPIs and timelines; 'html' for tables and Mermaid; 'mermaid' when the user only needs the raw Mermaid syntax.",
+  "version": "1.0.0",
+  "logo_url": "https://example.com/groundcontrol-logo.png",
+  "contact_email": "platform@example.com",
+  "legal_info_url": "https://example.com/legal",
+  "capabilities": {
+    "localization": {},
+    "conversation_starters": [
+      {
+        "text": "Draw a bar chart of automation opportunities by department."
+      },
+      {
+        "text": "Create a Mermaid flowchart of our order fulfilment process."
+      },
+      {
+        "text": "Show Q2 KPIs as a card layout in the Ground Control theme."
+      },
+      {
+        "text": "Render a timeline for the AI rollout: Discovery Q1, Build Q2, Rollout Q3."
+      }
+    ]
+  },
+  "functions": [
+    {
+      "name": "generateVisualisation",
+      "description": "Render a visualisation (chart, Mermaid diagram, KPI cards, table, or timeline) from structured input. Pick `visualisationType` and `options.outputFormat` to control the renderer and response shape. Returns inline SVG/HTML/Mermaid content, or a Blob Storage URL when payloads exceed the inline limit.",
+      "capabilities": {
+        "response_semantics": {
+          "data_path": "$.content",
+          "properties": {
+            "title": "$.visualisationType",
+            "subtitle": "$.requestId"
+          }
+        }
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "OpenApi",
+      "auth": {
+        "type": "ApiKeyPluginVault",
+        "reference_id": "REPLACE_WITH_TDP_API_KEY_REFERENCE_ID"
+      },
+      "spec": {
+        "url": "openapi.yaml",
+        "progress_style": "ShowUsage"
+      },
+      "run_for_functions": [
+        "generateVisualisation"
+      ]
+    }
+  ]
+}

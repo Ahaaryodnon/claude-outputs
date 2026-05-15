@@ -1,0 +1,456 @@
+openapi: 3.0.3
+info:
+  title: Ground Control Visualisation Generator
+  description: >-
+    Generates visualisations (bar / line / area / pie / scatter charts,
+    Mermaid diagrams, KPI cards, tables and milestone timelines) on demand
+    from structured data. Use this plugin whenever the user asks for a
+    chart, diagram, process map, KPI summary, table view or roadmap
+    timeline. The plugin returns inline SVG, HTML or Mermaid source that
+    can be embedded directly into a Copilot answer or stored in Azure
+    Blob Storage when payloads exceed the inline limit.
+  version: 1.0.0
+  contact:
+    name: Ground Control Platform Team
+  license:
+    name: Proprietary
+servers:
+  - url: https://{functionApp}.azurewebsites.net/api
+    description: Azure Function App hosting the visualisation generator.
+    variables:
+      functionApp:
+        default: gc-visualisation-prod
+        description: The Azure Function App name (without the .azurewebsites.net suffix).
+security:
+  - functionKey: []
+paths:
+  /visualisation/generate:
+    post:
+      operationId: generateVisualisation
+      summary: Generate a visualisation from structured data
+      description: >-
+        Renders a visualisation from a structured request. Choose
+        `visualisationType` to pick the renderer (chart, mermaid,
+        flowchart, kpi, table, timeline) and `options.outputFormat` to
+        select the response format (svg, html, mermaid or json).
+        Returns the generated content inline; large payloads are stored
+        in Azure Blob Storage and returned as `contentUrl`. Use this
+        operation whenever the user asks to "draw", "chart", "plot",
+        "diagram", "visualise", or "show a KPI / timeline / table".
+      tags:
+        - Visualisation
+      requestBody:
+        required: true
+        description: The visualisation request describing what to render and how.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualisationRequest"
+            examples:
+              barChart:
+                summary: Bar chart with Ground Control theme
+                value:
+                  requestId: vis-001
+                  visualisationType: chart
+                  title: Automation Opportunities by Department
+                  description: Bar chart showing opportunity count per department
+                  data:
+                    labels: ["Finance", "Operations", "HR", "IT"]
+                    values: [12, 18, 6, 14]
+                  options:
+                    theme: ground-control
+                    outputFormat: svg
+                    width: 1200
+                    height: 800
+                    chartType: bar
+                  metadata:
+                    agentName: ProcessDiscoveryAgent
+                    userId: aaron.haydon
+                    source: agent
+              mermaidFlow:
+                summary: Mermaid flowchart returned as HTML
+                value:
+                  requestId: vis-mermaid-001
+                  visualisationType: mermaid
+                  title: Order Fulfilment Process
+                  data:
+                    diagram: |
+                      flowchart LR
+                        A[Order received] --> B{In stock?}
+                        B -- Yes --> C[Pick and pack]
+                        B -- No --> D[Reorder]
+                        C --> E[Ship]
+                        D --> C
+                  options:
+                    theme: ground-control
+                    outputFormat: html
+              kpiCards:
+                summary: Grouped KPI cards
+                value:
+                  requestId: vis-kpi-001
+                  visualisationType: kpi
+                  title: Q2 Performance Snapshot
+                  data:
+                    kpis:
+                      - label: ARR
+                        value: 4.2
+                        unit: "$M"
+                        trend: up
+                        delta: "+12%"
+                      - label: NPS
+                        value: 62
+                        trend: up
+                        delta: "+4"
+                  options:
+                    theme: ground-control
+                    outputFormat: svg
+                    width: 1400
+                    height: 360
+      responses:
+        "200":
+          description: Visualisation generated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VisualisationResponse"
+              examples:
+                inlineSvg:
+                  summary: Inline SVG response
+                  value:
+                    requestId: vis-001
+                    status: success
+                    visualisationType: chart
+                    outputFormat: svg
+                    content: "<?xml version=\"1.0\"?><svg ...>...</svg>"
+                    contentUrl: null
+                    errors: []
+                blobUrl:
+                  summary: Large payload uploaded to Blob Storage
+                  value:
+                    requestId: vis-002
+                    status: success
+                    visualisationType: timeline
+                    outputFormat: html
+                    content: null
+                    contentUrl: https://gcvisualisations.blob.core.windows.net/visualisations/2026-05-15/vis-002-2f1a.html
+                    errors: []
+        "400":
+          description: Validation or rendering failure. The `errors` array describes the problem.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VisualisationResponse"
+              examples:
+                missingField:
+                  summary: Required field missing
+                  value:
+                    requestId: vis-001
+                    status: failed
+                    visualisationType: chart
+                    outputFormat: svg
+                    content: null
+                    contentUrl: null
+                    errors:
+                      - code: INVALID_INPUT
+                        message: "Missing required field: data"
+                        field: data
+        "500":
+          description: Unexpected internal failure.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VisualisationResponse"
+components:
+  securitySchemes:
+    functionKey:
+      type: apiKey
+      in: header
+      name: x-functions-key
+      description: Azure Functions function key. Stored in the Teams Developer Portal API key vault.
+  schemas:
+    VisualisationRequest:
+      type: object
+      required:
+        - requestId
+        - visualisationType
+        - data
+        - options
+      properties:
+        requestId:
+          type: string
+          description: Caller-supplied identifier used to correlate the request in logs and storage.
+          example: vis-001
+        visualisationType:
+          type: string
+          description: The kind of visualisation to render.
+          enum:
+            - chart
+            - mermaid
+            - flowchart
+            - kpi
+            - table
+            - timeline
+        title:
+          type: string
+          description: Optional title shown at the top of the visualisation.
+        description:
+          type: string
+          description: Optional subtitle or caption shown below the title.
+        data:
+          description: >-
+            Shape varies by `visualisationType`. Charts use
+            `{labels, values}` or `{labels, series}` or `{points}`;
+            mermaid uses `{diagram}`; kpi uses `{kpis: [...]}`; table
+            uses `{columns, rows}`; timeline uses `{events: [...]}`.
+          oneOf:
+            - $ref: "#/components/schemas/ChartData"
+            - $ref: "#/components/schemas/MermaidData"
+            - $ref: "#/components/schemas/KpiData"
+            - $ref: "#/components/schemas/TableData"
+            - $ref: "#/components/schemas/TimelineData"
+        options:
+          $ref: "#/components/schemas/VisualisationOptions"
+        metadata:
+          $ref: "#/components/schemas/VisualisationMetadata"
+    VisualisationOptions:
+      type: object
+      required:
+        - outputFormat
+      properties:
+        theme:
+          type: string
+          description: Visual theme. `ground-control` applies the brand palette.
+          enum:
+            - ground-control
+            - default
+          default: default
+        outputFormat:
+          type: string
+          description: Response content format.
+          enum:
+            - svg
+            - html
+            - mermaid
+            - json
+        width:
+          type: integer
+          description: Canvas width in pixels.
+          minimum: 1
+          maximum: 10000
+          default: 1200
+        height:
+          type: integer
+          description: Canvas height in pixels.
+          minimum: 1
+          maximum: 10000
+          default: 800
+        chartType:
+          type: string
+          description: Chart variant. Only used when `visualisationType` is `chart`.
+          enum:
+            - bar
+            - line
+            - area
+            - pie
+            - scatter
+    VisualisationMetadata:
+      type: object
+      description: Optional telemetry tags that flow into structured logging.
+      properties:
+        agentName:
+          type: string
+          description: Name of the calling agent (e.g. `ProcessDiscoveryAgent`).
+        userId:
+          type: string
+          description: End-user identifier on whose behalf the call is made.
+        source:
+          type: string
+          description: Free-text origin marker (e.g. `agent`, `copilot`, `workflow`).
+    ChartData:
+      type: object
+      description: Data shape for chart visualisations.
+      properties:
+        labels:
+          type: array
+          description: Category labels (one per bar / slice / x-axis tick).
+          items:
+            type: string
+        values:
+          type: array
+          description: Numeric values matching `labels`. Use for bar / pie charts.
+          items:
+            type: number
+        series:
+          type: array
+          description: Multiple named series for line / area charts.
+          items:
+            type: object
+            required: [name, values]
+            properties:
+              name:
+                type: string
+                description: Display name for the series.
+              values:
+                type: array
+                items:
+                  type: number
+        points:
+          type: array
+          description: Points for scatter charts.
+          items:
+            type: object
+            required: [x, y]
+            properties:
+              x:
+                type: number
+              y:
+                type: number
+              label:
+                type: string
+    MermaidData:
+      type: object
+      description: Data shape for Mermaid / flowchart visualisations.
+      required: [diagram]
+      properties:
+        diagram:
+          type: string
+          description: Mermaid source (e.g. `flowchart LR\n A --> B`).
+    KpiData:
+      type: object
+      description: Data shape for KPI cards.
+      properties:
+        kpis:
+          type: array
+          description: One card per entry.
+          items:
+            type: object
+            required: [label, value]
+            properties:
+              label:
+                type: string
+                description: KPI display name (e.g. `ARR`).
+              value:
+                description: KPI value (number or string).
+                oneOf:
+                  - type: string
+                  - type: number
+              unit:
+                type: string
+                description: Optional unit suffix (e.g. `$M`, `%`).
+              trend:
+                type: string
+                enum: [up, down, flat]
+                description: Direction of change vs prior period.
+              delta:
+                description: Change indicator (e.g. `+12%`).
+                oneOf:
+                  - type: string
+                  - type: number
+              description:
+                type: string
+    TableData:
+      type: object
+      description: Data shape for tables.
+      required: [columns, rows]
+      properties:
+        columns:
+          type: array
+          description: Column definitions.
+          items:
+            oneOf:
+              - type: string
+              - type: object
+                required: [name]
+                properties:
+                  name:
+                    type: string
+                  align:
+                    type: string
+                    enum: [left, right, center]
+        rows:
+          type: array
+          description: Row data. Each row is an array of cell values aligned to `columns`.
+          items:
+            type: array
+            items:
+              oneOf:
+                - type: string
+                - type: number
+                - type: "null"
+    TimelineData:
+      type: object
+      description: Data shape for milestone timelines.
+      required: [events]
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            required: [date, label]
+            properties:
+              date:
+                type: string
+                description: Date or period label (e.g. `2026-Q2`).
+              label:
+                type: string
+                description: Milestone name.
+              description:
+                type: string
+              status:
+                type: string
+                enum: [complete, in-progress, planned]
+    VisualisationResponse:
+      type: object
+      required:
+        - requestId
+        - status
+        - visualisationType
+        - outputFormat
+        - errors
+      properties:
+        requestId:
+          type: string
+          description: Echo of the request identifier.
+        status:
+          type: string
+          enum: [success, failed]
+          description: Overall outcome.
+        visualisationType:
+          type: string
+          description: The type that was rendered.
+        outputFormat:
+          type: string
+          description: The format of `content` / the blob at `contentUrl`.
+        content:
+          type: string
+          nullable: true
+          description: Inline visualisation content. `null` when stored in Blob Storage.
+        contentUrl:
+          type: string
+          nullable: true
+          description: Blob Storage URL when the payload exceeds the inline limit.
+        errors:
+          type: array
+          description: Empty on success; populated with structured errors on failure.
+          items:
+            $ref: "#/components/schemas/VisualisationError"
+    VisualisationError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum:
+            - INVALID_INPUT
+            - UNSUPPORTED_TYPE
+            - UNSUPPORTED_FORMAT
+            - UNSUPPORTED_THEME
+            - RENDER_FAILED
+            - STORAGE_FAILED
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: Human-readable description of the problem.
+        field:
+          type: string
+          description: Offending field path (when applicable).
