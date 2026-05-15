@@ -1,0 +1,16 @@
+{
+  "requestId": "vis-mermaid-001",
+  "visualisationType": "mermaid",
+  "title": "Order Fulfilment Process",
+  "data": {
+    "diagram": "flowchart LR\n  A[Order received] --> B{In stock?}\n  B -- Yes --> C[Pick and pack]\n  B -- No --> D[Reorder]\n  C --> E[Ship]\n  D --> C"
+  },
+  "options": {
+    "theme": "ground-control",
+    "outputFormat": "html"
+  },
+  "metadata": {
+    "agentName": "ProcessDiscoveryAgent",
+    "source": "agent"
+  }
+}

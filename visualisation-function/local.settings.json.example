@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+    "NODE_ENV": "development",
+    "VISUALISATION_BLOB_CONTAINER": "visualisations",
+    "VISUALISATION_BLOB_ACCOUNT_URL": "",
+    "VISUALISATION_INLINE_MAX_BYTES": "262144"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "requestId": "vis-kpi-001",
+  "visualisationType": "kpi",
+  "title": "Q2 Performance Snapshot",
+  "description": "Headline metrics for the executive review",
+  "data": {
+    "kpis": [
+      { "label": "ARR", "value": 4.2, "unit": "$M", "trend": "up", "delta": "+12%" },
+      { "label": "NPS", "value": 62, "trend": "up", "delta": "+4" },
+      { "label": "Churn", "value": 1.8, "unit": "%", "trend": "down", "delta": "-0.3pp" },
+      { "label": "Active customers", "value": 1840, "trend": "flat", "delta": "0%" }
+    ]
+  },
+  "options": {
+    "theme": "ground-control",
+    "outputFormat": "svg",
+    "width": 1400,
+    "height": 360
+  }
+}
