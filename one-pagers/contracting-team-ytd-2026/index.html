@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contracting Team YTD 2026 — one-pager</title>
+<style>
+  :root {
+    --gc-dark-green: #294238;
+    --gc-light-green: #B2D235;
+    --gc-mid-green: #50B748;
+    --gc-grey: #E6EBE3;
+    --gc-orange: #F57821;
+    --white: #FFFFFF;
+    --black: #000000;
+    --ink: #1a2620;
+    --muted: #5a6b62;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--gc-grey); color: var(--ink);
+    font-family: "Cera Pro", "Cera Pro Medium", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 880px; margin: 0 auto; background: var(--white); min-height: 100vh;
+    box-shadow: 0 2px 24px rgba(41, 66, 56, 0.08); }
+  .hero { position: relative; background: var(--gc-dark-green); color: var(--white);
+    padding: 48px 56px 56px 56px; overflow: hidden; }
+  .hero .flow-top { position: absolute; top: -20px; right: -40px; width: 320px; height: 160px;
+    pointer-events: none; opacity: 0.85; }
+  .hero .flow-bottom { position: absolute; bottom: -30px; left: -20px; width: 280px; height: 120px;
+    pointer-events: none; opacity: 0.7; }
+  .overline { text-transform: uppercase; letter-spacing: 2.5px; font-size: 11px; font-weight: 600;
+    color: var(--gc-light-green); margin-bottom: 18px; }
+  h1 { font-family: "FOT-TsukuARdGothic", "Cera Pro", -apple-system, sans-serif;
+    margin: 0 0 14px 0; font-size: 40px; line-height: 1.15; font-weight: 700; letter-spacing: -0.5px; }
+  .strapline { font-size: 18px; color: rgba(255, 255, 255, 0.85); max-width: 640px; margin: 0; font-weight: 400; }
+  .meta { margin-top: 28px; display: flex; gap: 28px; flex-wrap: wrap; font-size: 13px;
+    color: rgba(255, 255, 255, 0.7); }
+  .meta strong { color: var(--gc-light-green); font-weight: 600; }
+  main { padding: 48px 56px 56px 56px; }
+  .section-overline { text-transform: uppercase; letter-spacing: 2px; font-size: 11px; font-weight: 600;
+    color: var(--gc-mid-green); margin-bottom: 10px; }
+  h2 { font-family: "FOT-TsukuARdGothic", "Cera Pro", -apple-system, sans-serif;
+    margin: 0 0 18px 0; font-size: 28px; line-height: 1.2; font-weight: 700; color: var(--gc-dark-green); letter-spacing: -0.3px; }
+  .lede { font-size: 18px; line-height: 1.55; color: var(--ink); margin: 0 0 32px 0; max-width: 700px; }
+  .lede strong { color: var(--gc-dark-green); font-weight: 600; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 0 36px 0; }
+  .kpi { background: var(--gc-grey); border-left: 4px solid var(--gc-mid-green); padding: 16px 18px; }
+  .kpi.accent { border-left-color: var(--gc-orange); }
+  .kpi-value { font-size: 28px; font-weight: 700; color: var(--gc-dark-green); line-height: 1; margin-bottom: 6px;
+    font-family: "FOT-TsukuARdGothic", "Cera Pro", sans-serif; }
+  .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; }
+  .points { display: grid; grid-template-columns: 1fr; gap: 18px; margin: 0 0 36px 0; }
+  .point { display: flex; gap: 18px; padding: 18px 20px; background: var(--white); border: 1px solid var(--gc-grey);
+    border-radius: 4px; }
+  .point .marker { flex: 0 0 36px; height: 36px; border-radius: 50%; background: var(--gc-light-green);
+    color: var(--gc-dark-green); font-weight: 700; display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-family: "FOT-TsukuARdGothic", "Cera Pro", sans-serif; }
+  .point .body h3 { margin: 0 0 6px 0; font-size: 15px; font-weight: 700; color: var(--gc-dark-green); }
+  .point .body p { margin: 0; font-size: 14px; color: var(--ink); line-height: 1.55; }
+  .point .body p code { background: var(--gc-grey); padding: 1px 6px; border-radius: 3px; font-size: 12px;
+    color: var(--gc-dark-green); font-family: "SF Mono", Menlo, Consolas, monospace; }
+  .prose p { font-size: 15px; line-height: 1.65; margin: 0 0 16px 0; color: var(--ink); }
+  .prose p:last-child { margin-bottom: 0; }
+  .leaderboard { background: var(--gc-dark-green); color: var(--white); padding: 24px 28px; border-radius: 4px;
+    margin: 28px 0 0 0; }
+  .leaderboard h3 { margin: 0 0 14px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--gc-light-green); font-weight: 600; }
+  .leaderboard ol { margin: 0; padding-left: 18px; columns: 2; column-gap: 32px; font-size: 14px; }
+  .leaderboard li { padding: 4px 0; }
+  .leaderboard li.me { color: var(--gc-light-green); font-weight: 600; }
+  .leaderboard li b { font-variant-numeric: tabular-nums; }
+  .cta { margin-top: 44px; padding: 32px; background: var(--gc-dark-green); color: var(--white);
+    text-align: left; border-radius: 4px; position: relative; overflow: hidden; }
+  .cta h3 { margin: 0 0 6px 0; font-size: 22px; font-weight: 700;
+    font-family: "FOT-TsukuARdGothic", "Cera Pro", sans-serif; }
+  .cta p { margin: 0 0 18px 0; font-size: 14px; color: rgba(255, 255, 255, 0.8); max-width: 520px; }
+  .cta a { display: inline-block; background: var(--gc-light-green); color: var(--gc-dark-green);
+    padding: 12px 22px; text-decoration: none; font-weight: 700; font-size: 14px; border-radius: 4px;
+    transition: transform 120ms ease; }
+  .cta a:hover { transform: translateY(-1px); }
+  .cta .flow-cta { position: absolute; bottom: -20px; right: -10px; width: 220px; height: 100px;
+    opacity: 0.4; pointer-events: none; }
+  footer { padding: 24px 56px; background: var(--gc-grey); color: var(--muted); font-size: 12px;
+    border-top: 1px solid rgba(41, 66, 56, 0.08); display: flex; justify-content: space-between; align-items: center; }
+  footer .gc-mark { color: var(--gc-dark-green); font-weight: 700; letter-spacing: 1px; font-size: 13px; }
+  @media (max-width: 700px) {
+    .hero, main, footer { padding-left: 28px; padding-right: 28px; }
+    h1 { font-size: 30px; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .leaderboard ol { columns: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <svg class="flow-top" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M -10 60 Q 80 10, 160 50 T 340 30" stroke="#B2D235" stroke-width="3" fill="none" opacity="0.9"/>
+      <path d="M -10 90 Q 80 40, 160 80 T 340 60" stroke="#50B748" stroke-width="2" fill="none" opacity="0.7"/>
+      <path d="M -10 120 Q 80 70, 160 110 T 340 90" stroke="#B2D235" stroke-width="1.5" fill="none" opacity="0.5"/>
+    </svg>
+    <svg class="flow-bottom" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M -10 30 Q 70 80, 140 40 T 300 70" stroke="#B2D235" stroke-width="2" fill="none" opacity="0.7"/>
+      <path d="M -10 60 Q 70 100, 140 70 T 300 90" stroke="#50B748" stroke-width="2" fill="none" opacity="0.6"/>
+    </svg>
+    <div class="overline">Engineering · YTD review · Sprint 09</div>
+    <h1>Contracting Team — 2026 year-to-date delivery review</h1>
+    <p class="strapline">What we shipped between 01 January and 18 May, where the velocity is real, and where the long-cycle items are quietly costing us.</p>
+    <div class="meta">
+      <span><strong>Audience</strong> · Engineering team</span>
+      <span><strong>Author</strong> · Aaron Haydon</span>
+      <span><strong>Source</strong> · Azure DevOps · gcontroldevops</span>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="section-overline">Headlines</div>
+    <h2>One person delivered 12% of the team's points. The rest of the story is cycle time.</h2>
+    <p class="lede">
+      The Contracting Team has closed <strong>615 work items</strong> and <strong>1,003 story points</strong> year-to-date.
+      Aaron sits at the top of the table by points, by share, and by ratio against the median.
+      Estimation discipline has improved markedly. The number that needs attention is the cycle-time mean — a small number of long-running items is dragging it well above the team average.
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-value">120</div>
+        <div class="kpi-label">Aaron · story points</div>
+      </div>
+      <div class="kpi accent">
+        <div class="kpi-value">#1</div>
+        <div class="kpi-label">Rank · 20 active members</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">12.0%</div>
+        <div class="kpi-label">Share of 1,003 team pts</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">3.3×</div>
+        <div class="kpi-label">Team median (36.5 pts)</div>
+      </div>
+    </div>
+
+    <div class="section-overline">The three things to take away</div>
+    <h2>Volume is up, estimation is sharper, cycle time has a tail problem</h2>
+
+    <div class="points">
+      <div class="point">
+        <div class="marker">1</div>
+        <div class="body">
+          <h3>Volume is real, not optical</h3>
+          <p>Aaron closed <b>72 items / 120 points</b> across 10 sprints — first by points on the team, ahead of Smita (105) and Praise (102). Average sprint contribution sits at <b>12 points</b>, well clear of the team mean of <b>~5</b>. This isn't a one-sprint spike; the work is distributed across the year.</p>
+        </div>
+      </div>
+      <div class="point">
+        <div class="marker">2</div>
+        <div class="body">
+          <h3>Estimation discipline moved in the right direction</h3>
+          <p>Unestimated rate on Aaron's items is <b>15.3%</b> versus a team average of <b>28.1%</b>. That's a meaningful gap — items go into sprint with story points attached, which makes capacity planning honest. Worth defending: the temptation to drop estimation on small spikes is real, but the team-wide rate shows the cost of it.</p>
+        </div>
+      </div>
+      <div class="point">
+        <div class="marker">3</div>
+        <div class="body">
+          <h3>Cycle-time mean is a tail problem, not a throughput problem</h3>
+          <p>Average cycle time is <b>20.4 days</b> against a team average of <b>12.2</b>. But the median is <b>7.7 days</b> — most items close quickly. The mean is being dragged by a handful of long-running items, likely Features that have been activated but parked. The fix is operational: triage the open tail, close or split anything older than four weeks. Don't slow down day-to-day work to chase the average.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-overline">Context for the numbers</div>
+    <h2>What the dashboard tells us about the team, not just Aaron</h2>
+
+    <div class="prose">
+      <p>Across the team, completed-work distribution looks healthy at the top — six people sit between 70 and 105 points, which is a wider strong shoulder than this team had at the same point in 2025. The unestimated rate at <b>28.1%</b> team-wide is the single biggest hygiene issue: it's mostly concentrated in a small number of contributors and a small set of work types (Tasks and Incidents). A short cleanup pass would move this number a long way.</p>
+      <p>Cycle time tells a similar story at team level: median <b>7.7d</b> across all completed items is fine, mean <b>12.2d</b> shows a long tail. Spotting and triaging that tail every fortnight would do more for predictability than any process change.</p>
+    </div>
+
+    <div class="leaderboard">
+      <h3>Top 8 by story points · YTD 2026</h3>
+      <ol>
+        <li class="me"><b>Aaron Haydon — 120</b></li>
+        <li>Smita Jagtiani — <b>105</b></li>
+        <li>Praise Akinsipe — <b>102</b></li>
+        <li>Leonette Dias — <b>82</b></li>
+        <li>Dan Powell — <b>75</b></li>
+        <li>Oliver Smith — <b>75</b></li>
+        <li>Arren Bryant — <b>71</b></li>
+        <li>Karen De La Poer — <b>63.5</b></li>
+      </ol>
+    </div>
+
+    <div class="cta">
+      <svg class="flow-cta" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M -10 30 Q 60 80, 130 40 T 240 60" stroke="#B2D235" stroke-width="2" fill="none"/>
+        <path d="M -10 60 Q 60 100, 130 70 T 240 90" stroke="#50B748" stroke-width="2" fill="none"/>
+      </svg>
+      <h3>The full picture lives in the dashboard.</h3>
+      <p>Filterable per-person breakdown, sprint-by-sprint trends, every work item with its cycle time. Refreshed against ADO on demand.</p>
+      <a href="./dashboard.html">Open the interactive dashboard →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span class="gc-mark">GROUND CONTROL</span>
+    <span>Refreshed 18 May 2026 · 615 items closed · YTD 2026 · Engineering audience</span>
+  </footer>
+
+</div>
+</body>
+</html>
