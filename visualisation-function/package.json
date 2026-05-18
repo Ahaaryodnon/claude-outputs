@@ -1,0 +1,29 @@
+{
+  "name": "visualisation-function",
+  "version": "1.0.0",
+  "description": "Azure Function that generates visualisations (charts, mermaid, KPI, table, timeline) for AI agents.",
+  "main": "dist/src/functions/GenerateVisualisation.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "node --test --import tsx tests/**/*.test.ts",
+    "lint": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0",
+    "@azure/identity": "^4.4.1",
+    "@azure/storage-blob": "^12.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "rimraf": "^5.0.7",
+    "tsx": "^4.16.0",
+    "typescript": "^5.4.5"
+  }
+}

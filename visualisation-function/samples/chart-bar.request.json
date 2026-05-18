@@ -1,0 +1,22 @@
+{
+  "requestId": "vis-001",
+  "visualisationType": "chart",
+  "title": "Automation Opportunities by Department",
+  "description": "Bar chart showing opportunity count per department",
+  "data": {
+    "labels": ["Finance", "Operations", "HR", "IT"],
+    "values": [12, 18, 6, 14]
+  },
+  "options": {
+    "theme": "ground-control",
+    "outputFormat": "svg",
+    "width": 1200,
+    "height": 800,
+    "chartType": "bar"
+  },
+  "metadata": {
+    "agentName": "ProcessDiscoveryAgent",
+    "userId": "aaron.haydon",
+    "source": "agent"
+  }
+}
