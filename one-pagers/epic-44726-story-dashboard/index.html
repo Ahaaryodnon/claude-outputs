@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Canopy Cut — Epic 44726 story dashboard</title>
+<style>
+  :root{
+    --gc-dark:#294238; --gc-light:#B2D235; --gc-grey:#E6EBE3; --gc-mid:#50B748;
+    --gc-orange:#F57821; --white:#FFFFFF; --ink:#1d2a24; --muted:#5d6f66;
+    --body:'Cera Pro','Cera Pro Medium','Inter','Helvetica Neue',-apple-system,BlinkMacSystemFont,sans-serif;
+    --head:'FOT-TsukuARdGothic','Cera Pro','Inter',-apple-system,sans-serif;
+    --st-dev:#50B748; --st-play:#caa92f; --st-refine:#4a90c2; --st-elab:#8f6fb8; --st-removed:#9aa39d;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--gc-grey);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .page{max-width:920px;margin:0 auto;background:var(--white)}
+
+  .hero{position:relative;background:var(--gc-dark);color:var(--white);padding:50px 56px 44px;overflow:hidden}
+  .hero .wave{position:absolute;pointer-events:none}
+  .hero .wave.tr{top:-40px;right:-40px;width:300px;opacity:.9}
+  .hero .wave.bl{bottom:-70px;left:-50px;width:280px;opacity:.5}
+  .overline{text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:700;color:var(--gc-light);margin:0 0 14px}
+  h1{font-family:var(--head);font-weight:700;font-size:32px;line-height:1.12;margin:0 0 12px;max-width:20ch}
+  .strap{font-size:16px;color:#d8e6da;margin:0;max-width:60ch}
+  .meta{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap;font-size:12.5px;color:#bcd0c1}
+  .meta b{color:var(--gc-light);font-weight:700;display:block;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;margin-bottom:2px}
+
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);background:var(--gc-dark);border-top:1px solid rgba(178,210,53,.25)}
+  .stat{padding:18px 14px;text-align:center;border-left:1px solid rgba(255,255,255,.08)}
+  .stat:first-child{border-left:none}
+  .stat .n{font-family:var(--head);font-size:26px;font-weight:700;color:var(--gc-light);line-height:1}
+  .stat .n.orange{color:var(--gc-orange)}
+  .stat .k{font-size:10.5px;color:#bcd0c1;margin-top:5px;line-height:1.3}
+
+  .intro{padding:34px 56px 6px}
+  .intro .lede{font-size:15.5px;color:var(--ink);margin:0;max-width:66ch}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 0;font-size:11.5px;color:var(--muted)}
+  .legend .vchip{margin-right:6px}
+
+  .features{padding:14px 56px 8px}
+  .feature{margin:26px 0 0}
+  .fhead{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--gc-dark);padding-bottom:7px;margin-bottom:2px}
+  .fhead .fid{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .fhead h2{font-family:var(--head);font-size:19px;color:var(--gc-dark);margin:0;font-weight:700}
+  .fhead .fstate{margin-left:auto;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--gc-mid);font-weight:700}
+
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--gc-grey);vertical-align:top;font-size:13px}
+  th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid #cdd8cd}
+  td.id{white-space:nowrap;font-variant-numeric:tabular-nums}
+  td.id a{color:var(--gc-mid);text-decoration:none;font-weight:700}
+  td.id a:hover{text-decoration:underline}
+  td.id .ty{display:block;font-size:10px;color:var(--muted);font-weight:400}
+  .title-cell .nw{display:inline-block;margin-left:6px;font-size:9px;font-weight:700;color:var(--white);background:var(--gc-mid);border-radius:4px;padding:1px 5px;vertical-align:middle}
+  .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;color:var(--white)}
+  .who{color:var(--muted);font-size:12px;white-space:nowrap}
+  .vchip{display:inline-block;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:700;border:1px solid;margin:0 4px 3px 0}
+  .vchip.unit{color:#2c6a3c;border-color:var(--gc-mid);background:rgba(80,183,72,.14)}
+  .vchip.maestro{color:#9a5410;border-color:var(--gc-orange);background:rgba(245,120,33,.10)}
+  .vchip.none{color:#71807a;border-color:#c5cfc6;background:#f1f4f0}
+  .cov .note{display:block;color:var(--muted);font-size:10.5px;margin-top:1px}
+
+  .cta{margin:30px 56px 0;background:var(--gc-dark);border-radius:12px;padding:24px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;position:relative;overflow:hidden}
+  .cta .wave{position:absolute;bottom:-60px;right:-30px;width:220px;opacity:.5;pointer-events:none}
+  .cta h3{font-family:var(--head);color:var(--white);font-size:18px;margin:0;font-weight:700;position:relative}
+  .cta a{position:relative;background:var(--gc-orange);color:var(--white);text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:8px;white-space:nowrap}
+  .footer{padding:22px 56px 40px;color:var(--muted);font-size:11.5px}
+  .footer .rule{height:2px;background:linear-gradient(90deg,var(--gc-light),var(--gc-mid) 60%,transparent);border:0;margin:0 0 14px}
+  @media print{.page{max-width:none}body{background:var(--white)}.feature{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <svg class="wave tr" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 120 C90 40 210 40 300 120" stroke="#B2D235" stroke-width="6" fill="none"/>
+      <path d="M0 150 C90 70 210 70 300 150" stroke="#50B748" stroke-width="5" fill="none" opacity="0.7"/>
+      <path d="M0 180 C90 100 210 100 300 180" stroke="#B2D235" stroke-width="4" fill="none" opacity="0.5"/>
+    </svg>
+    <svg class="wave bl" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 180 C90 100 210 260 300 180" stroke="#50B748" stroke-width="5" fill="none" opacity="0.7"/>
+      <path d="M0 210 C90 130 210 290 300 210" stroke="#B2D235" stroke-width="4" fill="none" opacity="0.5"/>
+    </svg>
+    <p class="overline">Engineering delivery dashboard</p>
+    <h1>Canopy Cut — Epic 44726, every story and its status</h1>
+    <p class="strap">The new Utility Arb cutting app, tracked story by story. Live ADO state, the owner, and the test that stands behind each one — so finished work and in-flight work tell themselves apart.</p>
+    <div class="meta">
+      <div><b>Epic</b>44726 — New cutting team Android app</div>
+      <div><b>Audience</b>Engineering &amp; delivery</div>
+      <div><b>Author</b>Aaron Haydon</div>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="n">27</div><div class="k">stories &amp; spikes</div></div>
+    <div class="stat"><div class="n">5</div><div class="k">features</div></div>
+    <div class="stat"><div class="n">11</div><div class="k">in development</div></div>
+    <div class="stat"><div class="n">51</div><div class="k">unit tests passing</div></div>
+    <div class="stat"><div class="n orange">12</div><div class="k">UI flows authored</div></div>
+  </section>
+
+  <section class="intro">
+    <p class="lede">The board had drifted out of step with the code — stories sat in early states while their features were already built. This view reads every story under the epic and pairs it with the test that proves it. Coverage is split two ways: a unit test that compiles and passes, or a UI flow that is written and checked against the screen but not yet run.</p>
+    <div class="legend">
+      <span><span class="vchip unit">unit</span> compiles &amp; passes (verified green)</span>
+      <span><span class="vchip maestro">~ maestro</span> authored, runs in CI</span>
+      <span><span class="vchip none">no test</span> backend, docs, sync, spike</span>
+    </div>
+  </section>
+
+  <section class="features" id="features"></section>
+
+  <div class="cta">
+    <svg class="wave" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 160 C90 80 210 240 300 160" stroke="#B2D235" stroke-width="5" fill="none" opacity="0.6"/>
+      <path d="M0 190 C90 110 210 270 300 190" stroke="#50B748" stroke-width="4" fill="none" opacity="0.45"/>
+    </svg>
+    <h3>See the whole epic in context.</h3>
+    <a href="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/44726">Open Epic 44726 in Azure DevOps</a>
+  </div>
+
+  <footer class="footer">
+    <hr class="rule" />
+    Canopy Cut — Utility Arb cutting app · Epic 44726 · Drafted by AI, reviewed by Aaron Haydon.<br />
+    Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the Ground Control design bundle was unavailable at build time, so a fallback typeface is used. Colours follow the official Ground Control palette.
+  </footer>
+
+</div>
+
+<script>
+const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/";
+const SB={"In Development":"var(--st-dev)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","Removed":"var(--st-removed)"};
+const FEATURES=[
+ {id:45876,title:"Woodplan backend changes to support cutting app",state:"Implementing",rows:[
+   {id:45881,ty:"User Story",t:"Add Lead Team flag to Work Order",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan) — outside Android repo"},
+   {id:45883,ty:"User Story",t:"Lead Team cost uplift & configurable cost limits",s:"Elaborating",w:"Ruth Havis",cov:"none",note:"Backend (Woodplan)"},
+   {id:45962,ty:"User Story",t:"Update RP sheet creation logic in Woodplan",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Backend (Woodplan)"},
+   {id:45958,ty:"User Story",t:"Automated testing for Woodplan for new cutting app",s:"Removed",w:"—",cov:"none",note:"Removed"},
+ ]},
+ {id:45878,title:"Discovery & technical readiness (Android cutting app)",state:"Implementing",rows:[
+   {id:45879,ty:"Spike",t:"Developer familiarisation with Claude Code & Android",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Spike — research"},
+   {id:45880,ty:"User Story",t:"Create mock-up Android cutting app",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"00–11",note:"Umbrella — exercised end-to-end by the full flow suite"},
+   {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Ready to Play",w:"Praise Akinsipe",cov:"none",note:"Spike — the flow suite is the artifact"},
+ ]},
+ {id:45886,title:"Android cutting app (field use)",state:"Implementing",rows:[
+   {id:45887,ty:"User Story",t:"Log in and permissions",s:"In Development",w:"Mark Bissett",cov:"unit",u:11,m:"00, 01",note:"LoginVMTest (6) + OperativeSelectionVMTest (5) green"},
+   {id:45888,ty:"User Story",t:"View assigned work",s:"In Development",w:"Mark Bissett",cov:"unit",u:10,m:"02, 10",note:"WorkOrderListViewModelTest (10) green"},
+   {id:45889,ty:"User Story",t:"Multi-team work order visibility & completion",s:"In Development",w:"Ruth Havis",cov:"maestro",m:"03, 07",note:"UI flows only — multi-team data scoping untested"},
+   {id:45890,ty:"User Story",t:"Record work per span",s:"In Development",w:"Ruth Havis",cov:"unit",u:11,m:"05, 09",note:"CompletionViewModelTest (11) green"},
+   {id:45891,ty:"User Story",t:"RP sheet sign-off in app",s:"In Development",w:"Ruth Havis",cov:"unit",m:"06",note:"Covered within CompletionViewModelTest + flow 06"},
+   {id:45901,ty:"User Story",t:"Mapping",s:"In Development",w:"Ruth Havis",cov:"unit",u:11,m:"04, 11",note:"MapViewModelTest (11) green"},
+   {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"In Development",w:"Aaron Haydon",cov:"none",note:"This story is the test / CI setup itself"},
+   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Ruth Havis",cov:"unit",u:51,m:"00–11",note:"Deliverable: 12 flows + 51 unit tests, all green"},
+   {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Ruth Havis",cov:"none",note:"azure-pipelines.yml — build, emulator, Maestro stages"},
+   {id:45988,ty:"User Story",t:"Offline mapping capability",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Decided (PMTiles) — not built"},
+   {id:45991,ty:"User Story",t:"ARB presentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Not software"},
+   {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"—",cov:"unit",u:8,m:"08",note:"NEW. WorkOrderOverviewVMTest (8) green; flow 08 Live Works (Shutdown path blocked by mock data)",nw:true},
+ ]},
+ {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
+   {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"No sync code yet — only Room sync-state fields"},
+   {id:45895,ty:"User Story",t:"Woodplan to app synchronisation",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"No sync code yet"},
+   {id:45911,ty:"User Story",t:"Canopy publisher",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Android side not built"},
+   {id:45959,ty:"User Story",t:"Automated testing for field team cutting app integration",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Not started"},
+ ]},
+ {id:45896,title:"End-to-end solution documentation",state:"Implementing",rows:[
+   {id:45897,ty:"User Story",t:"Woodplan backend documentation",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Documentation"},
+   {id:45898,ty:"User Story",t:"Android cutting app documentation and video guides — user",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Documentation"},
+   {id:45899,ty:"User Story",t:"Android cutting app documentation — technical",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Partial: DEVELOPMENT_LOG.md, CLAUDE.md, agents.MD"},
+   {id:45900,ty:"User Story",t:"Integration documentation (cutting app and Woodplan)",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Documentation"},
+ ]},
+];
+function covCell(r){
+  let c=[];
+  if(r.cov==="unit") c.push(`<span class="vchip unit">unit${r.u?` (${r.u})`:''}</span>`);
+  if(r.m) c.push(`<span class="vchip maestro">~ maestro ${r.m}</span>`);
+  if(!c.length) c.push(`<span class="vchip none">no test</span>`);
+  return `<div class="cov">${c.join("")}<span class="note">${r.note}</span></div>`;
+}
+document.getElementById("features").innerHTML=FEATURES.map(f=>`
+  <div class="feature">
+    <div class="fhead"><span class="fid">${f.id}</span><h2>${f.title}</h2><span class="fstate">${f.state}</span></div>
+    <table>
+      <thead><tr><th style="width:78px">ID</th><th>Story</th><th style="width:140px">State</th><th style="width:104px">Owner</th><th style="width:230px">Test coverage</th></tr></thead>
+      <tbody>${f.rows.map(r=>`
+        <tr>
+          <td class="id"><a href="${ORG}${r.id}">${r.id}</a><span class="ty">${r.ty}</span></td>
+          <td class="title-cell">${r.t}${r.nw?'<span class="nw">NEW</span>':''}</td>
+          <td><span class="badge" style="background:${SB[r.s]||'#888'}">${r.s}</span></td>
+          <td class="who">${r.w}</td>
+          <td>${covCell(r)}</td>
+        </tr>`).join("")}</tbody>
+    </table>
+  </div>`).join("");
+</script>
+</body>
+</html>
