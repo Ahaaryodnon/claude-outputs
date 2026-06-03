@@ -97,9 +97,9 @@
   <section class="stats">
     <div class="stat"><div class="n">27</div><div class="k">stories &amp; spikes</div></div>
     <div class="stat"><div class="n">5</div><div class="k">features</div></div>
-    <div class="stat"><div class="n">11</div><div class="k">in development</div></div>
+    <div class="stat"><div class="n">10</div><div class="k">in development</div></div>
     <div class="stat"><div class="n">51</div><div class="k">unit tests passing</div></div>
-    <div class="stat"><div class="n orange">12</div><div class="k">UI flows authored</div></div>
+    <div class="stat"><div class="n orange">13</div><div class="k">UI flows authored</div></div>
   </section>
 
   <section class="intro">
@@ -132,17 +132,17 @@
 
 <script>
 const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/";
-const SB={"In Development":"var(--st-dev)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","Removed":"var(--st-removed)"};
+const SB={"In Development":"var(--st-dev)","Done":"#2f7d4a","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","Removed":"var(--st-removed)"};
 const FEATURES=[
  {id:45876,title:"Woodplan backend changes to support cutting app",state:"Implementing",rows:[
    {id:45881,ty:"User Story",t:"Add Lead Team flag to Work Order",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan) — outside Android repo"},
    {id:45883,ty:"User Story",t:"Lead Team cost uplift & configurable cost limits",s:"Elaborating",w:"Ruth Havis",cov:"none",note:"Backend (Woodplan)"},
-   {id:45962,ty:"User Story",t:"Update RP sheet creation logic in Woodplan",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Backend (Woodplan)"},
+   {id:45962,ty:"User Story",t:"Update RP sheet creation logic in Woodplan",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan)"},
    {id:45958,ty:"User Story",t:"Automated testing for Woodplan for new cutting app",s:"Removed",w:"—",cov:"none",note:"Removed"},
  ]},
  {id:45878,title:"Discovery & technical readiness (Android cutting app)",state:"Implementing",rows:[
    {id:45879,ty:"Spike",t:"Developer familiarisation with Claude Code & Android",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Spike — research"},
-   {id:45880,ty:"User Story",t:"Create mock-up Android cutting app",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"00–11",note:"Umbrella — exercised end-to-end by the full flow suite"},
+   {id:45880,ty:"User Story",t:"Create mock-up Android cutting app",s:"Done",w:"Mark Bissett",cov:"maestro",m:"00–12",note:"Umbrella — exercised end-to-end by the full flow suite"},
    {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Ready to Play",w:"Praise Akinsipe",cov:"none",note:"Spike — the flow suite is the artifact"},
  ]},
  {id:45886,title:"Android cutting app (field use)",state:"Implementing",rows:[
@@ -153,14 +153,14 @@ const FEATURES=[
    {id:45891,ty:"User Story",t:"RP sheet sign-off in app",s:"In Development",w:"Ruth Havis",cov:"unit",m:"06",note:"Covered within CompletionViewModelTest + flow 06"},
    {id:45901,ty:"User Story",t:"Mapping",s:"In Development",w:"Ruth Havis",cov:"unit",u:11,m:"04, 11",note:"MapViewModelTest (11) green"},
    {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"In Development",w:"Aaron Haydon",cov:"none",note:"This story is the test / CI setup itself"},
-   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Ruth Havis",cov:"unit",u:51,m:"00–11",note:"Deliverable: 12 flows + 51 unit tests, all green"},
+   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Ruth Havis",cov:"unit",u:51,m:"00–12",note:"Deliverable: 13 flows + 51 unit tests"},
    {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Ruth Havis",cov:"none",note:"azure-pipelines.yml — build, emulator, Maestro stages"},
    {id:45988,ty:"User Story",t:"Offline mapping capability",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Decided (PMTiles) — not built"},
    {id:45991,ty:"User Story",t:"ARB presentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Not software"},
    {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"—",cov:"unit",u:8,m:"08",note:"NEW. WorkOrderOverviewVMTest (8) green; flow 08 Live Works (Shutdown path blocked by mock data)",nw:true},
  ]},
  {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
-   {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"No sync code yet — only Room sync-state fields"},
+   {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"Ready for Refinement",w:"Ruth Havis",cov:"maestro",m:"12",note:"Flow 12 covers sync-status & photo-upload UI; sync engine still pending"},
    {id:45895,ty:"User Story",t:"Woodplan to app synchronisation",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"No sync code yet"},
    {id:45911,ty:"User Story",t:"Canopy publisher",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Android side not built"},
    {id:45959,ty:"User Story",t:"Automated testing for field team cutting app integration",s:"Ready for Refinement",w:"Ruth Havis",cov:"none",note:"Not started"},
