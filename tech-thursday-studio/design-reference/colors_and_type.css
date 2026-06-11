@@ -1,0 +1,199 @@
+/* =========================================================================
+   Ground Control — Core Tokens
+   Colour + Typography in one place. Import this file in any artifact.
+
+   :root exposes low-level tokens (--gc-*), semantic roles (--text-primary,
+   --surface-page, --accent-preferred), and composed type classes (.gc-h1,
+   .gc-body, etc).
+
+   Brand spirit: Human Nature — At Its Best.
+   Confident without arrogance, forward-looking without losing warmth.
+   ========================================================================= */
+
+
+/* ---- Fonts ------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Thin.woff2') format('woff2'),
+       url('fonts/CeraPro-Thin.woff') format('woff');
+  font-weight: 100; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-ThinItalic.woff2') format('woff2'),
+       url('fonts/CeraPro-ThinItalic.woff') format('woff');
+  font-weight: 100; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Light.woff2') format('woff2'),
+       url('fonts/CeraPro-Light.woff') format('woff');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-LightItalic.woff2') format('woff2'),
+       url('fonts/CeraPro-LightItalic.woff') format('woff');
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Regular.woff2') format('woff2'),
+       url('fonts/CeraPro-Regular.woff') format('woff');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Medium.woff2') format('woff2'),
+       url('fonts/CeraPro-Medium.woff') format('woff');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-MediumItalic.woff2') format('woff2'),
+       url('fonts/CeraPro-MediumItalic.woff') format('woff');
+  font-weight: 500; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Bold.woff2') format('woff2'),
+       url('fonts/CeraPro-Bold.woff') format('woff');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-BoldItalic.woff2') format('woff2');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/CeraPro-Black.woff2') format('woff2'),
+       url('fonts/CeraPro-Black.woff') format('woff');
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+
+
+/* ---- Tokens ------------------------------------------------------------ */
+
+:root {
+  /* Core brand palette — never change these values. */
+  --gc-dark-green:  #294238;   /* Primary brand. UI text on light, big dark backdrops. */
+  --gc-light-green: #B2D235;   /* Preferred accent. Flowing-line motif, highlights. */
+  --gc-mid-green:   #50B748;   /* Secondary accent. Success states. */
+  --gc-grey:        #E6EBE3;   /* Warm grey. Subtle surfaces, card backgrounds. */
+  --gc-orange:      #F57821;   /* Use SPARINGLY. Alerts + rare emphasis. */
+  --gc-white:       #FFFFFF;
+  --gc-black:       #000000;
+
+  /* Dark green tonal ramp (for 75% text, borders, etc. Never pure black.) */
+  --gc-dark-green-90: rgba(41, 66, 56, 0.90);
+  --gc-dark-green-75: rgba(41, 66, 56, 0.75);
+  --gc-dark-green-60: rgba(41, 66, 56, 0.60);
+  --gc-dark-green-40: rgba(41, 66, 56, 0.40);
+  --gc-dark-green-25: rgba(41, 66, 56, 0.25);
+  --gc-dark-green-15: rgba(41, 66, 56, 0.15);
+  --gc-dark-green-10: rgba(41, 66, 56, 0.10);
+  --gc-dark-green-05: rgba(41, 66, 56, 0.05);
+
+  /* Deeper approved orange for true error states only. */
+  --gc-error: #C64A0F;
+
+  /* Semantic roles — consume these in product code. */
+  --text-primary:   var(--gc-dark-green);
+  --text-secondary: var(--gc-dark-green-75);
+  --text-tertiary:  var(--gc-dark-green-60);
+  --text-on-dark:   var(--gc-white);
+  --text-on-dark-secondary: rgba(255,255,255,0.8);
+  --text-accent:    var(--gc-mid-green);
+
+  --surface-page:    var(--gc-white);
+  --surface-subtle:  var(--gc-grey);
+  --surface-inverse: var(--gc-dark-green);
+  --surface-hover:   var(--gc-dark-green-05);
+
+  --border-default: var(--gc-dark-green-25);
+  --border-subtle:  var(--gc-dark-green-15);
+  --border-strong:  var(--gc-dark-green);
+
+  --accent-preferred: var(--gc-light-green); /* Light Green — use liberally */
+  --accent-secondary: var(--gc-mid-green);
+  --accent-sparing:   var(--gc-orange);      /* Orange — use rarely */
+
+  --feedback-success: var(--gc-mid-green);
+  --feedback-warning: var(--gc-orange);
+  --feedback-error:   var(--gc-error);
+  --feedback-info:    var(--gc-dark-green);
+
+  /* Typography stacks. */
+  --font-display: 'FOT-TsukuARdGothic', 'Cera Pro', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans:    'Cera Pro', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:    'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* Type scale (desktop). Step down one level on mobile. */
+  --fs-display:   72px;   --lh-display:   80px;   --fw-display:   700;
+  --fs-h1:        48px;   --lh-h1:        56px;   --fw-h1:        700;
+  --fs-h2:        36px;   --lh-h2:        44px;   --fw-h2:        700;
+  --fs-h3:        24px;   --lh-h3:        32px;   --fw-h3:        700;  /* Cera Pro Bold */
+  --fs-subhead:   20px;   --lh-subhead:   30px;   --fw-subhead:   500;
+  --fs-body:      16px;   --lh-body:      24px;   --fw-body:      400;
+  --fs-body-sm:   14px;   --lh-body-sm:   20px;   --fw-body-sm:   400;
+  --fs-caption:   12px;   --lh-caption:   18px;   --fw-caption:   400;
+  --fs-overline:  12px;   --lh-overline:  16px;   --fw-overline:  500;
+  --ls-overline:  0.15em;
+
+  /* Spacing — 8pt based. */
+  --space-xxs:  4px;
+  --space-xs:   8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  /* Radius. */
+  --radius-none:  0;
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  /* Elevation — shadow colour is tinted Dark Green, never pure black. */
+  --elev-0:  none;
+  --elev-sm: 0 1px 2px rgba(41,66,56,0.08);
+  --elev-md: 0 4px 12px rgba(41,66,56,0.10), 0 1px 2px rgba(41,66,56,0.06);
+  --elev-lg: 0 12px 32px rgba(41,66,56,0.14), 0 2px 6px rgba(41,66,56,0.08);
+  --elev-xl: 0 24px 60px rgba(41,66,56,0.18), 0 4px 12px rgba(41,66,56,0.08);
+
+  /* Motion. Organic ease — slight overshoot on entrance. */
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+  --motion-slow: 400ms;
+  --ease-organic: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-entry:   cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* ---- Base type classes -------------------------------------------------- */
+
+.gc-display  { font-family: var(--font-display); font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-display); letter-spacing: -0.01em; color: var(--text-primary); }
+.gc-h1       { font-family: var(--font-display); font-size: var(--fs-h1);      line-height: var(--lh-h1);      font-weight: var(--fw-h1);      letter-spacing: -0.01em; color: var(--text-primary); }
+.gc-h2       { font-family: var(--font-display); font-size: var(--fs-h2);      line-height: var(--lh-h2);      font-weight: var(--fw-h2);      color: var(--text-primary); }
+.gc-h3       { font-family: var(--font-sans);    font-size: var(--fs-h3);      line-height: var(--lh-h3);      font-weight: var(--fw-h3);      color: var(--text-primary); }
+.gc-subhead  { font-family: var(--font-sans);    font-size: var(--fs-subhead); line-height: var(--lh-subhead); font-weight: var(--fw-subhead); color: var(--text-primary); }
+.gc-body     { font-family: var(--font-sans);    font-size: var(--fs-body);    line-height: var(--lh-body);    font-weight: var(--fw-body);    color: var(--text-primary); }
+.gc-body-sm  { font-family: var(--font-sans);    font-size: var(--fs-body-sm); line-height: var(--lh-body-sm); font-weight: var(--fw-body-sm); color: var(--text-primary); }
+.gc-caption  { font-family: var(--font-sans);    font-size: var(--fs-caption); line-height: var(--lh-caption); font-weight: var(--fw-caption); color: var(--text-secondary); }
+.gc-overline { font-family: var(--font-sans);    font-size: var(--fs-overline); line-height: var(--lh-overline); font-weight: var(--fw-overline); letter-spacing: var(--ls-overline); text-transform: uppercase; color: var(--accent-secondary); }
+
+/* On dark backgrounds. */
+.gc-on-dark           { color: var(--text-on-dark); }
+.gc-on-dark-secondary { color: var(--text-on-dark-secondary); }
