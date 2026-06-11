@@ -18,5 +18,10 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
+    rules: {
+      // Brand/context modules intentionally export helpers alongside
+      // components; the only cost is HMR falling back to a full reload.
+      'react-refresh/only-export-components': 'off',
+    },
   },
 ])
