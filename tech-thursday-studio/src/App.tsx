@@ -3,6 +3,7 @@ import { StudioProvider, useStudio } from './app/StudioContext'
 import { Sidebar, type ViewKey } from './app/Sidebar'
 import { EpisodePicker } from './app/EpisodePicker'
 import { OfflineBanner } from './app/OfflineBanner'
+import { EpisodesView } from './views/EpisodesView'
 import './app/app.css'
 import './brand/motion.css'
 
@@ -35,6 +36,7 @@ function StudioShell() {
         <main className="studio-content">
           {loading
             ? <div className="skeleton">Loading episodes…</div>
+            : view === 'episodes' ? <EpisodesView />
             : <Placeholder name={VIEW_TITLES[view]} />}
         </main>
       </div>
