@@ -4,6 +4,7 @@ import { Sidebar, type ViewKey } from './app/Sidebar'
 import { EpisodePicker } from './app/EpisodePicker'
 import { OfflineBanner } from './app/OfflineBanner'
 import { EpisodesView } from './views/EpisodesView'
+import { VideosView } from './views/VideosView'
 import './app/app.css'
 import './brand/motion.css'
 
@@ -37,6 +38,7 @@ function StudioShell() {
           {loading
             ? <div className="skeleton">Loading episodes…</div>
             : view === 'episodes' ? <EpisodesView />
+            : view === 'videos' ? <VideosView />
             : <Placeholder name={VIEW_TITLES[view]} />}
         </main>
       </div>
