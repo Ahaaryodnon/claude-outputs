@@ -1,0 +1,77 @@
+/* Tech Thursday — Direction D motion.
+   Ported from the design prototypes, with one deliberate change: every
+   timeline HOLDS at its end state (no fade-out tail). Looping in the preview
+   is done by remounting the component, and video export scrubs 0→end, so the
+   exported file never contains the loop-reset frames. Timeline is 5.2s. */
+
+/* Each preceding day-page tears upward off the pad in turn, revealing
+   Thursday underneath. z-order keeps the motion clean (no edge-on rotateX). */
+@keyframes d-tear-1 {
+  0%      { transform: translateY(0) rotate(0); opacity: 1; }
+  6%      { transform: translateY(0) rotate(0); opacity: 1; }
+  11%     { transform: translateY(-105%) rotate(-4deg); opacity: 0; }
+  100%    { transform: translateY(-105%) rotate(-4deg); opacity: 0; }
+}
+@keyframes d-tear-2 {
+  0%, 11% { transform: translateY(0); opacity: 1; }
+  17%     { transform: translateY(-105%) rotate(3deg); opacity: 0; }
+  100%    { transform: translateY(-105%) rotate(3deg); opacity: 0; }
+}
+@keyframes d-tear-3 {
+  0%, 17% { transform: translateY(0); opacity: 1; }
+  23%     { transform: translateY(-105%) rotate(-3deg); opacity: 0; }
+  100%    { transform: translateY(-105%) rotate(-3deg); opacity: 0; }
+}
+
+/* The Thursday page settles when it lands, then holds. */
+@keyframes d-land {
+  0%, 22% { transform: translateY(2%); opacity: 0.9; }
+  30%     { transform: translateY(-1%); opacity: 1; }
+  36%, 100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Tech Thursday stamp slams down once the Thursday page has settled. */
+@keyframes d-stamp-in {
+  0%, 36% { transform: scale(0.4) rotate(-14deg); opacity: 0; }
+  46%     { transform: scale(1.18) rotate(-5deg); opacity: 0.95; }
+  54%, 100% { transform: scale(1) rotate(-3deg); opacity: 1; }
+}
+
+/* Brand-bumper text columns rise in. */
+@keyframes d-text-in {
+  0%, 30% { opacity: 0; transform: translateY(6%); }
+  42%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Episode text rises + fades in once Thursday has landed; staggered via
+   animation-delay per line. */
+@keyframes ep-rise {
+  0%, 30% { opacity: 0; transform: translateY(14%); }
+  44%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Aaron — the host — peeks up from the bottom edge, waves, and stays. */
+@keyframes d-aaron-in {
+  0%, 48% { transform: translateY(120%); opacity: 0; }
+  57%     { transform: translateY(-3%); opacity: 1; }
+  62%, 100% { transform: translateY(0%); opacity: 1; }
+}
+@keyframes d-aaron-wave {
+  0%, 58% { transform: rotate(0deg); }
+  64%     { transform: rotate(8deg); }
+  70%     { transform: rotate(-6deg); }
+  76%     { transform: rotate(7deg); }
+  82%     { transform: rotate(-4deg); }
+  88%, 100% { transform: rotate(0deg); }
+}
+@keyframes d-aaron-hi {
+  0%, 60% { transform: scale(0.4) translateY(20%); opacity: 0; }
+  67%     { transform: scale(1.12) translateY(0); opacity: 1; }
+  72%, 100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Simple fade for outro elements. */
+@keyframes tt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
