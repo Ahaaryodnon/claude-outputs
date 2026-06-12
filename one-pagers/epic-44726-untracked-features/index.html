@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Canopy Cut — built features with no story</title>
+<style>
+  :root{
+    --gc-dark:#294238; --gc-light:#B2D235; --gc-grey:#E6EBE3; --gc-mid:#50B748;
+    --gc-orange:#F57821; --white:#FFFFFF; --ink:#1d2a24; --muted:#5d6f66;
+    --body:'Cera Pro','Cera Pro Medium','Inter','Helvetica Neue',-apple-system,BlinkMacSystemFont,sans-serif;
+    --head:'FOT-TsukuARdGothic','Cera Pro','Inter',-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--gc-grey);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .page{max-width:920px;margin:0 auto;background:var(--white)}
+
+  .hero{position:relative;background:var(--gc-dark);color:var(--white);padding:50px 56px 44px;overflow:hidden}
+  .hero .wave{position:absolute;pointer-events:none}
+  .hero .wave.tr{top:-40px;right:-40px;width:300px;opacity:.9}
+  .hero .wave.bl{bottom:-70px;left:-50px;width:280px;opacity:.5}
+  .overline{text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:700;color:var(--gc-light);margin:0 0 14px}
+  h1{font-family:var(--head);font-weight:700;font-size:32px;line-height:1.12;margin:0 0 12px;max-width:20ch}
+  .strap{font-size:16px;color:#d8e6da;margin:0;max-width:60ch}
+  .meta{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap;font-size:12.5px;color:#bcd0c1}
+  .meta b{color:var(--gc-light);font-weight:700;display:block;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;margin-bottom:2px}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--gc-dark);border-top:1px solid rgba(178,210,53,.25)}
+  .stat{padding:18px 14px;text-align:center;border-left:1px solid rgba(255,255,255,.08)}
+  .stat:first-child{border-left:none}
+  .stat .n{font-family:var(--head);font-size:26px;font-weight:700;color:var(--gc-light);line-height:1}
+  .stat .n.orange{color:var(--gc-orange)}
+  .stat .k{font-size:10.5px;color:#bcd0c1;margin-top:5px;line-height:1.3}
+
+  .intro{padding:34px 56px 6px}
+  .intro .lede{font-size:15.5px;color:var(--ink);margin:0 0 14px;max-width:66ch}
+
+  .section{padding:14px 56px 8px}
+  .shead{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--gc-dark);padding-bottom:7px;margin:26px 0 2px}
+  .shead h2{font-family:var(--head);font-size:19px;color:var(--gc-dark);margin:0;font-weight:700}
+  .shead .scount{margin-left:auto;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--gc-mid);font-weight:700}
+
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--gc-grey);vertical-align:top;font-size:13px}
+  th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid #cdd8cd}
+  td.cap{font-weight:700;color:var(--gc-dark);min-width:150px}
+  td.cap .scale{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:2px}
+  .code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted);display:block;margin-top:3px;line-height:1.5}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap;color:var(--white)}
+  .pill.untracked{background:var(--gc-orange)}
+  .pill.ahead{background:#4a90c2}
+  .suggest{color:var(--ink);font-size:12.5px}
+  .suggest b{color:var(--gc-dark)}
+
+  .cta{margin:30px 56px 0;background:var(--gc-dark);border-radius:12px;padding:24px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;position:relative;overflow:hidden}
+  .cta .wave{position:absolute;bottom:-60px;right:-30px;width:220px;opacity:.5;pointer-events:none}
+  .cta h3{font-family:var(--head);color:var(--white);font-size:18px;margin:0;font-weight:700;position:relative}
+  .cta a{position:relative;background:var(--gc-orange);color:var(--white);text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:8px;white-space:nowrap}
+  .footer{padding:22px 56px 40px;color:var(--muted);font-size:11.5px}
+  .footer .rule{height:2px;background:linear-gradient(90deg,var(--gc-light),var(--gc-mid) 60%,transparent);border:0;margin:0 0 14px}
+  @media print{.page{max-width:none}body{background:var(--white)}table{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <svg class="wave tr" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 120 C90 40 210 40 300 120" stroke="#B2D235" stroke-width="6" fill="none"/>
+      <path d="M0 150 C90 70 210 70 300 150" stroke="#50B748" stroke-width="5" fill="none" opacity="0.7"/>
+      <path d="M0 180 C90 100 210 100 300 180" stroke="#B2D235" stroke-width="4" fill="none" opacity="0.5"/>
+    </svg>
+    <svg class="wave bl" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 180 C90 100 210 260 300 180" stroke="#50B748" stroke-width="5" fill="none" opacity="0.7"/>
+      <path d="M0 210 C90 130 210 290 300 210" stroke="#B2D235" stroke-width="4" fill="none" opacity="0.5"/>
+    </svg>
+    <p class="overline">Engineering gap analysis</p>
+    <h1>Built in the app, missing from the board</h1>
+    <p class="strap">The reverse view of the story dashboard: capabilities that exist in the Canopy Cut codebase today with no Azure DevOps story behind them — and a second set where the code has moved further than the story that nominally covers it. Each entry names the evidence in the repo and the feature it should be raised under.</p>
+    <div class="meta">
+      <div><b>Epic</b>44726 — New cutting team Android app</div>
+      <div><b>Audience</b>Engineering &amp; delivery</div>
+      <div><b>Author</b>Aaron Haydon</div>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="n orange">7</div><div class="k">capabilities with no story</div></div>
+    <div class="stat"><div class="n">4</div><div class="k">where code is ahead of the story</div></div>
+    <div class="stat"><div class="n">1</div><div class="k">entire companion app untracked</div></div>
+  </section>
+
+  <section class="intro">
+    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates.</p>
+  </section>
+
+  <section class="section">
+    <div class="shead"><h2>No story at all</h2><span class="scount">7 capabilities</span></div>
+    <table>
+      <thead><tr><th>Capability</th><th>Evidence in the repo</th><th style="width:120px">Status</th><th style="width:250px">Suggested home</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="cap">iOS companion app<span class="scale">Largest gap — a whole second client</span></td>
+          <td>Complete SwiftUI mirror of the Android screens: <span class="code">CanopyCutIOS/ — App, Design, Domain (fixtures), 8 view files, unit + UI test targets, plus .maestro/ios flows</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest"><b>Decision first:</b> is iOS in scope for this epic? If yes it needs its own feature; if no, the code should be flagged as a prototype so nobody mistakes it for committed scope.</td>
+        </tr>
+        <tr>
+          <td class="cap">Photo annotation editor &amp; viewer</td>
+          <td><span class="code">ui/editor/ — AnnotationEditorScreen, AnnotationViewerScreen, controls, image utils; PictureAnnotationEntity + PictureAnnotationItemEntity</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">New story under <b>45886 Field app</b>. A full drawing/annotation surface with its own persistence — needs ACs and tests (no unit or Maestro coverage today).</td>
+        </tr>
+        <tr>
+          <td class="cap">Voice dictation input</td>
+          <td><span class="code">DictationTextField in CompletionWidgets.kt — used in the on-hold dialog, RP questions tab, and completion widgets ("Speak hold notes")</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">New story under <b>45886 Field app</b>. Field-glove-friendly input is a real requirement; it also needs a microphone-permission and offline behaviour decision.</td>
+        </tr>
+        <tr>
+          <td class="cap">Pole hazards &amp; pole issues</td>
+          <td><span class="code">PoleIssueEntity, HazardPicklistItemEntity + Dao, PoleHazardPanel component, hazard surfaces in the span map and completion sheet</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">New story under <b>45886 Field app</b>. Safety-relevant data capture with a master picklist — same shape as the on-hold reasons story (46296), so the pattern is already agreed.</td>
+        </tr>
+        <tr>
+          <td class="cap">Device sync issue tracking</td>
+          <td><span class="code">DeviceSyncIssueEntity + Dao; surfaced in WorkOrderListCorrectionCards, list filters, and sync panels</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">New story under <b>45892 Integration</b>. Distinct from the sync engine itself — this is the operator-facing record of what failed to sync and why.</td>
+        </tr>
+        <tr>
+          <td class="cap">Financial password gate<span class="scale">Data layer only — no UI yet</span></td>
+          <td><span class="code">UserSessionEntity.financialUnlocked, UserSessionDao.unlockFinancial()/lockFinancial() — resets per app restart; no UI consumes it</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">Likely the plumbing for <b>45883 cost uplift (Future Scope)</b> — link it there so the scaffold is not orphaned, or remove it until that story is played.</td>
+        </tr>
+        <tr>
+          <td class="cap">Switch operative without re-login</td>
+          <td><span class="code">UserSessionDao.switchOperative() — changes the active member mid-session for photo/completion attribution</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">Smallest item — either add an AC to <b>45887 Log in and permissions</b> or raise a slim story; attribution of work to the right operative is an audit concern.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="shead"><h2>Code ahead of the story</h2><span class="scount">4 areas</span></div>
+    <table>
+      <thead><tr><th>Capability</th><th>Evidence in the repo</th><th style="width:120px">Status</th><th style="width:250px">What the story is missing</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="cap">Span map editing</td>
+          <td><span class="code">SpanMapLibre / SpanMapCanvas / SpanMapControls in ui/completion; recent commits: pole urgent badge, map popup cards, edit-pole improvements</span></td>
+          <td><span class="pill ahead">Ahead of 45901</span></td>
+          <td class="suggest"><b>45901 Mapping</b> covers viewing. Editing poles and map objects from the span detail is new behaviour with no ACs — extend 45901 or split an editing story.</td>
+        </tr>
+        <tr>
+          <td class="cap">Photo capture &amp; upload policy</td>
+          <td><span class="code">CameraX capture in CompletionScreen; JobPhoto + SurveyPicture entities; Wi-Fi-only upload policy and queued-photo handling on the sync sheet</span></td>
+          <td><span class="pill ahead">Split coverage</span></td>
+          <td class="suggest">Spread across 45890, 45894, and 46297 with no owner for the photo pipeline itself. Worth one story under <b>45886</b> naming the capture-annotate-queue-upload chain. Flow 12 tests the queue UI only.</td>
+        </tr>
+        <tr>
+          <td class="cap">Offline map packs</td>
+          <td><span class="code">OfflineMapPackEntity + Dao already scaffolded; consumed by Map and Completion view models</span></td>
+          <td><span class="pill ahead">Ahead of 45988</span></td>
+          <td class="suggest"><b>45988 Offline mapping</b> is still Ready for Refinement while its schema is already in the build — refine the story before more code lands against it.</td>
+        </tr>
+        <tr>
+          <td class="cap">Work-pack publishing model</td>
+          <td><span class="code">WorkPackDao plus the per-team work-pack schema described in the data-model docs</span></td>
+          <td><span class="pill ahead">Ahead of 45911</span></td>
+          <td class="suggest"><b>45911 Canopy Publisher</b> is unrefined while the receiving schema exists on the device. The story should state which side owns pack composition.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="cta">
+    <svg class="wave" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 160 C90 80 210 240 300 160" stroke="#B2D235" stroke-width="5" fill="none" opacity="0.6"/>
+      <path d="M0 190 C90 110 210 270 300 190" stroke="#50B748" stroke-width="4" fill="none" opacity="0.45"/>
+    </svg>
+    <h3>Raise the missing stories against the epic.</h3>
+    <a href="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/44726">Open Epic 44726 in Azure DevOps</a>
+  </div>
+
+  <footer class="footer">
+    <hr class="rule" />
+    Canopy Cut — Utility Arb cutting app · Epic 44726 · Companion page to the story dashboard · Drafted by AI, reviewed by Aaron Haydon.<br />
+    Method: code inventory of screens, navigation routes, Room entities/DAOs, and recent commits, cross-checked against all 42 stories on the epic after the June restructure. Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the design bundle was unavailable at build time; colours follow the official Ground Control palette.
+  </footer>
+
+</div>
+</body>
+</html>
