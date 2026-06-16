@@ -98,15 +98,15 @@
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="n">47</div><div class="k">stories &amp; spikes</div></div>
+    <div class="stat"><div class="n">48</div><div class="k">stories &amp; spikes</div></div>
     <div class="stat"><div class="n">7</div><div class="k">features (2 new)</div></div>
     <div class="stat"><div class="n">14</div><div class="k">in development</div></div>
-    <div class="stat"><div class="n">57</div><div class="k">unit tests (51 verified green)</div></div>
+    <div class="stat"><div class="n">58</div><div class="k">unit tests (51 verified green)</div></div>
     <div class="stat"><div class="n orange">14</div><div class="k">UI flows authored</div></div>
   </section>
 
   <section class="intro">
-    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a new wave of stories landed — two with detailed requirements already mapped to code, twelve production placeholders awaiting requirements, and a feature-flag story to hide non-MVP work for the ARB build. The first stories have reached Done, Awaiting QA, and Ready to Deploy.</p>
+    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a new wave of stories landed — two with detailed requirements already mapped to code, twelve production placeholders awaiting requirements, and a feature-flag story to hide non-MVP work for the ARB build. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
     <p class="lede">Coverage is split two ways. A unit chip means a JVM test that compiles and passes. A maestro chip means a UI flow authored against the real screen source — these execute in the CI pipeline, not on a laptop.</p>
     <div class="legend">
       <span><span class="vchip unit">unit</span> compiles &amp; passes</span>
@@ -136,7 +136,7 @@
 
 <script>
 const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/";
-const SB={"In Development":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)"};
+const SB={"In Development":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)"};
 const FEATURES=[
  {id:45876,title:"Woodplan backend changes to support cutting app",state:"Implementing",rows:[
    {id:46296,ty:"User Story",t:"On hold reason for Actions (and master picklist)",s:"Awaiting QA",w:"Mark Bissett",cov:"unit",u:2,m:"13",nw:true,note:"App side built: on_hold_reason table + OnHoldReasonDao, mandatory-reason dialog. New flow 13 validates the blocked save. Woodplan admin screen + remediation script out of repo. AC map on ticket"},
@@ -159,7 +159,7 @@ const FEATURES=[
    {id:45891,ty:"User Story",t:"RP sheet sign-off in app",s:"Ready to Play",w:"Mark Bissett",cov:"unit",m:"06",note:"Covered within CompletionViewModelTest + flow 06"},
    {id:45901,ty:"User Story",t:"Mapping",s:"In Development",w:"Mark Bissett",cov:"unit",u:11,m:"04, 11",note:"MapViewModelTest (11); GPS finished per recent commits"},
    {id:46297,ty:"User Story",t:"In App Audit Notifications and Resolutions (POC)",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"07, 12",nw:true,note:"Resolution UX built and flow-covered; notification trigger and Woodplan sync-back not built. AC map on ticket"},
-   {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"unit",u:10,m:"08",note:"WorkOrderOverviewVMTest (10); flow 08 Live Works — Shutdown path blocked by mock data"},
+   {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"unit",u:11,m:"08",note:"WorkOrderOverviewVMTest (11); flow 08 Live Works — Shutdown path blocked by mock data"},
    {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"In Development",w:"Mark Bissett",cov:"none",note:"This story is the test / CI setup itself"},
    {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Aaron Haydon",cov:"none",note:"azure-pipelines.yml — build, emulator, Maestro stages"},
    {id:45988,ty:"User Story",t:"Offline mapping capability",s:"In Development",w:"Mark Bissett",cov:"none",note:"PMTiles decided; OfflineMapPackDao scaffolded"},
@@ -174,7 +174,8 @@ const FEATURES=[
    {id:46337,ty:"User Story",t:"Offline mapping capability (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45988"},
    {id:46338,ty:"User Story",t:"Record workforce on site (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46198"},
    {id:46339,ty:"User Story",t:"In App Audit Notifications and Resolutions (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46297"},
-   {id:46585,ty:"User Story",t:"Implement feature flags to hide non-MVP features",s:"Elaborating",w:"Mark Bissett",cov:"none",nw:true,note:"Genuinely new — flag-gates non-MVP screens so the ARB build shows only committed scope"},
+   {id:46585,ty:"User Story",t:"Implement feature flags to hide non-MVP features",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Genuinely new — flag-gates non-MVP screens so the ARB build shows only committed scope"},
+   {id:46608,ty:"User Story",t:"Support infrastructure with deployment",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"New story — support and deployment infrastructure; not yet refined"},
  ]},
  {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
    {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"12",note:"Flow 12 covers sync-status & photo-upload UI; sync engine still pending"},
@@ -185,9 +186,9 @@ const FEATURES=[
    {id:46329,ty:"User Story",t:"Woodplan to app synchronisation (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45895"},
    {id:46330,ty:"User Story",t:"Canopy publisher (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45911"},
  ]},
- {id:45959,title:"Automated testing for field team cutting app integration",state:"New",newFeature:true,rows:[
-   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:57,m:"00–13",note:"Moved here from the field-app feature. Deliverable: 14 flows + 57 unit tests (51 verified green; 6 added since await the next run)"},
-   {id:46324,ty:"User Story",t:"Test strategy",s:"Ready for Refinement",w:"Praise Akinsipe",cov:"none",nw:true,note:"QA documents the test strategy and scope"},
+ {id:45959,title:"Automated testing for field team cutting app integration",state:"Implementing",newFeature:true,rows:[
+   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:58,m:"00–13",note:"Moved here from the field-app feature. Deliverable: 14 flows + 58 unit tests (51 verified green; 7 added since await the next run)"},
+   {id:46324,ty:"User Story",t:"Test strategy",s:"In QA",w:"Praise Akinsipe",cov:"none",nw:true,note:"QA documents the test strategy and scope"},
    {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Ready to Play",w:"Praise Akinsipe",cov:"none",note:"Moved here from Discovery"},
  ]},
  {id:46327,title:"Future scope",state:"New",newFeature:true,rows:[
