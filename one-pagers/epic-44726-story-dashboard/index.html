@@ -89,7 +89,7 @@
     </svg>
     <p class="overline">Engineering delivery dashboard</p>
     <h1>Canopy Cut — Epic 44726, every story and its status</h1>
-    <p class="strap">The new Utility Arb cutting app, tracked story by story after the June restructure — seven features, the production backlog laid out, and the test that stands behind each piece of built work.</p>
+    <p class="strap">The new Utility Arb cutting app, tracked story by story after the June restructure — eight features, the production backlog laid out, and the test that stands behind each piece of built work.</p>
     <div class="meta">
       <div><b>Epic</b>44726 — New cutting team Android app</div>
       <div><b>Audience</b>Engineering &amp; delivery</div>
@@ -98,15 +98,15 @@
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="n">48</div><div class="k">stories &amp; spikes</div></div>
-    <div class="stat"><div class="n">7</div><div class="k">features (2 new)</div></div>
+    <div class="stat"><div class="n">49</div><div class="k">stories &amp; spikes</div></div>
+    <div class="stat"><div class="n">8</div><div class="k">features (3 new)</div></div>
     <div class="stat"><div class="n">14</div><div class="k">in development</div></div>
     <div class="stat"><div class="n">58</div><div class="k">unit tests (51 verified green)</div></div>
     <div class="stat"><div class="n orange">14</div><div class="k">UI flows authored</div></div>
   </section>
 
   <section class="intro">
-    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a new wave of stories landed — two with detailed requirements already mapped to code, twelve production placeholders awaiting requirements, and a feature-flag story to hide non-MVP work for the ARB build. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
+    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, a Route to Production feature now gathers the deployment pipeline and support stories, and a new wave of stories landed — two with detailed requirements already mapped to code, twelve production placeholders awaiting requirements, and a feature-flag story to hide non-MVP work for the ARB build. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
     <p class="lede">Coverage is split two ways. A unit chip means a JVM test that compiles and passes. A maestro chip means a UI flow authored against the real screen source — these execute in the CI pipeline, not on a laptop.</p>
     <div class="legend">
       <span><span class="vchip unit">unit</span> compiles &amp; passes</span>
@@ -161,7 +161,6 @@ const FEATURES=[
    {id:46297,ty:"User Story",t:"In App Audit Notifications and Resolutions (POC)",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"07, 12",nw:true,note:"Resolution UX built and flow-covered; notification trigger and Woodplan sync-back not built. AC map on ticket"},
    {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"unit",u:11,m:"08",note:"WorkOrderOverviewVMTest (11); flow 08 Live Works — Shutdown path blocked by mock data"},
    {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"In Development",w:"Mark Bissett",cov:"none",note:"This story is the test / CI setup itself"},
-   {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Aaron Haydon",cov:"none",note:"azure-pipelines.yml — build, emulator, Maestro stages"},
    {id:45988,ty:"User Story",t:"Offline mapping capability",s:"In Development",w:"Mark Bissett",cov:"none",note:"PMTiles decided; OfflineMapPackDao scaffolded"},
    {id:45991,ty:"User Story",t:"ARB presentation",s:"Ready to Deploy",w:"Ruth Havis",cov:"none",note:"Not software"},
    {id:46323,ty:"User Story",t:"Execute Cutting App automated test cases",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — the suite to execute already exists (14 flows, 56 unit tests)"},
@@ -175,7 +174,6 @@ const FEATURES=[
    {id:46338,ty:"User Story",t:"Record workforce on site (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46198"},
    {id:46339,ty:"User Story",t:"In App Audit Notifications and Resolutions (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46297"},
    {id:46585,ty:"User Story",t:"Implement feature flags to hide non-MVP features",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Genuinely new — flag-gates non-MVP screens so the ARB build shows only committed scope"},
-   {id:46608,ty:"User Story",t:"Support infrastructure with deployment",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"New story — support and deployment infrastructure; not yet refined"},
  ]},
  {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
    {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"12",note:"Flow 12 covers sync-status & photo-upload UI; sync engine still pending"},
@@ -193,6 +191,11 @@ const FEATURES=[
  ]},
  {id:46327,title:"Future scope",state:"New",newFeature:true,rows:[
    {id:45883,ty:"User Story",t:"Lead Team cost uplift & configurable cost limits",s:"Elaborating",w:"Ruth Havis",cov:"none",note:"Moved out of the Woodplan backend feature — explicitly deferred"},
+ ]},
+ {id:46628,title:"Route to production",state:"New",newFeature:true,rows:[
+   {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Aaron Haydon",cov:"none",note:"Moved here from the field-app feature. azure-pipelines.yml — build, emulator, Maestro stages"},
+   {id:46608,ty:"User Story",t:"Support infrastructure with deployment",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Moved here from the field-app feature — support and deployment infrastructure; not yet refined"},
+   {id:46632,ty:"User Story",t:"Route to production document",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"New story — documents the route to production for the cutting app"},
  ]},
  {id:45896,title:"End-to-end solution documentation",state:"Implementing",rows:[
    {id:45897,ty:"User Story",t:"Woodplan backend documentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Documentation"},
