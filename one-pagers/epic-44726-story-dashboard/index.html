@@ -136,7 +136,7 @@
 
 <script>
 const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/";
-const SB={"In Development":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)"};
+const SB={"In Development":"var(--st-dev)","Active":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)"};
 const FEATURES=[
  {id:45876,title:"Woodplan backend changes to support cutting app",state:"Implementing",rows:[
    {id:46296,ty:"User Story",t:"On hold reason for Actions (and master picklist)",s:"Awaiting QA",w:"Mark Bissett",cov:"unit",u:2,m:"13",nw:true,note:"App side built: on_hold_reason table + OnHoldReasonDao, mandatory-reason dialog. New flow 13 validates the blocked save. Woodplan admin screen + remediation script out of repo. AC map on ticket"},
@@ -187,7 +187,7 @@ const FEATURES=[
  {id:45959,title:"Automated testing for field team cutting app integration",state:"Implementing",newFeature:true,rows:[
    {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:58,m:"00–13",note:"Moved here from the field-app feature. Deliverable: 14 flows + 58 unit tests (51 verified green; 7 added since await the next run)"},
    {id:46324,ty:"User Story",t:"Test strategy",s:"In QA",w:"Praise Akinsipe",cov:"none",nw:true,note:"QA documents the test strategy and scope"},
-   {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Ready to Play",w:"Praise Akinsipe",cov:"none",note:"Moved here from Discovery"},
+   {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Active",w:"Praise Akinsipe",cov:"none",note:"Moved here from Discovery — now underway"},
  ]},
  {id:46327,title:"Future scope",state:"New",newFeature:true,rows:[
    {id:45883,ty:"User Story",t:"Lead Team cost uplift & configurable cost limits",s:"Elaborating",w:"Ruth Havis",cov:"none",note:"Moved out of the Woodplan backend feature — explicitly deferred"},
