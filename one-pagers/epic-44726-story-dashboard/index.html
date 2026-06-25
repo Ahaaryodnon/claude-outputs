@@ -12,7 +12,7 @@
     --head:'FOT-TsukuARdGothic','Cera Pro','Inter',-apple-system,sans-serif;
     --st-dev:#50B748; --st-done:#2f7d4a; --st-qa:#2f86a8; --st-play:#caa92f;
     --st-refine:#4a90c2; --st-elab:#8f6fb8; --st-new:#8a958e; --st-removed:#9aa39d;
-    --st-deploy:#1f9e8a; --st-closed:#3a6b50;
+    --st-deploy:#1f9e8a; --st-closed:#3a6b50; --st-blocked:#b04a3a;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -98,15 +98,15 @@
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="n">52</div><div class="k">stories &amp; spikes</div></div>
+    <div class="stat"><div class="n">41</div><div class="k">stories &amp; spikes</div></div>
     <div class="stat"><div class="n">8</div><div class="k">features (3 new)</div></div>
-    <div class="stat"><div class="n">15</div><div class="k">in development</div></div>
+    <div class="stat"><div class="n">10</div><div class="k">in development</div></div>
     <div class="stat"><div class="n">63</div><div class="k">unit tests (51 verified green)</div></div>
     <div class="stat"><div class="n orange">14</div><div class="k">UI flows authored</div></div>
   </section>
 
   <section class="intro">
-    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature now gathers the deployment pipeline. A wave of placeholder stories was raised to mirror the built POC work — two of them (the on-hold reason and the in-app audit story) already carry detailed requirements mapped to code, the rest await requirements. Three further stories have since been raised around the on-prem image route — photo limits, the on-prem API, and the on-prem image storage structure. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
+    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature now gathers the deployment pipeline. A wave of placeholder stories was raised to mirror the built POC work — two of them (the on-hold reason and the in-app audit story) carry detailed requirements mapped to code, the rest await requirements. Since the last review the backlog has been trimmed: a set of production and on-prem placeholder stories were removed from the epic, leaving 41 stories and spikes across the eight features. Five built or planned stories have moved to Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, and the soft-delete spike. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
     <p class="lede">Coverage is split two ways. A unit chip means a JVM test that compiles and passes. A maestro chip means a UI flow authored against the real screen source — these execute in the CI pipeline, not on a laptop.</p>
     <div class="legend">
       <span><span class="vchip unit">unit</span> compiles &amp; passes</span>
@@ -136,13 +136,13 @@
 
 <script>
 const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/";
-const SB={"In Development":"var(--st-dev)","Active":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)"};
+const SB={"In Development":"var(--st-dev)","Active":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)","Blocked":"var(--st-blocked)"};
 const FEATURES=[
  {id:45876,title:"Woodplan backend changes to support cutting app",state:"Implementing",rows:[
    {id:46296,ty:"User Story",t:"On hold reason for Actions (and master picklist)",s:"Awaiting QA",w:"Mark Bissett",cov:"unit",u:2,m:"13",nw:true,note:"App side built: on_hold_reason table + OnHoldReasonDao, mandatory-reason dialog. New flow 13 validates the blocked save. Woodplan admin screen + remediation script out of repo. AC map on ticket"},
-   {id:38597,ty:"Spike",t:"Soft Delete Function with WP",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Woodplan-side spike, linked into the epic in June"},
+   {id:38597,ty:"Spike",t:"Soft Delete Function with WP",s:"Blocked",w:"Mark Bissett",cov:"none",note:"Woodplan-side spike, linked into the epic in June — now blocked"},
    {id:45881,ty:"User Story",t:"Add Lead Team flag to Work Order",s:"Awaiting QA",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan) — outside Android repo"},
-   {id:45962,ty:"User Story",t:"Update RP sheet creation logic in Woodplan",s:"In Development",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan)"},
+   {id:45962,ty:"User Story",t:"Update RP sheet creation logic in Woodplan",s:"Blocked",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan) — now blocked"},
    {id:46326,ty:"User Story",t:"Testing Woodplan backend changes",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — requirements not yet written"},
    {id:45958,ty:"User Story",t:"Automated testing for Woodplan for new cutting app",s:"Removed",w:"—",cov:"none",note:"Removed"},
  ]},
@@ -153,14 +153,14 @@ const FEATURES=[
  ]},
  {id:45886,title:"Android cutting app (field use)",state:"Implementing",rows:[
    {id:45887,ty:"User Story",t:"Log in and permissions",s:"Awaiting QA",w:"Mark Bissett",cov:"unit",u:11,m:"00, 01",note:"LoginVMTest (6) + OperativeSelectionVMTest (5) green"},
-   {id:45888,ty:"User Story",t:"View assigned work",s:"In Development",w:"Mark Bissett",cov:"unit",u:12,m:"02, 10",note:"WorkOrderListViewModelTest (12)"},
+   {id:45888,ty:"User Story",t:"View assigned work",s:"Blocked",w:"Mark Bissett",cov:"unit",u:12,m:"02, 10",note:"WorkOrderListViewModelTest (12); story now blocked"},
    {id:45889,ty:"User Story",t:"Multi-team work order visibility & completion",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"03, 07",note:"UI flows only — multi-team data scoping untested"},
    {id:45890,ty:"User Story",t:"Record work per span",s:"In Development",w:"Mark Bissett",cov:"unit",u:14,m:"05, 09",note:"CompletionViewModelTest (14)"},
    {id:45891,ty:"User Story",t:"RP sheet sign-off in app",s:"Ready to Play",w:"Mark Bissett",cov:"unit",m:"06",note:"Covered within CompletionViewModelTest + flow 06"},
    {id:45901,ty:"User Story",t:"Mapping",s:"In Development",w:"Mark Bissett",cov:"unit",u:14,m:"04, 11",note:"MapViewModelTest (14); GPS finished per recent commits"},
-   {id:46297,ty:"User Story",t:"In App Audit Notifications and Resolutions (POC)",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"07, 12",nw:true,note:"Resolution UX built and flow-covered; notification trigger and Woodplan sync-back not built. AC map on ticket"},
+   {id:46297,ty:"User Story",t:"In App Audit Notifications and Resolutions (POC)",s:"Blocked",w:"Mark Bissett",cov:"maestro",m:"07, 12",nw:true,note:"Resolution UX built and flow-covered; notification trigger and Woodplan sync-back not built. Now blocked. AC map on ticket"},
    {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"unit",u:12,m:"08",note:"WorkOrderOverviewVMTest (12); flow 08 Live Works — Shutdown path blocked by mock data"},
-   {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"In Development",w:"Mark Bissett",cov:"none",note:"This story is the test / CI setup itself"},
+   {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"Blocked",w:"Mark Bissett",cov:"none",note:"This story is the test / CI setup itself — now blocked"},
    {id:45988,ty:"User Story",t:"Offline mapping capability",s:"In Development",w:"Mark Bissett",cov:"none",note:"PMTiles decided; OfflineMapPackDao scaffolded"},
    {id:45991,ty:"User Story",t:"ARB presentation",s:"Ready to Deploy",w:"Ruth Havis",cov:"none",note:"Not software"},
    {id:46323,ty:"User Story",t:"Execute Cutting App automated test cases",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — the suite to execute already exists (14 flows, 61 unit tests)"},
@@ -168,13 +168,6 @@ const FEATURES=[
    {id:46332,ty:"User Story",t:"View assigned work (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45888"},
    {id:46333,ty:"User Story",t:"Multi-team visibility & completion (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45889"},
    {id:46334,ty:"User Story",t:"Record work per span (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45890"},
-   {id:46335,ty:"User Story",t:"Mandatory RP sheet sign-off in app (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45891"},
-   {id:46336,ty:"User Story",t:"Mapping (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45901"},
-   {id:46337,ty:"User Story",t:"Offline mapping capability (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45988"},
-   {id:46338,ty:"User Story",t:"Record workforce on site (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46198"},
-   {id:46339,ty:"User Story",t:"In App Audit Notifications and Resolutions (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46297"},
-   {id:46585,ty:"User Story",t:"Implement feature flags to hide non-MVP features",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"MVP-scoping story — gate deferred features behind flags so the field build shows only agreed scope"},
-   {id:46889,ty:"User Story",t:"Photo limits and image size enforcement",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Newly raised — caps photo count and enforces image-size limits ahead of the on-prem image store. Requirements pending; not yet built in the Android repo"},
  ]},
  {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
    {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"12",note:"Flow 12 covers sync-status & photo-upload UI; sync engine still pending"},
@@ -184,7 +177,6 @@ const FEATURES=[
    {id:46328,ty:"User Story",t:"App to Woodplan synchronisation (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45894"},
    {id:46329,ty:"User Story",t:"Woodplan to app synchronisation (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45895"},
    {id:46330,ty:"User Story",t:"Canopy publisher (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45911"},
-   {id:46887,ty:"User Story",t:"API implementation for on-prem route",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Newly raised — the on-prem API the app syncs through. Backend work, outside the Android repo"},
  ]},
  {id:45959,title:"Automated testing for field team cutting app integration",state:"Implementing",newFeature:true,rows:[
    {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:63,m:"00–13",note:"Moved here from the field-app feature. Deliverable: 14 flows + 63 unit tests (51 verified green; 12 added since await the next CI run)"},
@@ -196,9 +188,6 @@ const FEATURES=[
  ]},
  {id:46628,title:"Route to production",state:"New",newFeature:true,rows:[
    {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Aaron Haydon",cov:"none",note:"Moved here from the field-app feature. azure-pipelines.yml — build, emulator, Maestro stages"},
-   {id:46608,ty:"User Story",t:"Support infrastructure with deployment",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"New — scopes the support and infrastructure needed alongside the pipeline"},
-   {id:46632,ty:"User Story",t:"Route to production document",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"New — the written route-to-production plan for the cutting app"},
-   {id:46886,ty:"User Story",t:"API image storage structure (on-prem)",s:"In Development",w:"Mark Bissett",cov:"none",nw:true,note:"Newly raised — on-prem image storage layout for completion and survey photos. Backend/infrastructure, outside the Android repo"},
  ]},
  {id:45896,title:"End-to-end solution documentation",state:"Implementing",rows:[
    {id:45897,ty:"User Story",t:"Woodplan backend documentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Documentation"},
