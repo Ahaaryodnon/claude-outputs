@@ -102,7 +102,7 @@
       <tbody>
         <tr>
           <td class="cap">iOS companion app<span class="scale">Largest gap — a whole second client</span></td>
-          <td>Complete SwiftUI mirror of the Android screens: <span class="code">CanopyCutIOS/ — App, Design, Domain (fixtures), 8 view files, unit + UI test targets, plus .maestro/ios flows</span></td>
+          <td>Complete SwiftUI mirror of the Android screens: <span class="code">CanopyCutIOS/ — App, Design, Domain (fixtures), 8 view files, unit + UI test targets</span></td>
           <td><span class="pill untracked">Untracked</span></td>
           <td class="suggest"><b>Decision first:</b> is iOS in scope for this epic? If yes it needs its own feature; if no, the code should be flagged as a prototype so nobody mistakes it for committed scope.</td>
         </tr>
@@ -110,7 +110,7 @@
           <td class="cap">Photo annotation editor &amp; viewer</td>
           <td><span class="code">ui/editor/ — AnnotationEditorScreen, AnnotationViewerScreen, controls, image utils; PictureAnnotationEntity + PictureAnnotationItemEntity</span></td>
           <td><span class="pill untracked">Untracked</span></td>
-          <td class="suggest">New story under <b>45886 Field app</b>. A full drawing/annotation surface with its own persistence — needs ACs and tests (no unit or Maestro coverage today).</td>
+          <td class="suggest">New story under <b>45886 Field app</b>. A full drawing/annotation surface with its own persistence — needs ACs and tests (no automated coverage today).</td>
         </tr>
         <tr>
           <td class="cap">Voice dictation input</td>
@@ -159,7 +159,7 @@
           <td class="cap">Photo capture &amp; upload policy</td>
           <td><span class="code">CameraX capture in CompletionScreen; JobPhoto + SurveyPicture entities; Wi-Fi-only upload policy and queued-photo handling on the sync sheet</span></td>
           <td><span class="pill ahead">Split coverage</span></td>
-          <td class="suggest">Spread across 45890, 45894, and 46297 with no owner for the photo pipeline itself. Worth one story under <b>45886</b> naming the capture-annotate-queue-upload chain. Flow 12 tests the queue UI only.</td>
+          <td class="suggest">Spread across 45890, 45894, and 46297 with no owner for the photo pipeline itself. Worth one story under <b>45886</b> naming the capture-annotate-queue-upload chain. There is no automated test for the capture-to-upload chain in the tree today.</td>
         </tr>
         <tr>
           <td class="cap">Offline map packs</td>

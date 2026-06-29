@@ -89,7 +89,7 @@
     </svg>
     <p class="overline">Engineering delivery dashboard</p>
     <h1>Canopy Cut — Epic 44726, every story and its status</h1>
-    <p class="strap">The new Utility Arb cutting app, tracked story by story after the June restructure — eight features, the production backlog laid out, and the test that stands behind each piece of built work.</p>
+    <p class="strap">The new Utility Arb cutting app, tracked story by story after the June restructure — eight features, the production backlog laid out, and where automated tests do, and do not, stand behind the built work.</p>
     <div class="meta">
       <div><b>Epic</b>44726 — New cutting team Android app</div>
       <div><b>Audience</b>Engineering &amp; delivery</div>
@@ -100,18 +100,17 @@
   <section class="stats">
     <div class="stat"><div class="n">41</div><div class="k">stories &amp; spikes</div></div>
     <div class="stat"><div class="n">8</div><div class="k">features (3 new)</div></div>
-    <div class="stat"><div class="n">10</div><div class="k">in development</div></div>
-    <div class="stat"><div class="n">63</div><div class="k">unit tests (51 verified green)</div></div>
-    <div class="stat"><div class="n orange">14</div><div class="k">UI flows authored</div></div>
+    <div class="stat"><div class="n">9</div><div class="k">in development</div></div>
+    <div class="stat"><div class="n">21</div><div class="k">unit tests authored (awaiting run)</div></div>
+    <div class="stat"><div class="n orange">0</div><div class="k">Maestro UI flows in repo</div></div>
   </section>
 
   <section class="intro">
-    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature now gathers the deployment pipeline. A wave of placeholder stories was raised to mirror the built POC work — two of them (the on-hold reason and the in-app audit story) carry detailed requirements mapped to code, the rest await requirements. Since the last review the backlog has been trimmed: a set of production and on-prem placeholder stories were removed from the epic, leaving 41 stories and spikes across the eight features. Five built or planned stories have moved to Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, and the soft-delete spike. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
-    <p class="lede">Coverage is split two ways. A unit chip means a JVM test that compiles and passes. A maestro chip means a UI flow authored against the real screen source — these execute in the CI pipeline, not on a laptop.</p>
+    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature now gathers the deployment pipeline — whose story (45960) has since moved to In QA. A wave of placeholder stories was raised to mirror the built POC work; two of them (the on-hold reason and the in-app audit story) carry detailed requirements mapped to code, the rest await requirements. The backlog stands at 41 stories and spikes across the eight features, with five built or planned stories Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, and the soft-delete spike. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
+    <p class="lede">Coverage tells a leaner story than at the last review. The ViewModel unit suites and the Maestro UI-flow suite that earlier stood behind the field-app stories have been removed from the repo; in their place the current branch adds 21 JVM logic tests covering completion-question rules and the offline map and PMTiles stack. These are authored but were not run this cycle — they sit on the edit-pole-map-improvements branch ahead of main and await their first CI run, so none are yet marked verified green.</p>
     <div class="legend">
-      <span><span class="vchip unit">unit</span> compiles &amp; passes</span>
-      <span><span class="vchip maestro">~ maestro</span> authored, runs in CI</span>
-      <span><span class="vchip none">no test</span> backend, docs, stub, spike</span>
+      <span><span class="vchip unit">unit</span> JVM logic test authored, awaiting run</span>
+      <span><span class="vchip none">no test</span> backend, docs, UI-only, stub, spike</span>
     </div>
   </section>
 
@@ -139,7 +138,7 @@ const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_
 const SB={"In Development":"var(--st-dev)","Active":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)","Blocked":"var(--st-blocked)"};
 const FEATURES=[
  {id:45876,title:"Woodplan backend changes to support cutting app",state:"Implementing",rows:[
-   {id:46296,ty:"User Story",t:"On hold reason for Actions (and master picklist)",s:"Awaiting QA",w:"Mark Bissett",cov:"unit",u:2,m:"13",nw:true,note:"App side built: on_hold_reason table + OnHoldReasonDao, mandatory-reason dialog. New flow 13 validates the blocked save. Woodplan admin screen + remediation script out of repo. AC map on ticket"},
+   {id:46296,ty:"User Story",t:"On hold reason for Actions (and master picklist)",s:"Awaiting QA",w:"Mark Bissett",cov:"none",nw:true,note:"App side built: on_hold_reason table + OnHoldReasonDao, mandatory-reason dialog. No automated test in the current tree. Woodplan admin screen + remediation script out of repo. AC map on ticket"},
    {id:38597,ty:"Spike",t:"Soft Delete Function with WP",s:"Blocked",w:"Mark Bissett",cov:"none",note:"Woodplan-side spike, linked into the epic in June — now blocked"},
    {id:45881,ty:"User Story",t:"Add Lead Team flag to Work Order",s:"Awaiting QA",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan) — outside Android repo"},
    {id:45962,ty:"User Story",t:"Update RP sheet creation logic in Woodplan",s:"Blocked",w:"Mark Bissett",cov:"none",note:"Backend (Woodplan) — now blocked"},
@@ -147,30 +146,30 @@ const FEATURES=[
    {id:45958,ty:"User Story",t:"Automated testing for Woodplan for new cutting app",s:"Removed",w:"—",cov:"none",note:"Removed"},
  ]},
  {id:45878,title:"Discovery & technical readiness (Android cutting app)",state:"Implementing",rows:[
-   {id:45880,ty:"User Story",t:"Create mock-up Android cutting app",s:"Done",w:"Mark Bissett",cov:"maestro",m:"00–13",note:"Umbrella for the mock build — closed out, exercised end-to-end by the full flow suite"},
+   {id:45880,ty:"User Story",t:"Create mock-up Android cutting app",s:"Done",w:"Mark Bissett",cov:"none",note:"Umbrella for the mock build — closed out; the end-to-end flow suite that exercised it has been removed from the repo"},
    {id:46298,ty:"User Story",t:"Validate acceptance criteria across the epic",s:"Done",w:"Praise Akinsipe",cov:"none",nw:true,note:"Completed — drove the June restructure and the new ACs"},
    {id:45879,ty:"Spike",t:"Developer familiarisation with Claude Code & Android",s:"Closed",w:"Mark Bissett",cov:"none",note:"Spike — research, now closed"},
  ]},
  {id:45886,title:"Android cutting app (field use)",state:"Implementing",rows:[
-   {id:45887,ty:"User Story",t:"Log in and permissions",s:"Awaiting QA",w:"Mark Bissett",cov:"unit",u:11,m:"00, 01",note:"LoginVMTest (6) + OperativeSelectionVMTest (5) green"},
-   {id:45888,ty:"User Story",t:"View assigned work",s:"Blocked",w:"Mark Bissett",cov:"unit",u:12,m:"02, 10",note:"WorkOrderListViewModelTest (12); story now blocked"},
-   {id:45889,ty:"User Story",t:"Multi-team work order visibility & completion",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"03, 07",note:"UI flows only — multi-team data scoping untested"},
-   {id:45890,ty:"User Story",t:"Record work per span",s:"In Development",w:"Mark Bissett",cov:"unit",u:14,m:"05, 09",note:"CompletionViewModelTest (14)"},
-   {id:45891,ty:"User Story",t:"RP sheet sign-off in app",s:"Ready to Play",w:"Mark Bissett",cov:"unit",m:"06",note:"Covered within CompletionViewModelTest + flow 06"},
-   {id:45901,ty:"User Story",t:"Mapping",s:"In Development",w:"Mark Bissett",cov:"unit",u:14,m:"04, 11",note:"MapViewModelTest (14); GPS finished per recent commits"},
-   {id:46297,ty:"User Story",t:"In App Audit Notifications and Resolutions (POC)",s:"Blocked",w:"Mark Bissett",cov:"maestro",m:"07, 12",nw:true,note:"Resolution UX built and flow-covered; notification trigger and Woodplan sync-back not built. Now blocked. AC map on ticket"},
-   {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"unit",u:12,m:"08",note:"WorkOrderOverviewVMTest (12); flow 08 Live Works — Shutdown path blocked by mock data"},
+   {id:45887,ty:"User Story",t:"Log in and permissions",s:"Awaiting QA",w:"Mark Bissett",cov:"none",note:"Login and operative selection built; the ViewModel unit tests that previously covered them have been removed from the repo — no automated coverage in the tree today"},
+   {id:45888,ty:"User Story",t:"View assigned work",s:"Blocked",w:"Mark Bissett",cov:"none",note:"Work-order list built; its ViewModel test has been removed — no coverage in the tree. Story now blocked"},
+   {id:45889,ty:"User Story",t:"Multi-team work order visibility & completion",s:"In Development",w:"Mark Bissett",cov:"none",note:"UI-flow coverage removed; multi-team data scoping has no automated test"},
+   {id:45890,ty:"User Story",t:"Record work per span",s:"In Development",w:"Mark Bissett",cov:"unit",u:10,note:"CompletionQuestionRulesTest (8) + CompletionQuestionPhotoMergeTest (2) cover the completion-sheet question rules and RP-photo merge — authored on the branch, awaiting first run"},
+   {id:45891,ty:"User Story",t:"RP sheet sign-off in app",s:"Ready to Play",w:"Mark Bissett",cov:"unit",note:"RP question rules covered within CompletionQuestionRulesTest (shared with completion) — awaiting first run"},
+   {id:45901,ty:"User Story",t:"Mapping",s:"In Development",w:"Mark Bissett",cov:"none",note:"On-screen span map and edit-pole work; the offline pack and PMTiles logic it builds on is tested under 45988"},
+   {id:46297,ty:"User Story",t:"In App Audit Notifications and Resolutions (POC)",s:"Blocked",w:"Mark Bissett",cov:"none",nw:true,note:"Resolution UX built; the flow that covered it has been removed, and the notification trigger and Woodplan sync-back are not built. Now blocked. AC map on ticket"},
+   {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"none",note:"Workforce recording built; its ViewModel test has been removed — no coverage in the tree"},
    {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"Blocked",w:"Mark Bissett",cov:"none",note:"This story is the test / CI setup itself — now blocked"},
-   {id:45988,ty:"User Story",t:"Offline mapping capability",s:"In Development",w:"Mark Bissett",cov:"none",note:"PMTiles decided; OfflineMapPackDao scaffolded"},
+   {id:45988,ty:"User Story",t:"Offline mapping capability",s:"In Development",w:"Mark Bissett",cov:"unit",u:11,note:"OfflineMapPackRepositoryTest (4), PmTilesArchiveTest (4) and OfflineMapTileServerTest (3) cover the offline pack and PMTiles stack — authored on the branch, awaiting first run"},
    {id:45991,ty:"User Story",t:"ARB presentation",s:"Ready to Deploy",w:"Ruth Havis",cov:"none",note:"Not software"},
-   {id:46323,ty:"User Story",t:"Execute Cutting App automated test cases",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — the suite to execute already exists (14 flows, 61 unit tests)"},
+   {id:46323,ty:"User Story",t:"Execute Cutting App automated test cases",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — the suite to execute is currently 21 JVM tests, with no UI flows"},
    {id:46331,ty:"User Story",t:"Log in and permissions (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45887"},
    {id:46332,ty:"User Story",t:"View assigned work (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45888"},
    {id:46333,ty:"User Story",t:"Multi-team visibility & completion (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45889"},
    {id:46334,ty:"User Story",t:"Record work per span (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45890"},
  ]},
  {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
-   {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"In Development",w:"Mark Bissett",cov:"maestro",m:"12",note:"Flow 12 covers sync-status & photo-upload UI; sync engine still pending"},
+   {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"In Development",w:"Mark Bissett",cov:"unit",u:2,note:"CompletionQuestionPhotoMergeTest (2) covers RP-question photo de-duplication after sync (the recent fix); the sync engine itself is still pending. Awaiting first run"},
    {id:45895,ty:"User Story",t:"Woodplan to app synchronisation",s:"In Development",w:"Mark Bissett",cov:"none",note:"No sync code yet"},
    {id:45911,ty:"User Story",t:"Canopy publisher",s:"In Development",w:"Mark Bissett",cov:"none",note:"Android side not built"},
    {id:46325,ty:"User Story",t:"Execute App to Woodplan testing",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — blocked until the sync engine exists"},
@@ -179,7 +178,7 @@ const FEATURES=[
    {id:46330,ty:"User Story",t:"Canopy publisher (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45911"},
  ]},
  {id:45959,title:"Automated testing for field team cutting app integration",state:"Implementing",newFeature:true,rows:[
-   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:63,m:"00–13",note:"Moved here from the field-app feature. Deliverable: 14 flows + 63 unit tests (51 verified green; 12 added since await the next CI run)"},
+   {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:21,note:"Deliverable now: 21 JVM logic tests on the edit-pole-map-improvements branch (completion-question rules, offline map and PMTiles). The earlier ViewModel and Maestro flow suites have been removed from the repo. Tests authored but not run this cycle — awaiting first CI run"},
    {id:46324,ty:"User Story",t:"Test strategy",s:"In QA",w:"Praise Akinsipe",cov:"none",nw:true,note:"QA documents the test strategy and scope"},
    {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Ready to Play",w:"Praise Akinsipe",cov:"none",note:"Moved here from Discovery"},
  ]},
@@ -187,7 +186,7 @@ const FEATURES=[
    {id:45883,ty:"User Story",t:"Lead Team cost uplift & configurable cost limits",s:"Elaborating",w:"Ruth Havis",cov:"none",note:"Moved out of the Woodplan backend feature — explicitly deferred"},
  ]},
  {id:46628,title:"Route to production",state:"Implementing",newFeature:true,rows:[
-   {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In Development",w:"Aaron Haydon",cov:"none",note:"Moved here from the field-app feature. azure-pipelines.yml — build, emulator, Maestro stages"},
+   {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In QA",w:"Aaron Haydon",cov:"none",note:"Moved here from the field-app feature. azure-pipelines.yml — build, emulator and test stages. Now in QA"},
  ]},
  {id:45896,title:"End-to-end solution documentation",state:"Implementing",rows:[
    {id:45897,ty:"User Story",t:"Woodplan backend documentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Documentation"},
@@ -199,7 +198,6 @@ const FEATURES=[
 function covCell(r){
   let c=[];
   if(r.cov==="unit") c.push(`<span class="vchip unit">unit${r.u?` (${r.u})`:''}</span>`);
-  if(r.m) c.push(`<span class="vchip maestro">~ maestro ${r.m}</span>`);
   if(!c.length) c.push(`<span class="vchip none">no test</span>`);
   return `<div class="cov">${c.join("")}<span class="note">${r.note}</span></div>`;
 }
