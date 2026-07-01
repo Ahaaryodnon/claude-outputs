@@ -98,7 +98,7 @@
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="n">41</div><div class="k">stories &amp; spikes</div></div>
+    <div class="stat"><div class="n">64</div><div class="k">stories &amp; spikes</div></div>
     <div class="stat"><div class="n">8</div><div class="k">features (3 new)</div></div>
     <div class="stat"><div class="n">9</div><div class="k">in development</div></div>
     <div class="stat"><div class="n">21</div><div class="k">unit tests authored (awaiting run)</div></div>
@@ -106,7 +106,7 @@
   </section>
 
   <section class="intro">
-    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature now gathers the deployment pipeline — whose story (45960) has since moved to In QA. A wave of placeholder stories was raised to mirror the built POC work; two of them (the on-hold reason and the in-app audit story) carry detailed requirements mapped to code, the rest await requirements. The backlog stands at 41 stories and spikes across the eight features, with five built or planned stories Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, and the soft-delete spike. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
+    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature gathers the deployment work — its original pipeline story (45960) has moved to In QA, and it has since grown into a full Azure deployment breakdown covering Key Vault and secrets, a DbUp migration runner, Private Link SQL connectivity, Azure Files image storage, App Service hardening, observability, auth, and CI/CD. Under the field-app feature a further wave of stories was raised: production-parity stubs now mirror the RP sign-off, mapping, offline mapping, workforce, and in-app audit work alongside the earlier login and work-order stubs, and new scope stories cover feature flags to hide non-MVP surfaces, photo limits and image size, a photo gallery, job-versus-man hours, and sign-off questions. The backlog now stands at 64 stories and spikes across the eight features, with nine built or planned stories Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, the soft-delete spike, the non-MVP feature flags, photo limits, and the two on-prem API stories. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
     <p class="lede">Coverage tells a leaner story than at the last review. The ViewModel unit suites and the Maestro UI-flow suite that earlier stood behind the field-app stories have been removed from the repo; in their place the current branch adds 21 JVM logic tests covering completion-question rules and the offline map and PMTiles stack. These are authored but were not run this cycle — they sit on the edit-pole-map-improvements branch ahead of main and await their first CI run, so none are yet marked verified green.</p>
     <div class="legend">
       <span><span class="vchip unit">unit</span> JVM logic test authored, awaiting run</span>
@@ -167,6 +167,16 @@ const FEATURES=[
    {id:46332,ty:"User Story",t:"View assigned work (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45888"},
    {id:46333,ty:"User Story",t:"Multi-team visibility & completion (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45889"},
    {id:46334,ty:"User Story",t:"Record work per span (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45890"},
+   {id:46335,ty:"User Story",t:"Mandatory RP sheet sign-off in app (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — production-track sign-off, needs requirements or de-dup with 45891"},
+   {id:46336,ty:"User Story",t:"Mapping (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45901"},
+   {id:46337,ty:"User Story",t:"Offline mapping capability (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45988"},
+   {id:46338,ty:"User Story",t:"Record workforce on site (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 46198"},
+   {id:46339,ty:"User Story",t:"In App Audit Notifications and Resolutions (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — production-track audit, needs requirements or de-dup with 46297"},
+   {id:46585,ty:"User Story",t:"Implement feature flags to hide non-MVP features",s:"Blocked",w:"Mark Bissett",cov:"none",nw:true,note:"Hides non-MVP surfaces behind flags for the first release — now blocked. No automated test"},
+   {id:46889,ty:"User Story",t:"Photo limits and image size enforcement",s:"Blocked",w:"Mark Bissett",cov:"none",nw:true,note:"Caps photo count and image size before upload; AC map on ticket. Now blocked. No automated test"},
+   {id:47113,ty:"User Story",t:"Job hours vs man hours on site",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Separates job duration from cumulative operative hours — not yet built"},
+   {id:47114,ty:"User Story",t:"Photo gallery / live photos",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"In-app gallery and live-photos view — not yet built; overlaps the untracked annotation editor"},
+   {id:47115,ty:"User Story",t:"Sign off questions",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Completion sign-off question set. The completion-question rules are exercised by CompletionQuestionRulesTest under 45890, but this story is not yet built"},
  ]},
  {id:45892,title:"Integration between Android app & Woodplan",state:"Implementing",rows:[
    {id:45894,ty:"User Story",t:"App to Woodplan synchronisation",s:"In Development",w:"Mark Bissett",cov:"unit",u:2,note:"CompletionQuestionPhotoMergeTest (2) covers RP-question photo de-duplication after sync (the recent fix); the sync engine itself is still pending. Awaiting first run"},
@@ -176,6 +186,7 @@ const FEATURES=[
    {id:46328,ty:"User Story",t:"App to Woodplan synchronisation (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45894"},
    {id:46329,ty:"User Story",t:"Woodplan to app synchronisation (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45895"},
    {id:46330,ty:"User Story",t:"Canopy publisher (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45911"},
+   {id:46887,ty:"User Story",t:"API implementation for on-prem route",s:"Blocked",w:"Mark Bissett",cov:"none",nw:true,note:"Backend API for the on-prem deployment route — now blocked. Pairs with 46886 image storage"},
  ]},
  {id:45959,title:"Automated testing for field team cutting app integration",state:"Implementing",newFeature:true,rows:[
    {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:21,note:"Deliverable now: 21 JVM logic tests on the edit-pole-map-improvements branch (completion-question rules, offline map and PMTiles). The earlier ViewModel and Maestro flow suites have been removed from the repo. Tests authored but not run this cycle — awaiting first CI run"},
@@ -187,6 +198,18 @@ const FEATURES=[
  ]},
  {id:46628,title:"Route to production",state:"Implementing",newFeature:true,rows:[
    {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"In QA",w:"Aaron Haydon",cov:"none",note:"Moved here from the field-app feature. azure-pipelines.yml — build, emulator and test stages. Now in QA"},
+   {id:46632,ty:"User Story",t:"Route to production document",s:"Done",w:"Aaron Haydon",cov:"none",nw:true,note:"Route-to-production planning document — completed"},
+   {id:46608,ty:"User Story",t:"Support infrastructure with deployment",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Support and operations infrastructure to run alongside the deployment"},
+   {id:46886,ty:"User Story",t:"API image storage structure (on-prem)",s:"Blocked",w:"Mark Bissett",cov:"none",nw:true,note:"On-prem image storage structure — now blocked. Pairs with 46887"},
+   {id:47031,ty:"User Story",t:"Azure deployment: confirm architecture decisions (spike)",s:"New",w:"Aaron Haydon",cov:"none",nw:true,note:"Spike to confirm the Azure target architecture before build"},
+   {id:47032,ty:"User Story",t:"Key Vault integration & secrets management",s:"Ready for Refinement",w:"Aaron Haydon",cov:"none",nw:true,note:"Secrets and configuration held in Azure Key Vault"},
+   {id:47033,ty:"User Story",t:"Database migration runner (DbUp)",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Versioned SQL Server migrations run on deploy via DbUp"},
+   {id:47034,ty:"User Story",t:"SQL connectivity hardening over Private Link",s:"New",w:"—",cov:"none",nw:true,note:"Private Link path to SQL Server — no public exposure"},
+   {id:47035,ty:"User Story",t:"Durable image & file storage on Azure Files",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Image and file persistence on Azure Files"},
+   {id:47036,ty:"User Story",t:"App Service hosting hardening",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Hardened App Service host for the API"},
+   {id:47037,ty:"User Story",t:"Observability & operations",s:"New",w:"—",cov:"none",nw:true,note:"Logging, metrics and alerting for the deployed service"},
+   {id:47038,ty:"User Story",t:"Auth & security hardening",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Authentication and security hardening for the API route"},
+   {id:47039,ty:"User Story",t:"CI/CD pipeline (build, DB deploy, app deploy, promotion)",s:"New",w:"Aaron Haydon",cov:"none",nw:true,note:"Build, database deploy, app deploy and environment promotion pipeline"},
  ]},
  {id:45896,title:"End-to-end solution documentation",state:"Implementing",rows:[
    {id:45897,ty:"User Story",t:"Woodplan backend documentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Documentation"},
