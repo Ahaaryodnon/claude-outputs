@@ -98,7 +98,7 @@
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="n">64</div><div class="k">stories &amp; spikes</div></div>
+    <div class="stat"><div class="n">73</div><div class="k">stories &amp; spikes</div></div>
     <div class="stat"><div class="n">8</div><div class="k">features (3 new)</div></div>
     <div class="stat"><div class="n">9</div><div class="k">in development</div></div>
     <div class="stat"><div class="n">24</div><div class="k">unit tests authored (awaiting run)</div></div>
@@ -106,7 +106,7 @@
   </section>
 
   <section class="intro">
-    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature gathers the deployment work — its original pipeline story (45960) has now reached Done, and it has since grown into a full Azure deployment breakdown covering Key Vault and secrets, a DbUp migration runner, Private Link SQL connectivity, Azure Files image storage, App Service hardening, observability, auth, and CI/CD — and those nine deployment stories have now each been decomposed into delivery tasks, around sixty in total, from ingress and secret-delivery decisions through to slot-swap promotion. Under the field-app feature a further wave of stories was raised: production-parity stubs now mirror the RP sign-off, mapping, offline mapping, workforce, and in-app audit work alongside the earlier login and work-order stubs, and new scope stories cover feature flags to hide non-MVP surfaces, photo limits and image size, a photo gallery, job-versus-man hours, and sign-off questions. The backlog now stands at 64 stories and spikes across the eight features, with ten built or planned stories Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, the soft-delete spike, the non-MVP feature flags, photo limits, job hours vs man hours, and the two on-prem API stories. The first stories have reached Done, Awaiting QA, In QA, and Ready to Deploy.</p>
+    <p class="lede">The epic was restructured in early June: automated testing was promoted to its own feature, a Future Scope feature now holds deferred work, and a Route to Production feature gathers the deployment work — its original pipeline story (45960) has now reached Done, and it has since grown into a full Azure deployment breakdown covering Key Vault and secrets, a DbUp migration runner, Private Link SQL connectivity, Azure Files image storage, App Service hardening, observability, auth, and CI/CD — and those nine deployment stories have now each been decomposed into delivery tasks, around sixty in total, from ingress and secret-delivery decisions through to slot-swap promotion. Route to Production has since taken on a Platform-team workstream as well — ten new stories covering the API repository set-up, access and permissions, App Service Terraform, Azure File Sync, an on-prem sync agent, a .NET 9 build pipeline, the deployment pipeline, and connectivity and security — while the earlier standalone SQL Private Link story has been removed and folded into that work. Under the field-app feature a further wave of stories was raised: production-parity stubs now mirror the RP sign-off, mapping, offline mapping, workforce, and in-app audit work alongside the earlier login and work-order stubs, and new scope stories cover feature flags to hide non-MVP surfaces, photo limits and image size, a photo gallery, job-versus-man hours, and sign-off questions. The backlog now stands at 73 stories and spikes across the eight features, with ten built or planned stories Blocked — view assigned work, the test-environment set-up, the in-app audit story, the Woodplan RP-sheet logic, the soft-delete spike, the non-MVP feature flags, photo limits, job hours vs man hours, and the two on-prem API stories. The first stories have reached Done and Awaiting QA; the test strategy and the ARB presentation have both closed out to Done since the last review.</p>
     <p class="lede">Coverage tells a leaner story than at the last review. The ViewModel unit suites and the Maestro UI-flow suite that earlier stood behind the field-app stories have been removed from the repo; in their place the current branch adds 24 JVM logic tests covering completion-question rules, the offline map and PMTiles stack, and the on-prem API client configuration. These are authored but were not run this cycle — they sit on the edit-pole-map-improvements branch ahead of main and await their first CI run, so none are yet marked verified green.</p>
     <div class="legend">
       <span><span class="vchip unit">unit</span> JVM logic test authored, awaiting run</span>
@@ -161,8 +161,8 @@ const FEATURES=[
    {id:46198,ty:"User Story",t:"Record workforce on site (Live Works, Fixed Price & Shutdown)",s:"In Development",w:"Mark Bissett",cov:"none",note:"Workforce recording built; its ViewModel test has been removed — no coverage in the tree"},
    {id:45912,ty:"User Story",t:"Testing environment set up (software and hardware)",s:"Blocked",w:"Mark Bissett",cov:"none",note:"This story is the test / CI setup itself — now blocked"},
    {id:45988,ty:"User Story",t:"Offline mapping capability",s:"In Development",w:"Mark Bissett",cov:"unit",u:11,note:"OfflineMapPackRepositoryTest (4), PmTilesArchiveTest (4) and OfflineMapTileServerTest (3) cover the offline pack and PMTiles stack — authored on the branch, awaiting first run"},
-   {id:45991,ty:"User Story",t:"ARB presentation",s:"Ready to Deploy",w:"Ruth Havis",cov:"none",note:"Not software"},
-   {id:46323,ty:"User Story",t:"Execute Cutting App automated test cases",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — the suite to execute is currently 21 JVM tests, with no UI flows"},
+   {id:45991,ty:"User Story",t:"ARB presentation",s:"Done",w:"Ruth Havis",cov:"none",note:"Not software — now Done"},
+   {id:46323,ty:"User Story",t:"Execute Cutting App automated test cases",s:"New",w:"Praise Akinsipe",cov:"none",nw:true,note:"Template stub — the suite to execute is currently 24 JVM tests, with no UI flows"},
    {id:46331,ty:"User Story",t:"Log in and permissions (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45887"},
    {id:46332,ty:"User Story",t:"View assigned work (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45888"},
    {id:46333,ty:"User Story",t:"Multi-team visibility & completion (production)",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Empty template — needs requirements or de-dup with 45889"},
@@ -190,8 +190,8 @@ const FEATURES=[
  ]},
  {id:45959,title:"Automated testing for field team cutting app integration",state:"Implementing",newFeature:true,rows:[
    {id:45957,ty:"User Story",t:"Automated testing for field team cutting app",s:"In Development",w:"Aaron Haydon",cov:"unit",u:24,note:"Deliverable now: 24 JVM logic tests on the edit-pole-map-improvements branch (completion-question rules, offline map and PMTiles, on-prem API client config). The earlier ViewModel and Maestro flow suites have been removed from the repo. Tests authored but not run this cycle — awaiting first CI run"},
-   {id:46324,ty:"User Story",t:"Test strategy",s:"In QA",w:"Praise Akinsipe",cov:"none",nw:true,note:"QA documents the test strategy and scope"},
-   {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Ready to Play",w:"Praise Akinsipe",cov:"none",note:"Moved here from Discovery"},
+   {id:46324,ty:"User Story",t:"Test strategy",s:"Done",w:"Praise Akinsipe",cov:"none",nw:true,note:"QA documented the test strategy and scope — now Done"},
+   {id:45967,ty:"Spike",t:"Tester familiarity with automated testing",s:"Active",w:"Praise Akinsipe",cov:"none",note:"Moved here from Discovery — now Active"},
  ]},
  {id:46327,title:"Future scope",state:"New",newFeature:true,rows:[
    {id:45883,ty:"User Story",t:"Lead Team cost uplift & configurable cost limits",s:"Elaborating",w:"Ruth Havis",cov:"none",note:"Moved out of the Woodplan backend feature — explicitly deferred. Note: the Future scope feature (46327) is currently unparented from Epic 44726, so it no longer appears in the epic hierarchy this cycle"},
@@ -199,17 +199,26 @@ const FEATURES=[
  {id:46628,title:"Route to production",state:"Implementing",newFeature:true,rows:[
    {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app",s:"Done",w:"Aaron Haydon",cov:"none",note:"Moved here from the field-app feature. azure-pipelines.yml — build, emulator and test stages. Now Done"},
    {id:46632,ty:"User Story",t:"Route to production document",s:"Done",w:"Aaron Haydon",cov:"none",nw:true,note:"Route-to-production planning document — completed"},
-   {id:46608,ty:"User Story",t:"Support infrastructure with deployment",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Support and operations infrastructure to run alongside the deployment"},
+   {id:46608,ty:"User Story",t:"Support platform with deployment",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Support and operations platform to run alongside the deployment — now ready to play"},
    {id:46886,ty:"User Story",t:"API image storage structure (on-prem)",s:"Blocked",w:"Mark Bissett",cov:"none",nw:true,note:"On-prem image storage structure — now blocked. Pairs with 46887"},
-   {id:47031,ty:"Spike",t:"Azure deployment: confirm architecture decisions (spike)",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"Spike to confirm the Azure target architecture before build — now ready to play"},
-   {id:47032,ty:"User Story",t:"Key Vault integration & secrets management",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"Secrets and configuration held in Azure Key Vault — now ready to play"},
-   {id:47033,ty:"User Story",t:"Database migration runner (DbUp)",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Versioned SQL Server migrations run on deploy via DbUp"},
-   {id:47034,ty:"User Story",t:"SQL connectivity hardening over Private Link",s:"New",w:"—",cov:"none",nw:true,note:"Private Link path to SQL Server — no public exposure"},
-   {id:47035,ty:"User Story",t:"Durable image & file storage on Azure Files",s:"Ready for Refinement",w:"Mark Bissett",cov:"none",nw:true,note:"Image and file persistence on Azure Files"},
-   {id:47036,ty:"User Story",t:"App Service hosting hardening",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Hardened App Service host for the API"},
-   {id:47037,ty:"User Story",t:"Observability & operations",s:"New",w:"—",cov:"none",nw:true,note:"Logging, metrics and alerting for the deployed service"},
-   {id:47038,ty:"User Story",t:"Auth & security hardening",s:"New",w:"Mark Bissett",cov:"none",nw:true,note:"Authentication and security hardening for the API route"},
-   {id:47039,ty:"User Story",t:"CI/CD pipeline (build, DB deploy, app deploy, promotion)",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"Build, database deploy, app deploy and environment promotion pipeline — now ready to play"},
+   {id:47031,ty:"Spike",t:"Azure deployment: confirm architecture decisions (spike)",s:"Ready for Refinement",w:"Ross Bishop",cov:"none",nw:true,note:"Spike to confirm the Azure target architecture before build — now with Platform for refinement"},
+   {id:47032,ty:"User Story",t:"Key Vault integration & secrets management",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Secrets and configuration held in Azure Key Vault — now ready to play"},
+   {id:47033,ty:"User Story",t:"Database migration runner (DbUp)",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"Versioned SQL Server migrations run on deploy via DbUp — now ready to play"},
+   {id:47035,ty:"Spike",t:"Durable image & file storage on Azure Files",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"Image and file persistence on Azure Files — now a spike, ready to play"},
+   {id:47036,ty:"User Story",t:"App Service hosting hardening",s:"New",w:"—",cov:"none",nw:true,note:"Hardened App Service host for the API"},
+   {id:47037,ty:"User Story",t:"Observability & operations",s:"Ready to Play",w:"Aaron Haydon",cov:"none",nw:true,note:"Logging, metrics and alerting for the deployed service — now ready to play"},
+   {id:47038,ty:"User Story",t:"Auth & security hardening",s:"New",w:"—",cov:"none",nw:true,note:"Authentication and security hardening for the API route"},
+   {id:47039,ty:"User Story",t:"CI/CD pipeline (build, DB deploy, app deploy, promotion)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Build, database deploy, app deploy and environment promotion pipeline — now with Platform for refinement"},
+   {id:47220,ty:"User Story",t:"Supply copy of repo for API code to Platform",s:"Ready to Play",w:"Mark Bissett",cov:"none",nw:true,note:"Hand the API source to the Platform team to stand up the deployment"},
+   {id:47221,ty:"User Story",t:"API repository setup",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — new API repository provisioning"},
+   {id:47222,ty:"User Story",t:"Repository access & permissions",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — repository access and permissions"},
+   {id:47223,ty:"User Story",t:"Platform configuration (service connections & identity)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — service connections and managed identity"},
+   {id:47224,ty:"User Story",t:"Terraform for App Service",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — App Service infrastructure as code"},
+   {id:47225,ty:"User Story",t:"Azure File Sync configuration",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — Azure File Sync for image and file storage"},
+   {id:47226,ty:"User Story",t:"On-prem sync agent",s:"Ready for Refinement",w:"Glen Sames",cov:"none",nw:true,note:"Platform team — on-prem sync agent for the hybrid route"},
+   {id:47227,ty:"User Story",t:"Build pipeline for API (.NET 9)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — .NET 9 API build pipeline"},
+   {id:47228,ty:"User Story",t:"Deployment pipeline",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — API deployment pipeline"},
+   {id:47229,ty:"User Story",t:"Connectivity, security & access (gateway, firewall, AD)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",cov:"none",nw:true,note:"Platform team — gateway, firewall and Active Directory access"},
  ]},
  {id:45896,title:"End-to-end solution documentation",state:"Implementing",rows:[
    {id:45897,ty:"User Story",t:"Woodplan backend documentation",s:"Ready to Play",w:"Mark Bissett",cov:"none",note:"Documentation"},
