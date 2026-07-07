@@ -86,7 +86,7 @@
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="n orange">7</div><div class="k">capabilities with no story</div></div>
+    <div class="stat"><div class="n orange">8</div><div class="k">capabilities with no story</div></div>
     <div class="stat"><div class="n">4</div><div class="k">where code is ahead of the story</div></div>
     <div class="stat"><div class="n">1</div><div class="k">entire companion app untracked</div></div>
   </section>
@@ -96,7 +96,7 @@
   </section>
 
   <section class="section">
-    <div class="shead"><h2>No story at all</h2><span class="scount">7 capabilities</span></div>
+    <div class="shead"><h2>No story at all</h2><span class="scount">8 capabilities</span></div>
     <table>
       <thead><tr><th>Capability</th><th>Evidence in the repo</th><th style="width:120px">Status</th><th style="width:250px">Suggested home</th></tr></thead>
       <tbody>
@@ -123,6 +123,12 @@
           <td><span class="code">PoleIssueEntity, HazardPicklistItemEntity + Dao, PoleHazardPanel component, hazard surfaces in the span map and completion sheet</span></td>
           <td><span class="pill untracked">Untracked</span></td>
           <td class="suggest">New story under <b>45886 Field app</b>. Safety-relevant data capture with a master picklist — same shape as the on-hold reasons story (46296), so the pattern is already agreed.</td>
+        </tr>
+        <tr>
+          <td class="cap">Street View integration<span class="scale">New this cycle</span></td>
+          <td><span class="code">ui/map/MapStreetViewControls.kt, util/StreetViewLauncher.kt; wired into MapScreen, MapControls, SpanMap and CompletionScreen</span></td>
+          <td><span class="pill untracked">Untracked</span></td>
+          <td class="suggest">A map viewing aid with no dedicated story — fold into <b>45901 Mapping</b> or raise a slim story. It launches an external Street View surface, so it needs a connectivity and offline-behaviour decision.</td>
         </tr>
         <tr>
           <td class="cap">Device sync issue tracking</td>
@@ -159,19 +165,19 @@
           <td class="cap">Photo capture &amp; upload policy</td>
           <td><span class="code">CameraX capture in CompletionScreen; JobPhoto + SurveyPicture entities; Wi-Fi-only upload policy and queued-photo handling on the sync sheet</span></td>
           <td><span class="pill ahead">Split coverage</span></td>
-          <td class="suggest">Two slices are now on the board — photo limits and image size (46889, Blocked) and a photo gallery / live photos (47114) — but they are split across 45890, 45894, and 46297 with no single story owning the capture-annotate-queue-upload chain. There is no automated test for the capture-to-upload chain in the tree today.</td>
+          <td class="suggest">Two slices are now on the board — photo limits and image size (46889, Awaiting QA) and a photo gallery / live photos (47114, Elaborating) — but they are split across 45890, 45894, and 46297 with no single story owning the capture-annotate-queue-upload chain. There is no automated test for the capture-to-upload chain in the tree today.</td>
         </tr>
         <tr>
           <td class="cap">Offline map packs</td>
           <td><span class="code">OfflineMapPackEntity + Dao already scaffolded; consumed by Map and Completion view models</span></td>
           <td><span class="pill ahead">Ahead of 45988</span></td>
-          <td class="suggest"><b>45988 Offline mapping</b> is In Development while its schema is already in the build — the story still lacks acceptance criteria for the offline pack format.</td>
+          <td class="suggest"><b>45988 Offline mapping</b> is Awaiting QA while its schema is already in the build — the story still lacks acceptance criteria for the offline pack format.</td>
         </tr>
         <tr>
           <td class="cap">Work-pack publishing model</td>
           <td><span class="code">WorkPackDao plus the per-team work-pack schema described in the data-model docs</span></td>
           <td><span class="pill ahead">Ahead of 45911</span></td>
-          <td class="suggest"><b>45911 Canopy Publisher</b> is In Development while the receiving schema exists on the device, yet still does not state which side owns pack composition.</td>
+          <td class="suggest"><b>45911 Canopy Publisher</b> is Awaiting QA while the receiving schema exists on the device, yet still does not state which side owns pack composition.</td>
         </tr>
       </tbody>
     </table>
