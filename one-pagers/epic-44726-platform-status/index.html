@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Canopy Cut — Platform repo and route-to-production status</title>
+<style>
+  :root{
+    --gc-dark:#294238; --gc-light:#B2D235; --gc-grey:#E6EBE3; --gc-mid:#50B748;
+    --gc-orange:#F57821; --white:#FFFFFF; --ink:#1d2a24; --muted:#5d6f66;
+    --body:'Cera Pro','Cera Pro Medium','Inter','Helvetica Neue',-apple-system,BlinkMacSystemFont,sans-serif;
+    --head:'FOT-TsukuARdGothic','Cera Pro','Inter',-apple-system,sans-serif;
+    --st-dev:#50B748; --st-done:#2f7d4a; --st-qa:#2f86a8; --st-play:#caa92f;
+    --st-refine:#4a90c2; --st-elab:#8f6fb8; --st-new:#8a958e; --st-removed:#9aa39d;
+    --st-deploy:#1f9e8a; --st-closed:#3a6b50; --st-blocked:#b04a3a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--gc-grey);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .page{max-width:920px;margin:0 auto;background:var(--white)}
+
+  .hero{position:relative;background:var(--gc-dark);color:var(--white);padding:50px 56px 44px;overflow:hidden}
+  .hero .wave{position:absolute;pointer-events:none}
+  .hero .wave.tr{top:-40px;right:-40px;width:300px;opacity:.9}
+  .hero .wave.bl{bottom:-70px;left:-50px;width:280px;opacity:.5}
+  .overline{text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:700;color:var(--gc-light);margin:0 0 14px}
+  h1{font-family:var(--head);font-weight:700;font-size:32px;line-height:1.12;margin:0 0 12px;max-width:22ch}
+  .strap{font-size:16px;color:#d8e6da;margin:0;max-width:60ch}
+  .meta{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap;font-size:12.5px;color:#bcd0c1}
+  .meta b{color:var(--gc-light);font-weight:700;display:block;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;margin-bottom:2px}
+
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);background:var(--gc-dark);border-top:1px solid rgba(178,210,53,.25)}
+  .stat{padding:18px 14px;text-align:center;border-left:1px solid rgba(255,255,255,.08)}
+  .stat:first-child{border-left:none}
+  .stat .n{font-family:var(--head);font-size:26px;font-weight:700;color:var(--gc-light);line-height:1}
+  .stat .n.orange{color:var(--gc-orange)}
+  .stat .k{font-size:10.5px;color:#bcd0c1;margin-top:5px;line-height:1.3}
+
+  .intro{padding:34px 56px 6px}
+  .intro .lede{font-size:15.5px;color:var(--ink);margin:0 0 14px;max-width:66ch}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 0;font-size:11.5px;color:var(--muted)}
+
+  .section{padding:14px 56px 8px}
+  .shead{display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--gc-dark);padding-bottom:7px;margin:26px 0 2px}
+  .shead .sid{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .shead h2{font-family:var(--head);font-size:19px;color:var(--gc-dark);margin:0;font-weight:700}
+  .shead .scount{margin-left:auto;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--gc-mid);font-weight:700}
+
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--gc-grey);vertical-align:top;font-size:13px}
+  th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid #cdd8cd}
+  td.id{white-space:nowrap;font-variant-numeric:tabular-nums}
+  td.id a{color:var(--gc-mid);text-decoration:none;font-weight:700}
+  td.id a:hover{text-decoration:underline}
+  td.id .ty{display:block;font-size:10px;color:var(--muted);font-weight:400}
+  .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;color:var(--white)}
+  .who{color:var(--muted);font-size:12px;white-space:nowrap}
+  .ev{font-size:12px;color:var(--ink)}
+  .ev .code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted);display:block;margin-top:2px;line-height:1.5}
+  .vchip{display:inline-block;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:700;border:1px solid;margin:0 4px 3px 0;white-space:nowrap}
+  .vchip.inrepo{color:#2c6a3c;border-color:var(--gc-mid);background:rgba(80,183,72,.14)}
+  .vchip.partial{color:#9a5410;border-color:var(--gc-orange);background:rgba(245,120,33,.10)}
+  .vchip.norepo{color:#71807a;border-color:#c5cfc6;background:#f1f4f0}
+
+  .callout{margin:20px 0 4px;background:var(--gc-grey);border-left:4px solid var(--gc-orange);border-radius:0 8px 8px 0;padding:14px 18px;font-size:13.5px}
+  .callout b{color:var(--gc-dark)}
+
+  .cta{margin:30px 56px 0;background:var(--gc-dark);border-radius:12px;padding:24px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;position:relative;overflow:hidden}
+  .cta .wave{position:absolute;bottom:-60px;right:-30px;width:220px;opacity:.5;pointer-events:none}
+  .cta h3{font-family:var(--head);color:var(--white);font-size:18px;margin:0;font-weight:700;position:relative}
+  .cta a{position:relative;background:var(--gc-orange);color:var(--white);text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:8px;white-space:nowrap}
+  .footer{padding:22px 56px 40px;color:var(--muted);font-size:11.5px}
+  .footer .rule{height:2px;background:linear-gradient(90deg,var(--gc-light),var(--gc-mid) 60%,transparent);border:0;margin:0 0 14px}
+  @media print{.page{max-width:none}body{background:var(--white)}table{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <svg class="wave tr" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 120 C90 40 210 40 300 120" stroke="#B2D235" stroke-width="6" fill="none"/>
+      <path d="M0 150 C90 70 210 70 300 150" stroke="#50B748" stroke-width="5" fill="none" opacity="0.7"/>
+      <path d="M0 180 C90 100 210 100 300 180" stroke="#B2D235" stroke-width="4" fill="none" opacity="0.5"/>
+    </svg>
+    <svg class="wave bl" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 180 C90 100 210 260 300 180" stroke="#50B748" stroke-width="5" fill="none" opacity="0.7"/>
+      <path d="M0 210 C90 130 210 290 300 210" stroke="#B2D235" stroke-width="4" fill="none" opacity="0.5"/>
+    </svg>
+    <p class="overline">Platform delivery status</p>
+    <h1>Canopy API — Platform repo against the route-to-production board</h1>
+    <p class="strap">The Platform team's new gc-slz-eng-canopy-api repository, read side by side with every story and delivery task under the Route to Production feature (46628) of Epic 44726 — what the board says, what the code already contains, and where the two disagree.</p>
+    <div class="meta">
+      <div><b>Epic</b>44726 — New cutting team Android app</div>
+      <div><b>Feature</b>46628 — Route to Production</div>
+      <div><b>Repo</b>Ground Control Platform / gc-slz-eng-canopy-api (dev)</div>
+      <div><b>Author</b>Aaron Haydon</div>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="n">22</div><div class="k">stories &amp; spikes on the feature</div></div>
+    <div class="stat"><div class="n">56</div><div class="k">delivery tasks under 9 stories</div></div>
+    <div class="stat"><div class="n">4</div><div class="k">stories Done, 2 in development</div></div>
+    <div class="stat"><div class="n orange">56</div><div class="k">tasks still New on the board</div></div>
+    <div class="stat"><div class="n orange">0</div><div class="k">automated tests in the repo</div></div>
+  </section>
+
+  <section class="intro">
+    <p class="lede">The Platform repo is real and recently seeded: three commits on the dev branch (6&ndash;7 July) that added the base template files and then the full application code handed over under story 47220. The solution holds six .NET projects (Canopy.Api, Canopy.Auth, Canopy.Cut, Canopy.Web, Canopy.Shared and a Canopy.DbUp migration runner), thirteen versioned SQL migrations, Terraform built on the shared gc-tf-shared modules with dev, uat and prd variable files, and four pipeline definitions extending the shared Platform templates for both application and infrastructure. On the board, the ten Platform workstream stories are moving — repository set-up and access are Done, platform configuration and the App Service Terraform are In Development — while all fifty-six delivery tasks under the nine Azure-deployment stories remain New.</p>
+    <p class="lede">The most useful finding is the gap between those two views, in both directions. A meaningful share of the New tasks is already implemented in the seeded code: Key Vault configuration with fail-fast production-secret validation, forwarded-headers middleware, an SQL-aware health endpoint, Application Insights wiring, the DbUp runner on dbup-sqlserver, a global.json pinning the .NET 9 SDK, and the pipeline and Terraform scaffolding. In the other direction, the two clearest genuinely-open items are confirmed by the repo itself: the Tests folder is an empty template stub (task 47094, the xunit project, has no code behind it) and secret-named values still sit in appsettings.json (task 47052). The nine architecture-decision tasks under spike 47031 gate several of the rest and none are recorded as decided.</p>
+    <div class="legend">
+      <span><span class="vchip inrepo">in repo</span> implementation evidence found in the code</span>
+      <span><span class="vchip partial">partial</span> some evidence, work clearly remaining</span>
+      <span><span class="vchip norepo">not started</span> no evidence in the repo</span>
+    </div>
+  </section>
+
+  <section class="section" id="stories"></section>
+
+  <section class="section">
+    <div class="callout"><b>Reading the task tables:</b> every one of the 56 tasks below is in state New on the board, so the state column is replaced by repo evidence. Where a chip says <b>in repo</b>, the seeded code already does what the task describes and the task likely needs verifying and closing rather than building; decision tasks under the spike need an owner to record the decision.</div>
+  </section>
+
+  <section class="section" id="tasks"></section>
+
+  <div class="cta">
+    <svg class="wave" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 160 C90 80 210 240 300 160" stroke="#B2D235" stroke-width="5" fill="none" opacity="0.6"/>
+      <path d="M0 190 C90 110 210 270 300 190" stroke="#50B748" stroke-width="4" fill="none" opacity="0.45"/>
+    </svg>
+    <h3>Open the Route to Production feature in Azure DevOps.</h3>
+    <a href="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/46628">Open Feature 46628</a>
+  </div>
+
+  <footer class="footer">
+    <hr class="rule" />
+    Canopy Cut — Utility Arb cutting app · Epic 44726 · Companion page to the story dashboard · Drafted by AI, reviewed by Aaron Haydon.<br />
+    Method: ADO hierarchy pull of Feature 46628 (22 stories and spikes, 56 tasks) cross-checked against the gc-slz-eng-canopy-api dev branch (three commits to 7 July) — solution structure, Program.cs wiring, DbUp project and migrations, Terraform and pipeline definitions. Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the Ground Control design bundle was unavailable at build time, so a fallback typeface is used. Colours follow the official Ground Control palette.
+  </footer>
+
+</div>
+
+<script>
+const ORG="https://dev.azure.com/GControlDevOps/Ground%20Control%20Engineering/_workitems/edit/";
+const SB={"In Development":"var(--st-dev)","Active":"var(--st-dev)","Done":"var(--st-done)","Awaiting QA":"var(--st-qa)","In QA":"var(--st-qa)","Ready to Play":"var(--st-play)","Ready for Refinement":"var(--st-refine)","Elaborating":"var(--st-elab)","New":"var(--st-new)","Removed":"var(--st-removed)","Ready to Deploy":"var(--st-deploy)","Closed":"var(--st-closed)","Blocked":"var(--st-blocked)"};
+
+const STORY_GROUPS=[
+ {title:"Platform workstream — repo, infrastructure and pipelines",rows:[
+  {id:47220,ty:"User Story",t:"Supply copy of repo for API code to Platform",s:"Done",w:"Mark Bissett",ev:"inrepo",note:"Delivered — commit f550559 (7 July) added the full application code to the Platform repo"},
+  {id:47221,ty:"User Story",t:"API repository setup",s:"Done",w:"Keerthi Jagarlamudi",ev:"inrepo",note:"Repo exists in the Ground Control Platform project with the standard template layout (Applications, Infrastructure, Tests, Docs, Wiki) and pre-commit config"},
+  {id:47222,ty:"User Story",t:"Repository access & permissions",s:"Done",w:"Keerthi Jagarlamudi",ev:"norepo",note:"Administrative — not visible in the working tree"},
+  {id:47223,ty:"User Story",t:"Platform configuration (service connections & identity)",s:"In Development",w:"Keerthi Jagarlamudi",ev:"partial",note:"Pipelines reference the gc-tf-shared repo at v2.2.8 and per-environment variable templates exist for dev, uat and prd"},
+  {id:47224,ty:"User Story",t:"Terraform for App Service",s:"In Development",w:"Keerthi Jagarlamudi",ev:"partial",note:"Infrastructure/Terraform/main present, composing shared modules — role assignments, private endpoint, Key Vault secrets, SQL database, and currently a Windows function-app module rather than an App Service web app; three env tfvars files"},
+  {id:47225,ty:"User Story",t:"Azure File Sync configuration",s:"Ready to Play",w:"Keerthi Jagarlamudi",ev:"norepo",note:"No File Sync configuration in the repo yet"},
+  {id:47226,ty:"User Story",t:"On-prem sync agent",s:"Ready for Refinement",w:"Glen Sames",ev:"norepo",note:"Not started in the repo"},
+  {id:47227,ty:"User Story",t:"Build pipeline for API (.NET 9)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",ev:"partial",note:"Applications/Pipelines/azure-pipeline.yaml extends the shared build-stages template, triggered on dev and release; global.json pins SDK 9.0.100. Story still in refinement while the pipeline scaffold already exists"},
+  {id:47228,ty:"User Story",t:"Deployment pipeline",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",ev:"partial",note:"release-pipeline-dev.yaml and release-pipeline-prod.yaml present alongside infrastructure pipelines with a manual-validation option"},
+  {id:47229,ty:"User Story",t:"Connectivity, security & access (gateway, firewall, AD)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",ev:"norepo",note:"Network-side work — nothing in the repo beyond the private-endpoint Terraform module reference"},
+ ]},
+ {title:"Azure deployment stories — decomposed into the 56 tasks below",rows:[
+  {id:47031,ty:"Spike",t:"Azure deployment: confirm architecture decisions",s:"Ready for Refinement",w:"Ross Bishop",ev:"norepo",note:"Nine decision tasks, none recorded as decided; several downstream tasks are gated on these"},
+  {id:47032,ty:"User Story",t:"Key Vault integration & secrets management",s:"Ready to Play",w:"Mark Bissett",ev:"partial",note:"Program.cs already calls ConfigureGroundControlKeyVaults() and ValidateProductionSecrets(); secret-named values remain in appsettings.json"},
+  {id:47033,ty:"User Story",t:"Database migration runner (DbUp)",s:"Ready to Play",w:"Aaron Haydon",ev:"partial",note:"Canopy.DbUp console project on dbup-sqlserver 6.0.0 with migrations 0001-0013 in Database/Migrations; SP-stripping and baselining tasks remain"},
+  {id:47035,ty:"Spike",t:"Durable image & file storage on Azure Files",s:"Ready for Refinement",w:"Aaron Haydon",ev:"norepo",note:"Moved back to refinement since the last dashboard refresh; no storage implementation evidence checked in"},
+  {id:47036,ty:"User Story",t:"App Service hosting hardening",s:"New",w:"—",ev:"partial",note:"ForwardedHeaders middleware and an SQL-aware anonymous health endpoint (/v2/health/check) are already wired in Program.cs"},
+  {id:47037,ty:"User Story",t:"Observability & operations",s:"Blocked",w:"Aaron Haydon",ev:"partial",note:"Blocked pending architecture decisions, yet Application Insights telemetry is already conditionally wired in Program.cs"},
+  {id:47038,ty:"User Story",t:"Auth & security hardening",s:"Ready to Play",w:"Mark Bissett",ev:"norepo",note:"Canopy.Auth project exists; the ten hardening tasks (key rotation, rate limiting, security headers, DTO validation) not verified in code"},
+  {id:47039,ty:"User Story",t:"CI/CD pipeline (build, DB deploy, app deploy, promotion)",s:"Ready for Refinement",w:"Keerthi Jagarlamudi",ev:"partial",note:"global.json and template-based build and release pipelines exist; no xunit test project and no verified DbUp, smoke-test or slot-swap stages"},
+  {id:45960,ty:"User Story",t:"Deployment pipeline for the cutting app (Android)",s:"Ready to Play",w:"Keerthi Jagarlamudi",ev:"norepo",note:"Android-side pipeline — lives in the Canopy_Cut repo, not this one"},
+  {id:46608,ty:"User Story",t:"Support platform with deployment",s:"Ready to Play",w:"Mark Bissett",ev:"norepo",note:"Support and operations arrangement — not a repo artefact"},
+  {id:46632,ty:"User Story",t:"Route to production document",s:"Done",w:"Aaron Haydon",ev:"norepo",note:"Planning document — completed outside this repo"},
+  {id:46886,ty:"User Story",t:"API image storage structure (on-prem)",s:"Ready to Play",w:"Mark Bissett",ev:"norepo",note:"Pairs with the Azure Files spike 47035 and integration story 46887"},
+ ]},
+];
+
+// All 56 tasks are state New on the board; ev shows repo evidence instead.
+const TASK_GROUPS=[
+ {pid:47031,title:"Architecture decisions (spike)",owner:"Ross Bishop",rows:[
+  {id:47040,t:"Decide public ingress: APIM vs Front Door",ev:"norepo",note:"Open decision"},
+  {id:47041,t:"Decide Android edge contract: APIM subscription key vs JWT-only",ev:"norepo",note:"Open decision"},
+  {id:47042,t:"Confirm on-prem SQL auth model (SQL auth vs AD/Kerberos)",ev:"norepo",note:"Open decision"},
+  {id:47043,t:"Decide secret delivery: KV config provider vs App Service KV references",ev:"partial",note:"Code currently uses the config-provider route (ConfigureGroundControlKeyVaults) — decision not recorded"},
+  {id:47044,t:"Decide Azure Files access: SMB mount vs Storage SDK",ev:"norepo",note:"Open decision"},
+  {id:47045,t:"Decide telemetry stack: App Insights SDK vs Azure Monitor OpenTelemetry",ev:"partial",note:"Code currently wires the App Insights SDK — decision not recorded"},
+  {id:47046,t:"Decide deploy method: ZIP/run-from-package vs container",ev:"norepo",note:"Open decision"},
+  {id:47047,t:"Decide time-zone model: WEBSITE_TIME_ZONE vs UTC end-to-end",ev:"norepo",note:"Open decision"},
+  {id:47048,t:"Decide JWT token model & TTL",ev:"norepo",note:"Open decision"},
+ ]},
+ {pid:47032,title:"Key Vault integration & secrets management",owner:"Mark Bissett",rows:[
+  {id:47049,t:"Add Azure.Identity + Configuration.Secrets packages",ev:"inrepo",note:"Key Vault configuration compiles and runs from Program.cs"},
+  {id:47050,t:"Wire AddAzureKeyVault in Program.cs (gated on non-Development)",ev:"inrepo",note:"builder.ConfigureGroundControlKeyVaults() at start-up"},
+  {id:47051,t:"Add fail-fast secret/JWT validation (ValidateOnStart)",ev:"inrepo",note:"KeyVaultConfiguration.ValidateProductionSecrets() at start-up"},
+  {id:47052,t:"Strip secret values from appsettings.json",ev:"norepo",note:"Secret-named values still present in appsettings.json — genuinely open"},
+  {id:47053,t:"Flip WebIdentity:AllowLegacyCanopyTokens default to false",ev:"norepo",note:"Not verified in config"},
+  {id:47054,t:"Choose & document the local-dev secret path",ev:"norepo",note:"No doc in the repo"},
+ ]},
+ {pid:47033,title:"Database migration runner (DbUp)",owner:"Aaron Haydon",rows:[
+  {id:47055,t:"Create Canopy.DbMigrator console project (dbup-sqlserver)",ev:"inrepo",note:"Exists as Canopy.DbUp on dbup-sqlserver 6.0.0 — name differs from the task"},
+  {id:47056,t:"Phase 1: journaled run-once migrations",ev:"partial",note:"Migrations 0001-0013 present under Database/Migrations; journaling behaviour not verified"},
+  {id:47057,t:"Phase 2: run-always stored-procedure deployment",ev:"norepo",note:"Not verified"},
+  {id:47058,t:"Strip embedded SP bodies from migrations 0011/0012/0013",ev:"norepo",note:"Migrations 0011-0013 exist and still carry their SP work"},
+  {id:47059,t:"Baseline Canopy_SchemaVersions for already-migrated environments",ev:"norepo",note:"Not verified"},
+  {id:47060,t:"Exclude Database/Seed and Database/Manual from the runner",ev:"norepo",note:"Seed and Manual folders exist; exclusion not verified"},
+ ]},
+ {pid:47035,title:"Durable image & file storage on Azure Files",owner:"Aaron Haydon",rows:[
+  {id:47065,t:"Reconcile photo write root with read root",ev:"norepo",note:"Not verified"},
+  {id:47066,t:"Add config-gated base-path override for legacy UNC reads",ev:"norepo",note:"Not verified"},
+  {id:47067,t:"Add storage fail-fast guard + readiness probe",ev:"norepo",note:"Not verified"},
+  {id:47068,t:"(Contingent) IFileStore seam + Azure impl if SDK chosen",ev:"norepo",note:"Gated on decision 47044"},
+ ]},
+ {pid:47036,title:"App Service hosting hardening",owner:"Unassigned",rows:[
+  {id:47069,t:"Add ForwardedHeaders as the first middleware",ev:"inrepo",note:"Configured and applied in Program.cs (X-Forwarded-For/Proto/Host)"},
+  {id:47070,t:"Add health checks (/health/live + SQL-aware /health/ready)",ev:"inrepo",note:"SqlConnectionHealthCheck + anonymous /v2/health/check mapped with 503 on unhealthy"},
+  {id:47071,t:"Add ProblemDetails + global exception handler",ev:"norepo",note:"Not verified"},
+  {id:47072,t:"Move CORS allowed origins to configuration",ev:"norepo",note:"Not verified"},
+  {id:47073,t:"Add degraded-mode circuit breaker (503 + Retry-After)",ev:"norepo",note:"Not verified"},
+  {id:47074,t:"Resolve time-zone model in code",ev:"norepo",note:"Gated on decision 47047"},
+  {id:47075,t:"(Low) HSTS / HTTPS-redirection ordering + response compression",ev:"norepo",note:"Not verified"},
+ ]},
+ {pid:47037,title:"Observability & operations (story Blocked)",owner:"Aaron Haydon",rows:[
+  {id:47076,t:"Add telemetry SDK (App Insights or Azure Monitor OpenTelemetry)",ev:"inrepo",note:"App Insights telemetry conditionally registered when a connection string is configured"},
+  {id:47077,t:"Inject ILogger and add structured logging",ev:"norepo",note:"Not verified"},
+  {id:47078,t:"Add PII/secret redaction for telemetry & logs",ev:"norepo",note:"Not verified"},
+  {id:47079,t:"Emit structured warning in DeviceSyncIssueService.LogAsync",ev:"norepo",note:"Not verified"},
+  {id:47080,t:"Add X-Trace-Id correlation + traceparent propagation",ev:"norepo",note:"Not verified"},
+  {id:47081,t:"Set quieter per-env log levels",ev:"norepo",note:"Per-env appsettings exist (Dev/Tst/Uat/Prd); levels not verified"},
+ ]},
+ {pid:47038,title:"Auth & security hardening",owner:"Mark Bissett",rows:[
+  {id:47082,t:"Multi-key JWT validation + rotation runbook",ev:"norepo",note:"Not verified"},
+  {id:47083,t:"Token lifetime / device revocation",ev:"norepo",note:"Not verified"},
+  {id:47084,t:"Set explicit ClockSkew + single-source ExpiryDays",ev:"norepo",note:"Not verified"},
+  {id:47085,t:"Add login rate limiting + per-name lockout",ev:"norepo",note:"Not verified"},
+  {id:47086,t:"Pin BCrypt work factor from config",ev:"norepo",note:"Not verified"},
+  {id:47087,t:"Add runtime guard to the dev hash-password endpoint",ev:"norepo",note:"Not verified"},
+  {id:47088,t:"Add security response headers",ev:"norepo",note:"Not verified"},
+  {id:47089,t:"Add request DTO model validation",ev:"norepo",note:"Not verified"},
+  {id:47090,t:"Add edge origin guard (FDID or APIM gateway secret)",ev:"norepo",note:"Gated on decision 47040"},
+  {id:47091,t:"Configure WebIdentity Entra (TenantId/Audience) per env",ev:"norepo",note:"Not verified"},
+ ]},
+ {pid:47039,title:"CI/CD pipeline (build, DB deploy, app deploy, promotion)",owner:"Keerthi Jagarlamudi",rows:[
+  {id:47092,t:"Add /global.json pinning the .NET 9 SDK band",ev:"inrepo",note:"global.json pins SDK 9.0.100 (rollForward latestMajor)"},
+  {id:47093,t:"Add /azure-pipelines.yml build stage",ev:"inrepo",note:"Applications/Pipelines/azure-pipeline.yaml extends the shared gc-tf-shared build template"},
+  {id:47094,t:"Add Canopy.Tests xunit project",ev:"norepo",note:"Tests folder is an empty template README — no test project exists"},
+  {id:47095,t:"Add per-env DbUp migration stage",ev:"norepo",note:"Not present in the pipeline definitions"},
+  {id:47096,t:"Add deploy-to-staging-slot stage",ev:"norepo",note:"Not verified in the release pipelines"},
+  {id:47097,t:"Add health + real smoke test before swap",ev:"norepo",note:"Not verified"},
+  {id:47098,t:"Add slot swap stage",ev:"norepo",note:"Not verified"},
+  {id:47099,t:"Add dev -> uat -> prd promotion with approvals",ev:"partial",note:"dev/uat/prd env-vars and separate dev and prod release pipelines exist; approval gates not verified"},
+ ]},
+];
+
+const EV={inrepo:'<span class="vchip inrepo">in repo</span>',partial:'<span class="vchip partial">partial</span>',norepo:'<span class="vchip norepo">not started</span>'};
+
+document.getElementById("stories").innerHTML=STORY_GROUPS.map(g=>`
+  <div class="feature">
+    <div class="shead"><h2>${g.title}</h2><span class="scount">${g.rows.length} items</span></div>
+    <table>
+      <thead><tr><th style="width:78px">ID</th><th>Story</th><th style="width:150px">State</th><th style="width:110px">Owner</th><th style="width:250px">Repo evidence</th></tr></thead>
+      <tbody>${g.rows.map(r=>`
+        <tr>
+          <td class="id"><a href="${ORG}${r.id}">${r.id}</a><span class="ty">${r.ty}</span></td>
+          <td>${r.t}</td>
+          <td><span class="badge" style="background:${SB[r.s]||'#888'}">${r.s}</span></td>
+          <td class="who">${r.w}</td>
+          <td class="ev">${EV[r.ev]}<span class="code">${r.note}</span></td>
+        </tr>`).join("")}</tbody>
+    </table>
+  </div>`).join("");
+
+document.getElementById("tasks").innerHTML=TASK_GROUPS.map(g=>`
+  <div class="feature">
+    <div class="shead"><span class="sid">${g.pid}</span><h2>${g.title}</h2><span class="scount">${g.rows.length} tasks — all New</span></div>
+    <table>
+      <thead><tr><th style="width:70px">ID</th><th>Task</th><th style="width:320px">Repo evidence</th></tr></thead>
+      <tbody>${g.rows.map(r=>`
+        <tr>
+          <td class="id"><a href="${ORG}${r.id}">${r.id}</a></td>
+          <td>${r.t}</td>
+          <td class="ev">${EV[r.ev]}<span class="code">${r.note}</span></td>
+        </tr>`).join("")}</tbody>
+    </table>
+  </div>`).join("");
+</script>
+</body>
+</html>
