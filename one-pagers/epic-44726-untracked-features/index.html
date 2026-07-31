@@ -87,12 +87,12 @@
 
   <section class="stats">
     <div class="stat"><div class="n orange">7</div><div class="k">capabilities with no story</div></div>
-    <div class="stat"><div class="n">4</div><div class="k">where code is ahead of the story</div></div>
-    <div class="stat"><div class="n orange">0</div><div class="k">iOS companion app in the tree this cycle (dropped from main)</div></div>
+    <div class="stat"><div class="n">5</div><div class="k">where code is ahead of the story</div></div>
+    <div class="stat"><div class="n orange">0</div><div class="k">iOS companion app in the tree this cycle (not on Dev)</div></div>
   </section>
 
   <section class="intro">
-    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates. The iOS companion app that a previous cycle flagged as the largest gap is no longer present in the tree on the current branch (main), so it has come off this list.</p>
+    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates. The iOS companion app that a previous cycle flagged as the largest gap is not present in the tree on the current branch (Dev), so it stays off this list — its Maestro flows do still sit on the Testing branch. New this cycle: the release and distribution chain has moved well ahead of the story that covers it, and is recorded below.</p>
   </section>
 
   <section class="section">
@@ -145,7 +145,7 @@
       </tbody>
     </table>
 
-    <div class="shead"><h2>Code ahead of the story</h2><span class="scount">4 areas</span></div>
+    <div class="shead"><h2>Code ahead of the story</h2><span class="scount">5 areas</span></div>
     <table>
       <thead><tr><th>Capability</th><th>Evidence in the repo</th><th style="width:120px">Status</th><th style="width:250px">What the story is missing</th></tr></thead>
       <tbody>
@@ -166,6 +166,12 @@
           <td><span class="code">OfflineMapPackEntity + Dao already scaffolded; consumed by Map and Completion view models</span></td>
           <td><span class="pill ahead">Ahead of 45988</span></td>
           <td class="suggest"><b>45988 Offline mapping</b> is Awaiting QA while its schema is already in the build — the story still lacks acceptance criteria for the offline pack format.</td>
+        </tr>
+        <tr>
+          <td class="cap">Release channels, in-app update &amp; Firebase distribution<span class="scale">New this cycle</span></td>
+          <td><span class="code">azure-pipelines.yml (514 lines) with a firebase-app-distribution-stage template and dev/uat/prod channels; AppUpdatePolicyRepository, AppUpdateUrlValidator, AppUpdateNoticeCard, ReleaseFeatureSettingsRepository; release links published back to the Canopy API</span></td>
+          <td><span class="pill ahead">Ahead of 48090</span></td>
+          <td class="suggest">The board covers Google Play only — <b>48090</b> developer testing, <b>48091</b> tester invitations, <b>48092</b> production listing. What is actually built is a Firebase App Distribution route with three release channels, an in-app update notice driven by a policy repository, and pipeline publishing of release links to the API. Raise a distribution story under <b>46628 Route to production</b>, or widen 48090 to state which channel is the release mechanism. Only the URL validator is tested (5 tests).</td>
         </tr>
         <tr>
           <td class="cap">Work-pack publishing model</td>
