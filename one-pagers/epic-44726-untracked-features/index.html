@@ -104,7 +104,7 @@
           <td class="cap">Photo annotation editor &amp; viewer<span class="scale">Largest gap in the current tree</span></td>
           <td><span class="code">ui/editor/ — AnnotationEditorScreen, AnnotationViewerScreen, controls, image utils; PictureAnnotationEntity + PictureAnnotationItemEntity</span></td>
           <td><span class="pill untracked">Untracked</span></td>
-          <td class="suggest">New story under <b>45886 Field app</b>. A full drawing/annotation surface with its own persistence — needs ACs and tests. A first saved-state audit suite (AnnotationEditorSavedStateAuditTest, 2 tests) landed this cycle; the rest of the surface remains untested.</td>
+          <td class="suggest">New story under <b>45886 Field app</b>. A full drawing/annotation surface with its own persistence — needs ACs and tests. A single saved-state audit suite (AnnotationEditorSavedStateAuditTest, 2 tests) stands behind it; the rest of the surface remains untested.</td>
         </tr>
         <tr>
           <td class="cap">Voice dictation input</td>
@@ -168,7 +168,7 @@
           <td class="suggest"><b>45988 Offline mapping</b> is Awaiting QA while its schema is already in the build — the story still lacks acceptance criteria for the offline pack format.</td>
         </tr>
         <tr>
-          <td class="cap">Release channels, in-app update &amp; Firebase distribution<span class="scale">New this cycle</span></td>
+          <td class="cap">Release channels, in-app update &amp; Firebase distribution<span class="scale">Built late July</span></td>
           <td><span class="code">azure-pipelines.yml (514 lines) with a firebase-app-distribution-stage template and dev/uat/prod channels; AppUpdatePolicyRepository, AppUpdateUrlValidator, AppUpdateNoticeCard, ReleaseFeatureSettingsRepository; release links published back to the Canopy API</span></td>
           <td><span class="pill ahead">Ahead of 48090</span></td>
           <td class="suggest">The board covers Google Play only — <b>48090</b> developer testing, <b>48091</b> tester invitations, <b>48092</b> production listing. What is actually built is a Firebase App Distribution route with three release channels, an in-app update notice driven by a policy repository, and pipeline publishing of release links to the API. Raise a distribution story under <b>46628 Route to production</b>, or widen 48090 to state which channel is the release mechanism. Only the URL validator is tested (5 tests).</td>
