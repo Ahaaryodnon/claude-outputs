@@ -1,157 +1,178 @@
-# FoodLens — Snap a photo, know what's on your plate
+# FoodLens for Crohn's — Snap a photo, find your triggers
 
-**Product design document** · v0.1 · August 2026
+**Product design document** · v0.2 · August 2026
 
 ---
 
 ## 1. The idea in one paragraph
 
-FoodLens is a mobile app for people who need to know what's *in* their food, not just how many calories it has. You point your camera at a meal — home-cooked, restaurant, or packaged — and the app identifies the dish, breaks it down into its likely ingredients, and immediately flags anything that conflicts with your dietary profile: allergens, intolerances, religious or ethical restrictions, or medical diets. Every meal is logged so you can spot patterns over time ("I feel bloated on days I eat X").
+FoodLens helps people with Crohn's disease work out which foods actually trigger *their* symptoms. You photograph each meal — the app identifies the dish and breaks it into ingredients, including hidden ones (onion in the sauce, butter it was fried in). You log symptoms as they happen. Over weeks, the app correlates ingredients with symptoms — accounting for the 4–48 hour lag typical in IBD — and builds a personal trigger profile with evidence behind it. That evidence base is exportable for your gastroenterologist or dietitian, replacing the unreliable paper food diary they ask you to keep.
 
-## 2. Who it's for
+## 2. Why Crohn's needs a different design
 
-| Persona | Need | What FoodLens does for them |
+Crohn's is not an allergy. There is no universal "unsafe ingredient" list — triggers are highly individual, evidence for most food-symptom links is personal rather than clinical, and what you tolerate changes between **remission and flare**. That drives four design principles:
+
+1. **Correlation over classification.** The app's job is not to declare food safe/unsafe, but to gather evidence and surface patterns: "symptoms followed 7 of your last 9 meals containing onion."
+2. **Symptoms are first-class data**, logged as easily as meals — a food log without a symptom log is useless for IBD.
+3. **Two modes, one profile.** A *flare mode* switches guidance to conservative low-residue defaults (as commonly advised clinically) while still logging everything; remission mode is exploratory.
+4. **Clinician-grade export.** The end consumer of this data is often a gastro or dietitian appointment. Structured, honest data beats recall.
+
+## 3. Who it's for
+
+| Persona | Situation | What FoodLens does for them |
 |---|---|---|
-| **Allergy sufferer** (nut, shellfish, egg…) | Avoid trace ingredients, especially when eating out | Red-flag alerts with confidence levels; "ask the kitchen" prompts for high-risk items |
-| **Intolerance manager** (lactose, gluten, FODMAP) | Identify hidden triggers and correlate with symptoms | Ingredient-level logging + symptom diary + correlation insights |
-| **Medical diet** (coeliac, diabetic, renal, low-sodium) | Stay within clinically prescribed limits | Per-ingredient nutrient estimates, daily budget tracking |
-| **Lifestyle diet** (vegan, halal, kosher, keto) | Verify compliance quickly | Instant compliant / non-compliant / uncertain verdicts |
-| **Parent / carer** | Check food for someone else's restrictions | Multiple profiles per account ("scanning for: Emma") |
+| **Newly diagnosed** | Overwhelmed, told to "keep a food diary" | Frictionless photo logging; education on common (not universal) trigger categories |
+| **Trigger hunter** (remission) | Suspects onion/dairy/fried food but isn't sure | Correlation engine + guided elimination-and-reintroduce experiments |
+| **Managing a flare** | Needs to eat conservatively for a period | Flare mode: low-residue guidance, flags high-risk ingredients (insoluble fibre, skins, seeds, fried/fatty) |
+| **Pre-appointment** | Gastro visit in 2 weeks | One-tap PDF/CSV export: meals, ingredients, symptoms, correlations, weight trend |
+| **Carer/parent** | Tracking for a child or partner with Crohn's | Scan-on-behalf-of profiles |
 
-## 3. Core user flow
+## 4. Core loop
 
 ```
-┌─────────┐    ┌──────────────┐    ┌─────────────────┐    ┌───────────────┐    ┌────────┐
-│  Snap    │ →  │ AI identifies │ →  │ Ingredient list  │ →  │ Dietary check  │ →  │  Log    │
-│  photo   │    │ the dish      │    │ with confidence  │    │ vs. profile    │    │  meal   │
-└─────────┘    └──────────────┘    └─────────────────┘    └───────────────┘    └────────┘
-                                          ↑ user can edit / confirm each ingredient
+┌─────────┐   ┌──────────────┐   ┌──────────────────┐   ┌──────────┐
+│  Snap    │ → │ AI identifies │ → │ Ingredients with  │ → │   Log     │
+│  meal    │   │ the dish      │   │ trigger-risk tags │   │   meal    │
+└─────────┘   └──────────────┘   └──────────────────┘   └────┬─────┘
+                                                              │
+┌──────────────────┐   ┌───────────────────────┐   ┌─────────▼─────────┐
+│ Personal trigger  │ ← │ Correlation engine     │ ← │  Log symptoms      │
+│ profile updates   │   │ (4–48h lag windows)    │   │  as they happen    │
+└──────────────────┘   └───────────────────────┘   └───────────────────┘
 ```
 
-1. **Snap** — camera-first UI. Also supports: photo library, barcode scan (packaged food), and menu-photo mode (scan a restaurant menu item description).
-2. **Identify** — a vision model names the dish ("chicken pad thai") and estimates portion size from visual cues.
-3. **Decompose** — the model lists likely ingredients *including hidden ones* (fish sauce, peanut oil, egg in the noodles), each with a confidence score: `visible` / `likely` / `possible`.
-4. **Check** — ingredients are matched against the user's dietary profile. Verdicts: ✅ safe · ⚠️ uncertain (ask/verify) · ⛔ conflict.
-5. **Log** — one tap saves the meal with time, ingredients, nutrients, and any flags. Optional symptom entry later links back to logged meals.
+- **Meal logging** is photo-first (plus barcode for packaged food and quick-repeat for regular meals — friction kills food diaries).
+- **Symptom logging** is a 10-second interaction: tap symptom type, severity, done. Types: abdominal pain, urgency, stool frequency + Bristol scale, blood, bloating, nausea, fatigue, joint pain. Optional daily check-in captures baseline wellness even on good days — no-symptom days are what make correlations meaningful.
+- **The correlation engine** scores ingredient↔symptom links across configurable lag windows and only surfaces a pattern once there's enough signal (see §7).
 
-### The honesty principle (safety-critical)
-
-A photo **cannot prove absence** of an allergen. FoodLens is designed to never say "this is safe" for severe allergies — it says "no conflicts *detected*" and, for high-severity profile items, always shows a persistent "verify with the kitchen/label" banner. Uncertainty is a first-class UI state, not fine print.
-
-## 4. Key features
+## 5. Key features
 
 ### MVP (v1)
-- 📸 **Photo → dish → ingredients** with three-tier confidence (visible / likely / possible)
-- 🚨 **Allergen & diet conflict alerts** against a personal dietary profile
-- ✏️ **Tap-to-edit ingredient list** — corrections feed back to improve the model
-- 📊 **Meal log** — timeline of meals with flags and basic nutrition (kcal, macros)
-- 🏷 **Barcode fallback** for packaged foods (Open Food Facts lookup — exact label data)
-- 👤 **Dietary profile** — allergens (with severity), intolerances, diets, disliked ingredients
+- 📸 **Photo → dish → ingredients** with three-tier confidence (visible / likely / possible) — hidden ingredients like onion, garlic, butter, and cooking fats matter enormously for IBD
+- 🏷 **Trigger-category tagging** — every ingredient is tagged against IBD-relevant categories: insoluble fibre, high-fat/fried, dairy/lactose, high-FODMAP, spicy, caffeine, alcohol, carbonated, artificial sweeteners (sorbitol/mannitol), nuts/seeds/skins, red & processed meat
+- 🩺 **Symptom diary** — fast structured logging + daily check-in
+- 🔗 **Correlation insights** — "symptoms followed N of M meals containing X within 24h", with a confidence label and the meals as evidence
+- 🔥 **Flare mode** — one toggle switches to conservative low-residue guidance and marks the period so flare data doesn't pollute remission correlations
+- 👤 **Personal trigger profile** — each suspected trigger holds a status: `testing` → `suspected` → `confirmed` (user-promoted, evidence-linked), plus known-safe list
+- 📤 **Clinician export** — PDF/CSV: meal log, symptom log, correlation summary, flare periods
 
 ### v2
-- 🩺 **Symptom diary + correlation insights** ("bloating correlates with meals containing onion")
-- 👨‍👩‍👧 **Multi-profile scanning** (scan on behalf of a family member)
-- 🍽 **Menu mode** — photograph a restaurant menu, get per-dish risk ratings before ordering
-- 🌍 **Cuisine priors** — location + restaurant type improves hidden-ingredient inference
-- 📤 **Export for clinicians** — PDF/CSV food diary for dietitians and allergy clinics
+- 🧪 **Guided reintroduction experiments** — pick a suspected trigger, the app plans a test window, prompts symptom checks at the right lags, and reports the result
+- 💊 **Medication & context tracking** — log meds, stress, sleep, menstrual cycle as confounders the correlation engine can control for
+- ⚖️ **Weight & hydration trends** — relevant markers during flares
+- 🍽 **Menu mode** — photograph a restaurant menu, get per-dish risk against *your* trigger profile before ordering
+- 👨‍👩‍👧 **Multi-profile** for carers
 
 ### v3
-- ⌚ Wearable/CGM integration (glucose response vs. logged ingredients)
-- 🗣 Voice logging ("I had a flat white and a banana")
-- 🤝 Restaurant partnerships — verified ingredient data replacing inference
+- 📈 Validated score integration (e.g. Harvey–Bradshaw style self-assessment trend)
+- 🤝 Dietitian portal — share a live read-only view with your clinical team
+- ⌚ Wearable signals (sleep, HRV) as additional confounders
 
-## 5. Screens
+## 6. Screens
 
-1. **Home / Today** — today's meals as cards, running nutrient budget, streak, prominent scan button.
-2. **Camera** — full-screen viewfinder, mode switch (Meal · Barcode · Menu), flash/library controls.
-3. **Analysing** — photo with scanning shimmer; shows dish guess as soon as available (~1s), ingredients stream in.
-4. **Result** — dish name + portion estimate; verdict banner (safe / caution / conflict); ingredient list grouped by confidence tier, each row showing allergen tags; edit affordances; "Log meal" CTA.
-5. **Ingredient detail** — why it was inferred, typical nutrition, which profile rule it triggers, "not in my dish" removal.
-6. **Log / History** — calendar + timeline, filter by flag ("show all meals containing dairy"), symptom entries interleaved.
-7. **Insights** (v2) — correlation cards, weekly nutrient trends.
-8. **Profile** — dietary profile editor with severity per allergen (anaphylaxis → always warn, even for "possible" traces), diets, nutrient budgets, family profiles.
+1. **Today** — meals as cards with trigger tags, symptom entries interleaved on the same timeline, daily check-in prompt, flare-mode banner when active.
+2. **Camera** — full-screen viewfinder; modes: Meal · Barcode · Repeat (recent meals).
+3. **Analysing** — progressive reveal: dish name ~1s, ingredients stream in.
+4. **Result** — dish + portion; risk summary against *your* profile ("contains 2 suspected triggers, 1 testing"); ingredients grouped by confidence tier, each with trigger-category chips; tap-to-edit; "Log meal".
+5. **Log symptom** — grid of symptom types, severity slider, Bristol picker where relevant; under 10 seconds end-to-end.
+6. **Insights** — correlation cards ranked by strength, each expandable to the underlying meals; "not enough data yet" states that tell you what to log next.
+7. **Profile** — trigger list with status (confirmed/suspected/testing/safe), flare-mode toggle, export button, household profiles.
 
-The interactive mockup in [`index.html`](./index.html) shows screens 1, 3, 4, and 8.
+The interactive mockup in [`index.html`](./index.html) shows screens 1, 3, 4, 6 and 7.
 
-## 6. System architecture
+## 7. Correlation engine (the core IP)
+
+Deterministic and explainable — no black-box scoring, because users will make dietary decisions from this and clinicians will read it.
+
+- **Windows:** for each symptom event, look back across lag windows (0–4h, 4–24h, 24–48h) at ingredients consumed.
+- **Scoring:** for each ingredient (and each trigger *category*, since categories aggregate signal faster than single ingredients), compare symptom rate after exposure vs. after non-exposure days. A simple 2×2 association (exposed/not × symptoms/not) with a minimum-exposure threshold (e.g. ≥5 exposures) before anything is surfaced.
+- **Confounders:** flare periods are excluded from remission correlations by default; v2 adds meds/stress/sleep as logged covariates shown alongside (not silently modelled).
+- **Honest presentation:** every insight card shows the raw numbers ("7 of 9 exposures → symptoms within 24h; baseline 2 of 8 days") and a plain-language caveat. Status promotion to "confirmed" is always a user action, ideally after a guided reintroduction test.
+- **What we never do:** diagnose, predict flares, or recommend eliminating whole food groups. Broad elimination without supervision risks malnutrition in Crohn's — the app repeatedly signposts dietitian involvement.
+
+## 8. System architecture
 
 ```
 ┌─────────────── Mobile app (React Native / Expo) ───────────────┐
-│  Camera · local image compression · offline queue · SQLite cache │
+│ Camera · image compression · offline queue · SQLite cache       │
+│ Symptom quick-log (works fully offline)                         │
 └────────────────────────────┬────────────────────────────────────┘
-                             │ HTTPS (image upload + JSON)
+                             │ HTTPS
 ┌────────────────────────────▼────────────────────────────────────┐
-│                    Backend (Supabase + Edge Functions)           │
-│  Auth · Postgres (profiles, meals, corrections) · Storage (photos)│
-│  Edge Function: /analyze — orchestrates the AI pipeline          │
+│                Backend (Supabase + Edge Functions)               │
+│ Auth · Postgres · Storage (photos) · /analyze · /correlate       │
+│ /export (PDF/CSV generation)                                     │
 └──────┬──────────────────────────────┬───────────────────────────┘
-       │                              │
 ┌──────▼───────────────┐   ┌──────────▼──────────────────────────┐
-│  Vision + reasoning   │   │  Nutrition & product data            │
-│  Claude API (vision)  │   │  USDA FoodData Central (nutrients)   │
-│  structured output    │   │  Open Food Facts (barcodes/labels)   │
+│ Vision + reasoning    │   │ Nutrition & product data             │
+│ Claude API (vision,   │   │ USDA FoodData Central · Open Food    │
+│ structured output)    │   │ Facts · FODMAP/fibre reference table │
 └──────────────────────┘   └─────────────────────────────────────┘
 ```
 
-### AI pipeline (`/analyze` edge function)
+### AI pipeline (`/analyze`)
 
-1. **Pre-process** — resize/compress client-side (~1280px, ~200KB) for latency and cost.
-2. **Single vision call** to Claude with the image + the user's dietary profile as context, requesting structured JSON:
-   ```json
-   {
-     "dish": {"name": "Chicken pad thai", "cuisine": "Thai", "confidence": 0.91},
-     "portion": {"estimate_g": 420, "basis": "standard restaurant plate"},
-     "ingredients": [
-       {"name": "rice noodles", "tier": "visible", "allergens": ["gluten? (check)"], "est_g": 150},
-       {"name": "peanuts", "tier": "visible", "allergens": ["peanut"], "est_g": 15},
-       {"name": "fish sauce", "tier": "likely", "allergens": ["fish"], "est_g": 10},
-       {"name": "egg", "tier": "likely", "allergens": ["egg"], "est_g": 40},
-       {"name": "shrimp paste", "tier": "possible", "allergens": ["shellfish"], "est_g": 5}
-     ],
-     "profile_conflicts": [
-       {"ingredient": "peanuts", "rule": "peanut allergy (severe)", "verdict": "conflict"},
-       {"ingredient": "fish sauce", "rule": "pescatarian-ok", "verdict": "safe"}
-     ]
-   }
-   ```
-   Passing the profile *into* the prompt matters: a model told "user has a severe peanut allergy; this looks like Thai food" will actively reason about peanut oil and cross-contamination rather than only listing what it sees.
-3. **Nutrient enrichment** — map ingredients to FoodData Central entries server-side; multiply by estimated grams for kcal/macros. Estimates are labelled as estimates (±30% is normal for photo-based portioning).
-4. **Verdict computation** — deterministic server-side rule engine (not the LLM) applies profile rules to the ingredient list. Severity `anaphylaxis` triggers a conflict on *any* tier including `possible`; milder rules can ignore `possible`. Safety logic stays auditable code, with the LLM as an input.
-5. **Correction loop** — user edits (add/remove/confirm ingredients) are stored and used as few-shot examples for that user's frequent dishes, and aggregated (opt-in, anonymised) for model evaluation.
+The vision call receives the image **plus the user's trigger profile and mode** (remission/flare), and returns structured JSON:
+
+```json
+{
+  "dish": {"name": "Chicken pad thai", "cuisine": "Thai", "confidence": 0.91},
+  "portion": {"estimate_g": 420},
+  "ingredients": [
+    {"name": "rice noodles", "tier": "visible", "categories": [], "est_g": 150},
+    {"name": "crushed peanuts", "tier": "visible", "categories": ["nuts_seeds", "insoluble_fibre"], "est_g": 15},
+    {"name": "chilli flakes", "tier": "visible", "categories": ["spicy"], "est_g": 2},
+    {"name": "cooking oil (wok-fried)", "tier": "likely", "categories": ["high_fat_fried"], "est_g": 20},
+    {"name": "garlic", "tier": "likely", "categories": ["high_fodmap"], "est_g": 5},
+    {"name": "shallots", "tier": "likely", "categories": ["high_fodmap"], "est_g": 10},
+    {"name": "fish sauce", "tier": "likely", "categories": [], "est_g": 10}
+  ],
+  "profile_matches": [
+    {"ingredient": "garlic", "trigger": "onion/garlic (FODMAP)", "status": "suspected"},
+    {"ingredient": "cooking oil (wok-fried)", "trigger": "fried/high-fat", "status": "confirmed"}
+  ]
+}
+```
+
+Prompting the model with the profile matters: told "user's confirmed trigger is fried food; suspected: onion/garlic", it actively reasons about cooking methods and hidden aromatics instead of only listing visible items. Trigger-category tagging is then **verified against a curated reference table** (FODMAP content, fibre type, lactose) server-side — the LLM proposes, the reference table disposes, and the correlation/verdict logic is deterministic code throughout.
 
 ### Data model (Postgres)
 
 ```
 users(id, email, created_at)
-profiles(id, user_id, name, is_default)                    -- family support
-profile_rules(id, profile_id, kind, value, severity)       -- kind: allergen|intolerance|diet|dislike|nutrient_budget
-meals(id, user_id, profile_id, photo_url, dish_name, portion_g, eaten_at, verdict)
-meal_ingredients(id, meal_id, name, tier, est_g, kcal, protein_g, carbs_g, fat_g,
-                 allergens text[], user_action)            -- user_action: confirmed|added|removed|null
-symptoms(id, user_id, kind, severity, noted_at)            -- v2
-corrections(id, user_id, dish_name, ingredient, action, created_at)
+profiles(id, user_id, name, mode)                           -- mode: remission|flare
+triggers(id, profile_id, name, category, status, promoted_at) -- status: testing|suspected|confirmed|safe
+flare_periods(id, profile_id, started_at, ended_at)
+meals(id, profile_id, photo_url, dish_name, portion_g, eaten_at, mode_at_log)
+meal_ingredients(id, meal_id, name, tier, est_g, categories text[], user_action)
+symptoms(id, profile_id, kind, severity, bristol, noted_at, note)
+checkins(id, profile_id, date, wellness, symptom_free bool)
+correlations(id, profile_id, subject, subject_type, window_h,   -- materialised nightly
+             exposures, symptomatic, baseline_days, baseline_symptomatic, updated_at)
+experiments(id, profile_id, trigger_id, plan, started_at, outcome)  -- v2
 ```
 
-## 7. Non-functional requirements
+## 9. Non-functional requirements
 
-- **Latency**: dish name < 2s, full breakdown < 6s on 4G. Stream the response so the UI fills progressively.
-- **Offline**: photos queue locally and analyse when connectivity returns; the log is readable offline.
-- **Privacy**: photos are health-adjacent data. Encrypted at rest, user-deletable, never used for training without explicit opt-in. GDPR export/delete built in from day one.
-- **Cost**: one vision call per scan; at ~1,500 tokens/scan this is low single-digit cents. Cache identical barcode lookups.
-- **Accessibility**: verdicts communicated by icon + text + colour (never colour alone); VoiceOver labels on every ingredient row; large-text friendly.
+- **Latency:** dish name < 2s, full breakdown < 6s; symptom logging is instant and offline-capable.
+- **Friction budget:** logging a repeat meal ≤ 3 taps; a symptom ≤ 3 taps. Diary apps die from friction — this is the top product risk.
+- **Privacy:** this is health data in the fullest sense (symptoms including blood, bowel habits). Encrypted at rest, region-pinned storage, full GDPR export/delete, photos deletable while keeping the ingredient record, and no third-party analytics on health events.
+- **Accessibility:** colour never the sole signal; large-text friendly; one-handed symptom logging (people log from the bathroom — design for it, don't be squeamish about it).
+- **Cost:** one vision call per scan (~low single-digit cents); correlations computed in nightly batch, not per-request.
 
-## 8. What FoodLens is *not*
+## 10. Boundaries and safety
 
-- Not a medical device and not marketed as one — prominent disclaimer at onboarding, and the "verify for severe allergies" banner is non-dismissable by design.
-- Not a calorie-obsessed diet app — nutrition numbers are secondary to ingredient awareness; no shame mechanics.
+- **Not a medical device**; no diagnosis, no flare prediction, no treatment advice. Clear onboarding disclaimer plus contextual signposting (e.g. blood logged repeatedly → "worth discussing with your IBD team soon" prompt, never urgency claims).
+- **Anti-restriction guardrail:** if the profile accumulates many confirmed/suspected exclusions, the app surfaces a dietitian-referral nudge rather than celebrating restriction.
+- **Evidence honesty:** correlation ≠ causation is stated on every insight card, with the guided reintroduction experiment (v2) offered as the way to firm it up.
 
-## 9. MVP build estimate
+## 11. MVP build estimate
 
 | Phase | Scope | Effort |
 |---|---|---|
-| 1 | Expo app shell, auth, dietary profile, camera capture | ~2 weeks |
-| 2 | `/analyze` pipeline + result screen + rule engine | ~3 weeks |
-| 3 | Meal log, barcode mode, edit/correction loop | ~2 weeks |
-| 4 | Polish, accessibility pass, TestFlight beta | ~1 week |
+| 1 | Expo shell, auth, trigger profile, camera, symptom quick-log | ~2 weeks |
+| 2 | `/analyze` pipeline, reference-table verification, result screen | ~3 weeks |
+| 3 | Timeline, flare mode, correlation engine + insights, export | ~3 weeks |
+| 4 | Polish, accessibility, TestFlight beta with an IBD community group | ~1 week |
 
-**Total: ~8 weeks to a testable MVP** with one developer plus design support.
+**Total: ~9 weeks to a testable MVP.** Beta with real Crohn's patients early — the friction budget and symptom-logging UX can only be validated by people who live with this.
