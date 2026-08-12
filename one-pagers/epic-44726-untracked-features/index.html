@@ -92,7 +92,7 @@
   </section>
 
   <section class="intro">
-    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates. The iOS companion app that a previous cycle flagged as the largest gap is not present in the tree on the current branch (Dev), so it stays off this list — its Maestro flows do still sit on the Testing branch. New this cycle: the release and distribution chain has moved well ahead of the story that covers it, and is recorded below.</p>
+    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates. The iOS companion app that a previous cycle flagged as the largest gap is not present in the tree on the current branch (Dev), so it stays off this list — its Maestro flows do still sit on the Testing branch. The Android tree has not changed since 30 July, so the seven untracked capabilities below stand unchanged. The one reconciliation that did move is the hosted map-tile source, now on the board as two new stories under Route to production.</p>
   </section>
 
   <section class="section">
@@ -165,7 +165,7 @@
           <td class="cap">Offline map packs</td>
           <td><span class="code">OfflineMapPackEntity + Dao already scaffolded; consumed by Map and Completion view models</span></td>
           <td><span class="pill ahead">Ahead of 45988</span></td>
-          <td class="suggest"><b>45988 Offline mapping</b> is Awaiting QA while its schema is already in the build — the story still lacks acceptance criteria for the offline pack format.</td>
+          <td class="suggest"><b>45988 Offline mapping</b> is Awaiting QA while its schema is already in the build — the story still lacks acceptance criteria for the offline pack format. The hosted side of this gap has now been raised: <b>49066</b> adds a map-tile blob container to the Canopy API storage account and <b>49067</b> serves tiles from it through the API, both Ready to Play. Neither states the pack format either, and the blocked map-download defect (48557) waits on the pair.</td>
         </tr>
         <tr>
           <td class="cap">Release channels, in-app update &amp; Firebase distribution<span class="scale">Built late July</span></td>
@@ -195,7 +195,7 @@
   <footer class="footer">
     <hr class="rule" />
     Canopy Cut — Utility Arb cutting app · Epic 44726 · Companion page to the story dashboard · Drafted by AI, reviewed by Aaron Haydon.<br />
-    Method: code inventory of screens, navigation routes, Room entities/DAOs, and recent commits, cross-checked against all 91 stories, spikes and bugs on the epic after the June restructure. Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the design bundle was unavailable at build time; colours follow the official Ground Control palette.
+    Method: code inventory of screens, navigation routes, Room entities/DAOs, and recent commits, cross-checked against all 93 stories, spikes and bugs on the epic after the June restructure. Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the design bundle was unavailable at build time; colours follow the official Ground Control palette.
   </footer>
 
 </div>
