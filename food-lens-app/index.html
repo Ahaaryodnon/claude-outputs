@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FoodLens for Crohn's — Interactive Mockup</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#181b22; --card:#1f232d; --line:#2a2f3b;
+    --text:#eef1f6; --muted:#9aa3b2;
+    --green:#34c98e; --amber:#f5b43c; --red:#f2635f; --accent:#5b8def; --purple:#a78bfa;
+    --tier-vis:#34c98e; --tier-lik:#f5b43c; --tier-pos:#9aa3b2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:linear-gradient(160deg,#0b0d12,#141826);
+    color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:32px 16px;
+  }
+  h1{font-size:22px; font-weight:700; margin-bottom:6px;}
+  .sub{color:var(--muted); font-size:14px; margin-bottom:24px; text-align:center; max-width:560px; line-height:1.5;}
+  .sub a{color:var(--accent);}
+
+  .phone{
+    width:375px; max-width:100%; height:760px; background:var(--bg);
+    border:10px solid #000; border-radius:44px; overflow:hidden; position:relative;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+    display:flex; flex-direction:column;
+  }
+  .notch{position:absolute; top:10px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-radius:14px; z-index:50;}
+
+  .screen{display:none; flex:1; flex-direction:column; overflow-y:auto; padding:56px 18px 84px;}
+  .screen.active{display:flex;}
+
+  .tabbar{
+    position:absolute; bottom:0; left:0; right:0; height:66px; background:rgba(15,17,21,.96);
+    border-top:1px solid var(--line); display:flex; z-index:40;
+  }
+  .tab{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+       color:var(--muted); font-size:10px; cursor:pointer; user-select:none;}
+  .tab .ico{font-size:20px;}
+  .tab.on{color:var(--accent);}
+  .tab.scan .ico{
+    width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:24px; margin-top:-26px;
+    box-shadow:0 6px 18px rgba(91,141,239,.45); border:4px solid var(--bg);
+  }
+
+  .h-row{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px;}
+  .h-row h2{font-size:20px;}
+  .h-row .date{color:var(--muted); font-size:12px;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; margin-bottom:12px;}
+
+  .meal{display:flex; gap:12px; align-items:center;}
+  .meal .thumb{width:48px; height:48px; border-radius:12px; flex:none; display:flex; align-items:center; justify-content:center; font-size:24px;}
+  .meal .info{flex:1; min-width:0;}
+  .meal .name{font-weight:600; font-size:14px;}
+  .meal .meta{font-size:11px; color:var(--muted); margin-top:2px;}
+  .pill{display:inline-block; font-size:10px; font-weight:700; padding:3px 8px; border-radius:99px; white-space:nowrap;}
+  .pill.ok{background:rgba(52,201,142,.15); color:var(--green);}
+  .pill.warn{background:rgba(245,180,60,.15); color:var(--amber);}
+  .pill.bad{background:rgba(242,99,95,.15); color:var(--red);}
+  .pill.test{background:rgba(167,139,250,.15); color:var(--purple);}
+
+  .symptom-entry{display:flex; gap:12px; align-items:center; border-left:3px solid var(--red); }
+  .symptom-entry .e{font-size:20px; width:48px; text-align:center; flex:none;}
+  .checkin{display:flex; align-items:center; gap:10px; background:rgba(91,141,239,.08); border:1px dashed rgba(91,141,239,.4);}
+  .checkin .q{flex:1; font-size:13px;}
+  .face{font-size:22px; cursor:pointer; opacity:.55;}
+  .face:hover{opacity:1;}
+
+  /* analysing */
+  .photo{
+    height:280px; border-radius:20px; position:relative; overflow:hidden; margin-bottom:16px;
+    background:
+      radial-gradient(ellipse 90px 60px at 30% 40%, #d98a3f 0%, #b96a2d 60%, transparent 62%),
+      radial-gradient(ellipse 70px 50px at 62% 35%, #e8c15a 0%, #d5a53c 60%, transparent 62%),
+      radial-gradient(ellipse 80px 55px at 48% 62%, #7fae5a 0%, #5e8f43 60%, transparent 62%),
+      radial-gradient(ellipse 55px 40px at 72% 60%, #c9524a 0%, #a83f38 60%, transparent 62%),
+      radial-gradient(circle at 50% 50%, #f2ede4 0%, #f2ede4 68%, #d9d2c4 69%, #24272e 72%);
+  }
+  .shimmer{position:absolute; inset:0; background:linear-gradient(105deg, transparent 40%, rgba(91,141,239,.35) 50%, transparent 60%); background-size:250% 100%; animation:sweep 1.6s infinite;}
+  @keyframes sweep{from{background-position:120% 0;}to{background-position:-120% 0;}}
+  .scanline{position:absolute; left:0; right:0; height:2px; background:var(--accent); box-shadow:0 0 12px var(--accent); animation:scan 2.2s ease-in-out infinite;}
+  @keyframes scan{0%,100%{top:8%;}50%{top:92%;}}
+  .steps{list-style:none;}
+  .steps li{display:flex; gap:10px; align-items:center; padding:9px 0; font-size:14px; color:var(--muted);}
+  .steps li.done{color:var(--text);}
+  .steps li.doing{color:var(--accent);}
+  .dot{width:8px; height:8px; border-radius:50%; background:var(--line); flex:none;}
+  .done .dot{background:var(--green);}
+  .doing .dot{background:var(--accent); animation:pulse 1s infinite;}
+  @keyframes pulse{50%{opacity:.3;}}
+
+  /* result */
+  .verdict{border-radius:16px; padding:14px; display:flex; gap:12px; align-items:flex-start; margin-bottom:14px;
+           background:rgba(245,180,60,.1); border:1px solid rgba(245,180,60,.4);}
+  .verdict .big{font-size:24px;}
+  .verdict h3{font-size:15px; color:var(--amber);}
+  .verdict p{font-size:12px; color:var(--muted); margin-top:3px; line-height:1.45;}
+  .dishname{font-size:19px; font-weight:700;}
+  .dishmeta{font-size:12px; color:var(--muted); margin:3px 0 14px;}
+  .tierlabel{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:14px 0 6px;}
+  .ing{display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:8px;}
+  .ing .t{width:8px; height:8px; border-radius:50%; flex:none;}
+  .ing .n{flex:1; font-size:13px; line-height:1.5;}
+  .ing .g{font-size:11px; color:var(--muted);}
+  .ing .x{color:var(--muted); font-size:16px; cursor:pointer; padding:0 2px;}
+  .ing.conflict{border-color:rgba(242,99,95,.55); background:rgba(242,99,95,.08);}
+  .ing.suspect{border-color:rgba(245,180,60,.5); background:rgba(245,180,60,.06);}
+  .banner{font-size:11px; color:var(--muted); background:rgba(154,163,178,.08); border:1px solid var(--line); border-radius:10px; padding:9px 12px; margin:12px 0; line-height:1.5;}
+  .cta{display:block; width:100%; text-align:center; background:var(--accent); color:#fff; font-weight:700; font-size:15px; padding:14px; border-radius:14px; border:none; cursor:pointer; margin-top:8px;}
+  .cta.ghost{background:transparent; border:1px solid var(--line); color:var(--muted); font-weight:500; margin-top:8px;}
+
+  /* insights */
+  .corr{cursor:default;}
+  .corr .head{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .corr .head .e{font-size:20px;}
+  .corr .head .t{flex:1; font-weight:600; font-size:14px;}
+  .corr .stat{font-size:12px; color:var(--muted); line-height:1.55;}
+  .corr .stat b{color:var(--text);}
+  .evbar{display:flex; gap:3px; margin:8px 0 4px;}
+  .evbar i{width:18px; height:8px; border-radius:2px; background:var(--line);}
+  .evbar i.hit{background:var(--red);}
+  .evbar i.hit.mild{background:var(--amber);}
+  .caveat{font-size:10px; color:var(--muted); font-style:italic; margin-top:6px;}
+  .corr .act{font-size:12px; color:var(--accent); margin-top:8px; cursor:pointer;}
+
+  /* profile */
+  .sec{font-size:12px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin:16px 0 8px;}
+  .rule{display:flex; align-items:center; gap:10px; padding:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:8px; font-size:14px;}
+  .rule .e{font-size:18px;}
+  .rule .grow{flex:1; line-height:1.4;}
+  .rule .sub2{display:block; font-size:11px; color:var(--muted);}
+  .sev{font-size:10px; font-weight:700; padding:3px 8px; border-radius:99px;}
+  .sev.hi{background:rgba(242,99,95,.15); color:var(--red);}
+  .sev.md{background:rgba(245,180,60,.15); color:var(--amber);}
+  .sev.lo{background:rgba(154,163,178,.15); color:var(--muted);}
+  .sev.tst{background:rgba(167,139,250,.15); color:var(--purple);}
+  .sev.ok{background:rgba(52,201,142,.15); color:var(--green);}
+  .avatar{width:64px; height:64px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; margin:0 auto 8px;}
+  .center{text-align:center;}
+  .center .who{font-weight:700; font-size:17px;}
+  .center .mail{font-size:12px; color:var(--muted);}
+  .flare{display:flex; align-items:center; gap:10px; padding:12px; border-radius:12px; margin-top:12px;
+         background:rgba(52,201,142,.08); border:1px solid rgba(52,201,142,.35); font-size:13px;}
+  .flare .grow{flex:1;}
+  .toggle{width:44px; height:26px; border-radius:13px; background:var(--line); position:relative; cursor:pointer; flex:none;}
+  .toggle i{position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .15s;}
+  .toggle.on{background:var(--green);}
+  .toggle.on i{left:21px;}
+
+  .hint{color:var(--muted); font-size:12px; margin-top:20px; text-align:center; max-width:460px; line-height:1.6;}
+</style>
+</head>
+<body>
+  <h1>🥗 FoodLens for Crohn's — Interactive Mockup</h1>
+  <p class="sub">Photograph every meal, log symptoms in seconds, and let the app correlate ingredients with how you feel — building an evidence-backed personal trigger profile you can share with your IBD team. Tap the <b>scan button</b> for the demo flow. Full spec in <a href="./DESIGN.md">DESIGN.md</a>.</p>
+
+  <div class="phone">
+    <div class="notch"></div>
+
+    <!-- TODAY -->
+    <div class="screen active" id="s-home">
+      <div class="h-row"><h2>Today</h2><span class="date">Mon 10 Aug · Remission</span></div>
+
+      <div class="card checkin">
+        <span style="font-size:18px;">👋</span>
+        <span class="q">Daily check-in — how's today been?</span>
+        <span class="face">😀</span><span class="face">😐</span><span class="face">😣</span>
+      </div>
+
+      <div class="card meal">
+        <div class="thumb" style="background:rgba(52,201,142,.12)">🥣</div>
+        <div class="info"><div class="name">Porridge with banana</div><div class="meta">08:12 · 5 ingredients</div></div>
+        <span class="pill ok">No triggers</span>
+      </div>
+      <div class="card meal">
+        <div class="thumb" style="background:rgba(245,180,60,.12)">🥪</div>
+        <div class="info"><div class="name">Chicken & pesto sandwich</div><div class="meta">12:47 · 9 ingredients</div></div>
+        <span class="pill warn">⚠ garlic</span>
+      </div>
+      <div class="card symptom-entry">
+        <div class="e">🩺</div>
+        <div class="info" style="flex:1"><div class="name" style="font-size:13px;">Bloating — moderate</div><div class="meta">15:05 · 2h 18m after lunch</div></div>
+        <span class="pill bad">Symptom</span>
+      </div>
+      <div class="card meal">
+        <div class="thumb" style="background:rgba(91,141,239,.12)">🍏</div>
+        <div class="info"><div class="name">Apple (peeled) & rice cakes</div><div class="meta">16:30 · repeat meal · 2 taps</div></div>
+        <span class="pill ok">No triggers</span>
+      </div>
+      <p style="color:var(--muted); font-size:12px; text-align:center; margin-top:8px;">Tap 📷 to scan a meal · long-press to log a symptom</p>
+    </div>
+
+    <!-- ANALYSING -->
+    <div class="screen" id="s-analyse">
+      <div class="photo"><div class="shimmer"></div><div class="scanline"></div></div>
+      <ul class="steps">
+        <li class="done" id="st1"><span class="dot"></span>Photo captured</li>
+        <li id="st2"><span class="dot"></span>Identifying dish…</li>
+        <li id="st3"><span class="dot"></span>Breaking down ingredients (incl. hidden)…</li>
+        <li id="st4"><span class="dot"></span>Checking against your trigger profile…</li>
+      </ul>
+    </div>
+
+    <!-- RESULT -->
+    <div class="screen" id="s-result">
+      <div class="dishname">Chicken Pad Thai 🍜</div>
+      <div class="dishmeta">Thai · est. portion 420g · confidence 91%</div>
+
+      <div class="verdict">
+        <div class="big">⚠️</div>
+        <div>
+          <h3>1 confirmed + 2 suspected triggers</h3>
+          <p>Wok-fried in oil (your <b>confirmed</b> trigger: fried/high-fat). Likely contains <b>garlic and shallots</b> — you're currently tracking onion/garlic as suspected.</p>
+        </div>
+      </div>
+
+      <div class="tierlabel">● Visible in photo</div>
+      <div class="ing"><span class="t" style="background:var(--tier-vis)"></span><span class="n">Rice noodles</span><span class="g">~150g</span><span class="x">✕</span></div>
+      <div class="ing"><span class="t" style="background:var(--tier-vis)"></span><span class="n">Chicken breast</span><span class="g">~120g</span><span class="x">✕</span></div>
+      <div class="ing suspect"><span class="t" style="background:var(--tier-vis)"></span><span class="n">Crushed peanuts <span class="pill test">nuts/seeds</span></span><span class="g">~15g</span><span class="x">✕</span></div>
+      <div class="ing suspect"><span class="t" style="background:var(--tier-vis)"></span><span class="n">Chilli flakes <span class="pill warn">spicy</span></span><span class="g">~2g</span><span class="x">✕</span></div>
+
+      <div class="tierlabel">● Likely (typical recipe)</div>
+      <div class="ing conflict"><span class="t" style="background:var(--tier-lik)"></span><span class="n">Cooking oil, wok-fried <span class="pill bad">fried/high-fat · confirmed</span></span><span class="g">~20g</span><span class="x">✕</span></div>
+      <div class="ing suspect"><span class="t" style="background:var(--tier-lik)"></span><span class="n">Garlic <span class="pill warn">FODMAP · suspected</span></span><span class="g">~5g</span><span class="x">✕</span></div>
+      <div class="ing suspect"><span class="t" style="background:var(--tier-lik)"></span><span class="n">Shallots <span class="pill warn">FODMAP · suspected</span></span><span class="g">~10g</span><span class="x">✕</span></div>
+      <div class="ing"><span class="t" style="background:var(--tier-lik)"></span><span class="n">Fish sauce, tamarind, palm sugar</span><span class="g">~25g</span><span class="x">✕</span></div>
+
+      <div class="banner">Eating this is your call — logging it either way makes your trigger evidence stronger. FoodLens finds patterns; it doesn't make food rules.</div>
+      <button class="cta" onclick="go('home')">Log this meal</button>
+      <button class="cta ghost" onclick="go('home')">Discard</button>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="screen" id="s-insights">
+      <div class="h-row"><h2>Insights</h2><span class="date">last 60 days</span></div>
+
+      <div class="card corr">
+        <div class="head"><span class="e">🧅</span><span class="t">Onion &amp; garlic (FODMAP)</span><span class="pill warn">suspected</span></div>
+        <div class="evbar"><i class="hit"></i><i class="hit"></i><i></i><i class="hit"></i><i class="hit mild"></i><i class="hit"></i><i></i><i class="hit"></i><i class="hit"></i></div>
+        <div class="stat">Symptoms followed <b>7 of 9</b> meals containing onion/garlic within 24h. Baseline: symptoms on <b>2 of 8</b> days without exposure.</div>
+        <div class="caveat">Correlation, not causation — a reintroduction test can firm this up.</div>
+        <div class="act">Plan a guided test →</div>
+      </div>
+
+      <div class="card corr">
+        <div class="head"><span class="e">🍟</span><span class="t">Fried / high-fat</span><span class="pill bad">confirmed by you</span></div>
+        <div class="evbar"><i class="hit"></i><i class="hit"></i><i class="hit"></i><i class="hit mild"></i><i class="hit"></i><i></i><i class="hit"></i></div>
+        <div class="stat">Symptoms followed <b>6 of 7</b> exposures within 24h. You confirmed this trigger on 14 Jul after a reintroduction test.</div>
+      </div>
+
+      <div class="card corr">
+        <div class="head"><span class="e">☕</span><span class="t">Caffeine</span><span class="pill test">testing</span></div>
+        <div class="evbar"><i></i><i class="hit mild"></i><i></i><i></i></div>
+        <div class="stat">Only <b>4 exposures</b> logged so far — not enough data. Keep logging coffee days and symptom-free days alike.</div>
+      </div>
+
+      <div class="card corr">
+        <div class="head"><span class="e">🥛</span><span class="t">Dairy / lactose</span><span class="pill ok">looking safe</span></div>
+        <div class="stat">Symptoms after <b>1 of 11</b> exposures — no meaningful difference from baseline. 🎉</div>
+        <div class="caveat">Good news counts too — this keeps foods on your plate.</div>
+      </div>
+
+      <div class="banner">📤 Gastro appointment coming up? <b style="color:var(--accent)">Export this as a PDF</b> — meals, symptoms, and correlations in a format your IBD team can use.</div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="screen" id="s-profile">
+      <div class="center" style="margin-bottom:6px;">
+        <div class="avatar">A</div>
+        <div class="who">Aaron</div>
+        <div class="mail">Crohn's · diagnosed 2023</div>
+      </div>
+
+      <div class="flare">
+        <span style="font-size:18px;">🔥</span>
+        <span class="grow"><b>Flare mode</b><span class="sub2" style="display:block; font-size:11px; color:var(--muted);">Off — currently in remission. Turning on applies low-residue guidance and separates this period's data.</span></span>
+        <span class="toggle" onclick="this.classList.toggle('on')"><i></i></span>
+      </div>
+
+      <div class="sec">My triggers</div>
+      <div class="rule"><span class="e">🍟</span><span class="grow">Fried / high-fat food<span class="sub2">Confirmed 14 Jul · via reintroduction test</span></span><span class="sev hi">CONFIRMED</span></div>
+      <div class="rule"><span class="e">🧅</span><span class="grow">Onion &amp; garlic (FODMAP)<span class="sub2">7/9 exposures → symptoms</span></span><span class="sev md">SUSPECTED</span></div>
+      <div class="rule"><span class="e">🌶</span><span class="grow">Spicy food<span class="sub2">Gathering evidence</span></span><span class="sev md">SUSPECTED</span></div>
+      <div class="rule"><span class="e">☕</span><span class="grow">Caffeine<span class="sub2">4 exposures logged</span></span><span class="sev tst">TESTING</span></div>
+      <div class="rule"><span class="e">🥛</span><span class="grow">Dairy / lactose<span class="sub2">1/11 exposures → symptoms</span></span><span class="sev ok">SAFE</span></div>
+      <div class="rule"><span class="e">➕</span><span class="grow" style="color:var(--muted)">Track a new trigger…</span></div>
+
+      <div class="sec">Sharing</div>
+      <div class="rule"><span class="e">📤</span><span class="grow">Export diary for clinic<span class="sub2">PDF / CSV · meals, symptoms, correlations</span></span></div>
+      <div class="rule"><span class="e">🧑‍⚕️</span><span class="grow">Dietitian access<span class="sub2">Not shared</span></span><span class="sev lo">OFF</span></div>
+    </div>
+
+    <!-- TAB BAR -->
+    <div class="tabbar">
+      <div class="tab on" data-s="home" onclick="go('home')"><span class="ico">🏠</span>Today</div>
+      <div class="tab" data-s="insights" onclick="go('insights')"><span class="ico">📈</span>Insights</div>
+      <div class="tab scan" onclick="scan()"><span class="ico">📷</span></div>
+      <div class="tab" data-s="symptom" onclick="go('home')"><span class="ico">🩺</span>Symptom</div>
+      <div class="tab" data-s="profile" onclick="go('profile')"><span class="ico">👤</span>Profile</div>
+    </div>
+  </div>
+
+  <p class="hint">Mockup screens: <b>Today</b> (meals + symptoms on one timeline, daily check-in) → tap 📷 for <b>Analysing</b> → <b>Result</b> (ingredient tiers with trigger tags matched to <i>your</i> profile) → <b>Insights</b> (correlation cards with raw evidence) → <b>Profile</b> (trigger statuses, flare mode, clinic export).</p>
+
+<script>
+  function show(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s-'+id).classList.add('active');
+  }
+  function go(id){
+    show(id);
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    const tab=document.querySelector('.tab[data-s="'+(id==='result'||id==='analyse'?'home':id)+'"]');
+    if(tab) tab.classList.add('on');
+  }
+  let timers=[];
+  function scan(){
+    timers.forEach(clearTimeout); timers=[];
+    ['st2','st3','st4'].forEach(i=>{const el=document.getElementById(i); el.classList.remove('done','doing');});
+    show('analyse');
+    const seq=[['st2',300],['st3',1400],['st4',2600]];
+    seq.forEach(([id,t],idx)=>{
+      timers.push(setTimeout(()=>{
+        document.getElementById(id).classList.add('doing');
+        if(idx>0) document.getElementById(seq[idx-1][0]).classList.replace('doing','done');
+      },t));
+    });
+    timers.push(setTimeout(()=>{document.getElementById('st4').classList.replace('doing','done');},3600));
+    timers.push(setTimeout(()=>{go('result');},4100));
+  }
+</script>
+</body>
+</html>
