@@ -92,7 +92,7 @@
   </section>
 
   <section class="intro">
-    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates. The iOS companion app that a previous cycle flagged as the largest gap is not present in the tree on the current branch (Dev), so it stays off this list — its Maestro flows do still sit on the Testing branch. The Android tree has not changed since 30 July, so the seven untracked capabilities below stand unchanged, and no untracked capability gained a story this cycle. That holds even though the board itself has moved sharply around it: no items at all were added this cycle, following sixteen the cycle before, and none of that intake covers a capability on this list. The board is now moving stories towards deployment rather than adding them — all five core field-app stories reached Ready to Deploy this cycle — which raises the stake on this list, because anything shipped from that band carries these untracked capabilities with it, unstoried and unscoped for QA. The hosted map-tile source stays resolved on the board rather than on this list: 49066 remains removed from the backlog and 49067 holds at Awaiting QA.</p>
+    <p class="lede">Why this matters: anything built without a story is invisible to planning, QA scope, and the acceptance-criteria validation that just completed (46298). It will not be tested, estimated, or documented unless it is put on the board. The workforce-recording feature followed exactly this path — built untracked, then raised retrospectively as 46198 — and these are the remaining candidates. The iOS companion app that a previous cycle flagged as the largest gap is not present in the tree on the current branch (Dev), so it stays off this list — its Maestro flows do still sit on the Testing branch. The Android tree has not changed since 30 July, so the seven untracked capabilities below stand unchanged, and no untracked capability gained a story this cycle. That holds even though the board itself keeps moving around it: one item was added this cycle, the published-work file copier (49542) under Route to production, and it covers no capability on this list. The five core field-app stories that reached Ready to Deploy last cycle are all still sitting in that band, which keeps the stake on this list high, because anything shipped from there carries these untracked capabilities with it, unstoried and unscoped for QA. This cycle also detached ten of the field-app defects from the epic entirely, so the gap between what is built and what the board can account for widened on both sides at once. The hosted map-tile source stays resolved on the board rather than on this list: 49066 remains removed from the backlog and 49067 holds at Awaiting QA.</p>
   </section>
 
   <section class="section">
@@ -159,7 +159,7 @@
           <td class="cap">Photo capture &amp; upload policy</td>
           <td><span class="code">CameraX capture in CompletionScreen; JobPhoto + SurveyPicture entities; Wi-Fi-only upload policy and queued-photo handling on the sync sheet</span></td>
           <td><span class="pill ahead">Split coverage</span></td>
-          <td class="suggest">Two slices are now on the board — photo limits and image size (46889, Awaiting QA) and a photo gallery / live photos (47114, Awaiting QA) — but they are split across 45890, 45894, and 46297 with no single story owning the capture-annotate-queue-upload chain. There is no automated test for the capture-to-upload chain in the tree today.</td>
+          <td class="suggest">Two slices are now on the board — photo limits and image size (46889, Awaiting QA) and a photo gallery / live photos (47114, Ready to Deploy) — but they are split across 45890, 45894, and 46297 with no single story owning the capture-annotate-queue-upload chain. There is no automated test for the capture-to-upload chain in the tree today.</td>
         </tr>
         <tr>
           <td class="cap">Offline map packs</td>
@@ -195,7 +195,7 @@
   <footer class="footer">
     <hr class="rule" />
     Canopy Cut — Utility Arb cutting app · Epic 44726 · Companion page to the story dashboard · Drafted by AI, reviewed by Aaron Haydon.<br />
-    Method: code inventory of screens, navigation routes, Room entities/DAOs, and recent commits, cross-checked against all 93 stories, spikes and bugs on the epic after the June restructure. Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the Ground Control design bundle was unavailable at build time, so a fallback typeface is used. Colours follow the official Ground Control palette.
+    Method: code inventory of screens, navigation routes, Room entities/DAOs, and recent commits, cross-checked against the 100 stories, spikes and bugs inside the epic, plus twelve shown for continuity, after the June restructure. Brand note: Cera Pro and FOT-TsukuARdGothic are not embedded — the Ground Control design bundle was unavailable at build time, so a fallback typeface is used. Colours follow the official Ground Control palette.
   </footer>
 
 </div>
