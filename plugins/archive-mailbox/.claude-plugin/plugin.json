@@ -1,0 +1,19 @@
+{
+  "name": "archive-mailbox",
+  "displayName": "Archive Mailbox",
+  "description": "Interact with your Exchange Online archive mailbox (In-Place / Online Archive) from Claude Cowork — browse folders, search items, restore archived mail to your primary mailbox via the Microsoft Graph Mailbox Import/Export APIs, or search an exported PST file locally as a fallback.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Aaron Haydon"
+  },
+  "keywords": [
+    "outlook",
+    "exchange",
+    "archive",
+    "online-archive",
+    "in-place-archive",
+    "pst",
+    "microsoft-graph",
+    "email"
+  ]
+}
