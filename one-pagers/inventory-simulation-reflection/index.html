@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inventory Simulation — Reflective Report One-Pager</title>
+<meta name="description" content="One-page summary of a reflective report on a twelve-round inventory management simulation, structured with Gibbs' Reflective Cycle. All figures are illustrative placeholders.">
+<style>
+  :root{
+    color-scheme: light;
+    --page:#f9f9f7;
+    --surface:#fcfcfb;
+    --ink:#0b0b0b;
+    --ink-2:#52514e;
+    --muted:#898781;
+    --grid:#e1e0d9;
+    --baseline:#c3c2b7;
+    --border:rgba(11,11,11,.10);
+    --series-1:#2a78d6;   /* ordering */
+    --series-2:#008300;   /* holding */
+    --series-3:#e87ba4;   /* stockout */
+    --accent:#2a78d6;
+    --note-bg:#fdf6e7;
+    --note-border:#eda100;
+    --radius:14px;
+    --radius-sm:8px;
+    --maxw:1000px;
+    --shadow:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(11,11,11,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme: dark;
+      --page:#0d0d0d;
+      --surface:#1a1a19;
+      --ink:#ffffff;
+      --ink-2:#c3c2b7;
+      --muted:#898781;
+      --grid:#2c2c2a;
+      --baseline:#383835;
+      --border:rgba(255,255,255,.10);
+      --series-1:#3987e5;
+      --series-2:#008300;
+      --series-3:#d55181;
+      --accent:#3987e5;
+      --note-bg:#2a2413;
+      --note-border:#c98500;
+      --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --page:#0d0d0d;
+    --surface:#1a1a19;
+    --ink:#ffffff;
+    --ink-2:#c3c2b7;
+    --muted:#898781;
+    --grid:#2c2c2a;
+    --baseline:#383835;
+    --border:rgba(255,255,255,.10);
+    --series-1:#3987e5;
+    --series-2:#008300;
+    --series-3:#d55181;
+    --accent:#3987e5;
+    --note-bg:#2a2413;
+    --note-border:#c98500;
+    --shadow:none;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page);
+    color:var(--ink);
+    line-height:1.55;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent); text-underline-offset:3px}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px 64px}
+
+  /* Header */
+  header{padding:48px 0 8px}
+  .overline{
+    text-transform:uppercase; letter-spacing:.16em; font-size:12px;
+    font-weight:600; color:var(--accent); margin:0 0 10px;
+  }
+  h1{font-size:clamp(26px,4vw,36px); line-height:1.15; margin:0 0 10px; letter-spacing:-.01em}
+  .lede{color:var(--ink-2); max-width:64ch; margin:0}
+
+  .note{
+    margin:20px 0 0; padding:10px 14px; font-size:14px; color:var(--ink-2);
+    background:var(--note-bg); border-left:3px solid var(--note-border);
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  /* Stat tiles */
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:28px 0 0}
+  .tile{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px 18px; box-shadow:var(--shadow);
+  }
+  .tile .label{font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600}
+  .tile .value{font-size:30px; font-weight:700; line-height:1.15; margin-top:4px}
+  .tile .sub{font-size:13px; color:var(--ink-2); margin-top:2px}
+
+  /* Sections */
+  section{margin-top:40px}
+  h2{font-size:20px; margin:0 0 6px}
+  .section-sub{color:var(--ink-2); font-size:14.5px; margin:0 0 16px; max-width:70ch}
+
+  /* Chart card */
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px; box-shadow:var(--shadow);
+  }
+  .legend{display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--ink-2); margin:0 0 12px}
+  .legend .key{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:11px; height:11px; border-radius:3px; display:inline-block}
+  .chart-holder{position:relative; overflow-x:auto}
+  svg{display:block; width:100%; height:auto}
+  .tooltip{
+    position:absolute; pointer-events:none; opacity:0; transition:opacity .12s;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+    box-shadow:var(--shadow); padding:9px 12px; font-size:13px; min-width:170px; z-index:5;
+  }
+  .tooltip .t-title{font-weight:700; margin-bottom:4px}
+  .tooltip .t-row{display:flex; justify-content:space-between; gap:16px; color:var(--ink-2)}
+  .tooltip .t-row b{color:var(--ink); font-variant-numeric:tabular-nums}
+  .phase-row{display:flex; font-size:12px; color:var(--muted); margin-top:6px; text-align:center}
+
+  /* Gibbs grid */
+  .gibbs{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px}
+  .stage{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px 18px; box-shadow:var(--shadow);
+  }
+  .stage .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; border-radius:50%; background:var(--accent); color:#fff;
+    font-size:13px; font-weight:700; margin-right:8px;
+  }
+  .stage h3{display:inline; font-size:15.5px; margin:0}
+  .stage p{font-size:14px; color:var(--ink-2); margin:10px 0 0}
+
+  /* Lessons */
+  .lessons{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px}
+  .lesson{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow)}
+  .lesson h3{font-size:15.5px; margin:0 0 6px}
+  .lesson p{font-size:14px; color:var(--ink-2); margin:0}
+
+  blockquote{
+    margin:32px 0 0; padding:18px 22px; border-left:3px solid var(--accent);
+    background:var(--surface); border-radius:0 var(--radius) var(--radius) 0;
+    font-size:17px; color:var(--ink); box-shadow:var(--shadow);
+  }
+  blockquote em{color:var(--ink-2); font-size:14px; font-style:normal; display:block; margin-top:6px}
+
+  /* Data table (accessibility alternative to the chart) */
+  details{margin-top:14px; font-size:14px}
+  details summary{cursor:pointer; color:var(--ink-2)}
+  table{border-collapse:collapse; margin-top:10px; width:100%; font-variant-numeric:tabular-nums}
+  th,td{text-align:right; padding:5px 10px; border-bottom:1px solid var(--grid); font-size:13.5px}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--muted); font-weight:600}
+
+  footer{margin-top:48px; font-size:13px; color:var(--muted); border-top:1px solid var(--grid); padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="overline">Operations &amp; Supply Chain Management · Reflective Report</p>
+    <h1>Twelve rounds of inventory management, one lesson: policy beats intuition</h1>
+    <p class="lede">A one-page summary of my reflective report on the inventory management simulation — what happened, why our costs spiked, how a systematic ordering policy turned the game around, and what I'm taking forward. Structured with Gibbs' (1988) Reflective Cycle.</p>
+    <p class="note"><strong>Worked model answer.</strong> All figures, rounds, and team events on this page are invented placeholders — replace them with your real simulation results before any submission.</p>
+  </header>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="label">Total cost</div>
+      <div class="value">£4,120</div>
+      <div class="sub">vs £3,100 theoretical optimum</div>
+    </div>
+    <div class="tile">
+      <div class="label">Service level</div>
+      <div class="value">91%</div>
+      <div class="sub">all stockouts in rounds 3–5</div>
+    </div>
+    <div class="tile">
+      <div class="label">Final ranking</div>
+      <div class="value">3rd of 8</div>
+      <div class="sub">winning team: £3,400</div>
+    </div>
+    <div class="tile">
+      <div class="label">Final 4 rounds</div>
+      <div class="value">&lt;8%</div>
+      <div class="sub">above optimum cost, once policy-driven</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Cost per round, by cost type</h2>
+    <p class="section-sub">The £1,020 gap to optimum is almost entirely rounds 3–8: a stockout spiral (rounds 3–5), then heavy holding costs from the panic double-order (rounds 6–8). From round 9 the moving-average forecast and explicit safety stock kept weekly cost flat.</p>
+    <div class="card">
+      <div class="legend" aria-hidden="true">
+        <span class="key"><span class="swatch" style="background:var(--series-1)"></span>Ordering (£50/order)</span>
+        <span class="key"><span class="swatch" style="background:var(--series-2)"></span>Holding (£1/unit/wk)</span>
+        <span class="key"><span class="swatch" style="background:var(--series-3)"></span>Stockout (£5/unit)</span>
+      </div>
+      <div class="chart-holder">
+        <svg id="chart" viewBox="0 0 880 340" role="img" aria-label="Stacked bar chart of weekly cost by type across twelve rounds. Costs peak in rounds 3 to 8 and stabilise from round 9."></svg>
+        <div class="tooltip" id="tip"></div>
+      </div>
+      <details>
+        <summary>View data as a table</summary>
+        <table id="datatable">
+          <thead><tr><th>Round</th><th>Ordering</th><th>Holding</th><th>Stockout</th><th>Total</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <h2>The reflection at a glance — Gibbs' Reflective Cycle</h2>
+    <div class="gibbs">
+      <div class="stage"><span class="num">1</span><h3>Description</h3>
+        <p>Twelve weekly rounds, two-week lead time, three cost types. A round-3 demand spike (240 vs 180 in stock) caused our first stockout; the panic double-order arrived in round 6 as demand normalised, leaving 300+ units on the shelf. From round 8 we switched to a three-round moving average, an explicit reorder point, and a 40-unit safety buffer.</p>
+      </div>
+      <div class="stage"><span class="num">2</span><h3>Feelings</h3>
+        <p>Quiet confidence going in, embarrassment after arguing our stock was "comfortable" the round before the stockout, frustration watching holding costs pay weekly for one moment of panic — and, by the end, earned confidence: good inventory management feels boring.</p>
+      </div>
+      <div class="stage"><span class="num">3</span><h3>Evaluation</h3>
+        <p>Good: the round-8 recovery, explicit safety stock, and clear role division in five-minute rounds. Bad: seven reactive rounds, forecasting from a single week, and ignoring the lead time — ordering for a world that had already changed by the time stock arrived.</p>
+      </div>
+      <div class="stage"><span class="num">4</span><h3>Analysis</h3>
+        <p>Textbook bullwhip: demand-signal processing (Lee et al., 1997) and supply-line under-weighting (Croson &amp; Donohue, 2006) explain the round-4 double-order placed while stock was already in transit. The recovery worked because it matched theory — newsvendor cost-ratio logic justified the 40-unit buffer, and consistent batches approximated EOQ.</p>
+      </div>
+      <div class="stage"><span class="num">5</span><h3>Conclusion</h3>
+        <p>A mediocre policy applied consistently beats good intuition applied reactively. Costs were highest not when demand was hardest to predict, but when every decision was made from scratch under pressure. One vivid failure outweighed seven weeks of stable data in my judgement.</p>
+      </div>
+      <div class="stage"><span class="num">6</span><h3>Action plan</h3>
+        <p>Build a simple model before committing to any quantitative decision; write down what's in the pipeline to stop under-weighting the supply line; propose an agreed decision rule in the first session of the next group project; practise stating data-based dissent clearly, once, before the group commits.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Three lessons that transfer</h2>
+    <div class="lessons">
+      <div class="lesson">
+        <h3>Respect the supply line</h3>
+        <p>Every early mistake traced back to ignoring stock already ordered but not yet arrived. Orders must cover the protection interval — lead time plus review period — not the current week.</p>
+      </div>
+      <div class="lesson">
+        <h3>Commit to a decision rule</h3>
+        <p>The improvement came less from the sophistication of the model than from the discipline of having one. Adjust the parameters; don't override the policy.</p>
+      </div>
+      <div class="lesson">
+        <h3>Beware the vivid event</h3>
+        <p>I over-correct after visible failures. One dramatic stockout drove more decisions than seven weeks of stable demand data — a bias a written forecast keeps in check.</p>
+      </div>
+    </div>
+    <blockquote>
+      "Once we had a systematic policy, the rounds became calm — almost boring — and I realised that boring is what good inventory management feels like."
+      <em>From section 2 (Feelings) of the full report</em>
+    </blockquote>
+  </section>
+
+  <footer>
+    Summary of <a href="../../docs/inventory-simulation-reflection.md">the full reflective report</a> ·
+    Key sources: Lee, Padmanabhan &amp; Whang (1997); Croson &amp; Donohue (2006); Chopra &amp; Meindl (2019); Slack, Brandon-Jones &amp; Burgess (2022); Gibbs (1988) ·
+    All figures illustrative.
+  </footer>
+</div>
+
+<script>
+(function(){
+  // Per-round cost breakdown (£). Illustrative — consistent with the report's
+  // narrative: stockouts R3–5, overstock holding R6–8, stable policy R9–12.
+  // Totals: ordering £550, holding £2,720, stockout £850 → £4,120.
+  var data = [
+    {r:1,  order:50, hold:180, stock:0,   note:"Baseline ordering"},
+    {r:2,  order:50, hold:150, stock:0,   note:"Order = last week's sales"},
+    {r:3,  order:50, hold:20,  stock:300, note:"Demand spike 240 — first stockout"},
+    {r:4,  order:50, hold:10,  stock:250, note:"Panic double-order placed"},
+    {r:5,  order:50, hold:0,   stock:300, note:"Still exposed — order in transit"},
+    {r:6,  order:0,  hold:480, stock:0,   note:"Double-order lands; 300+ units held"},
+    {r:7,  order:50, hold:430, stock:0,   note:"Burning down excess stock"},
+    {r:8,  order:50, hold:350, stock:0,   note:"Policy adopted: MA-3 + safety stock"},
+    {r:9,  order:50, hold:290, stock:0,   note:"Policy-driven"},
+    {r:10, order:50, hold:280, stock:0,   note:"Policy-driven"},
+    {r:11, order:50, hold:270, stock:0,   note:"Policy-driven"},
+    {r:12, order:50, hold:260, stock:0,   note:"Policy-driven"}
+  ];
+
+  var css = getComputedStyle(document.documentElement);
+  function v(name){ return css.getPropertyValue(name).trim(); }
+
+  var W=880, H=340, m={t:26, r:16, b:56, l:52};
+  var pw=W-m.l-m.r, ph=H-m.t-m.b;
+  var yMax=500, gap=2, rTop=4;
+  var n=data.length, band=pw/n, barW=Math.min(40, band*0.55);
+
+  var svg=document.getElementById('chart');
+  var NS='http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent){
+    var e=document.createElementNS(NS, tag);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    (parent||svg).appendChild(e); return e;
+  }
+  function y(val){ return m.t + ph - (val/yMax)*ph; }
+
+  // Gridlines + y labels
+  for(var g=0; g<=yMax; g+=100){
+    el('line',{x1:m.l, x2:W-m.r, y1:y(g), y2:y(g), stroke:v('--grid'), 'stroke-width':1});
+    el('text',{x:m.l-8, y:y(g)+4, 'text-anchor':'end', 'font-size':11,
+      fill:v('--muted'), 'font-family':'system-ui,sans-serif'}).textContent='£'+g;
+  }
+  // Baseline
+  el('line',{x1:m.l, x2:W-m.r, y1:y(0), y2:y(0), stroke:v('--baseline'), 'stroke-width':1});
+
+  var series=[
+    {key:'order', color:v('--series-1'), label:'Ordering'},
+    {key:'hold',  color:v('--series-2'), label:'Holding'},
+    {key:'stock', color:v('--series-3'), label:'Stockout'}
+  ];
+
+  var tip=document.getElementById('tip');
+  var holder=document.querySelector('.chart-holder');
+
+  data.forEach(function(d, i){
+    var cx=m.l + band*i + band/2;
+    var x=cx - barW/2;
+    var total=d.order+d.hold+d.stock;
+    var grp=el('g',{});
+
+    // Segments bottom-up with 2px surface gaps; rounded cap on the top segment.
+    var acc=0;
+    var segs=series.map(function(s){ return {color:s.color, val:d[s.key], label:s.label}; })
+                   .filter(function(s){ return s.val>0; });
+    segs.forEach(function(s, si){
+      var y1=y(acc), y0=y(acc+s.val);
+      var isTop=(si===segs.length-1);
+      var hgt=Math.max(0, y1-y0 - (isTop?0:gap));
+      if(isTop && hgt>rTop){
+        el('path',{d:'M'+x+' '+y1+' V'+(y0+rTop)+' Q'+x+' '+y0+' '+(x+rTop)+' '+y0+
+          ' H'+(x+barW-rTop)+' Q'+(x+barW)+' '+y0+' '+(x+barW)+' '+(y0+rTop)+' V'+y1+' Z',
+          fill:s.color}, grp);
+      } else {
+        el('rect',{x:x, y:y0+(isTop?0:0), width:barW, height:hgt, fill:s.color}, grp);
+      }
+      acc+=s.val;
+    });
+
+    // Hit target wider than the mark
+    var hit=el('rect',{x:m.l+band*i, y:m.t, width:band, height:ph, fill:'transparent'}, grp);
+    hit.addEventListener('mousemove', function(ev){
+      tip.innerHTML='<div class="t-title">Round '+d.r+' — £'+total+'</div>'+
+        '<div class="t-row"><span>Ordering</span><b>£'+d.order+'</b></div>'+
+        '<div class="t-row"><span>Holding</span><b>£'+d.hold+'</b></div>'+
+        '<div class="t-row"><span>Stockout</span><b>£'+d.stock+'</b></div>'+
+        '<div class="t-row" style="margin-top:4px"><span>'+d.note+'</span></div>';
+      tip.style.opacity=1;
+      var r=holder.getBoundingClientRect();
+      var tx=ev.clientX-r.left+14, ty=ev.clientY-r.top-10;
+      if(tx+190>r.width) tx=ev.clientX-r.left-200;
+      tip.style.left=tx+'px'; tip.style.top=ty+'px';
+    });
+    hit.addEventListener('mouseleave', function(){ tip.style.opacity=0; });
+
+    // x labels
+    el('text',{x:cx, y:H-m.b+18, 'text-anchor':'middle', 'font-size':11.5,
+      fill:v('--muted'), 'font-family':'system-ui,sans-serif'}).textContent='R'+d.r;
+
+    // Selective direct labels: first stockout, holding peak, final round
+    if(d.r===3||d.r===6||d.r===12){
+      el('text',{x:cx, y:y(total)-7, 'text-anchor':'middle', 'font-size':11.5,
+        'font-weight':700, fill:v('--ink'), 'font-family':'system-ui,sans-serif'})
+        .textContent='£'+total;
+    }
+  });
+
+  // Phase bands under the axis
+  var phases=[
+    {from:1, to:5,  label:'Reactive ordering'},
+    {from:6, to:8,  label:'Overstocked'},
+    {from:9, to:12, label:'Policy-driven'}
+  ];
+  phases.forEach(function(p){
+    var x0=m.l+band*(p.from-1)+6, x1=m.l+band*p.to-6;
+    el('line',{x1:x0, x2:x1, y1:H-m.b+32, y2:H-m.b+32, stroke:v('--baseline'), 'stroke-width':1});
+    el('text',{x:(x0+x1)/2, y:H-m.b+48, 'text-anchor':'middle', 'font-size':11,
+      fill:v('--muted'), 'font-family':'system-ui,sans-serif'}).textContent=p.label;
+  });
+
+  // Data table
+  var tbody=document.querySelector('#datatable tbody');
+  data.forEach(function(d){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>Round '+d.r+'</td><td>£'+d.order+'</td><td>£'+d.hold+
+      '</td><td>£'+d.stock+'</td><td><b>£'+(d.order+d.hold+d.stock)+'</b></td>';
+    tbody.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>
